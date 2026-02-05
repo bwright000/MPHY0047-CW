@@ -1,0 +1,13 @@
+# Claude Code
+.claude/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Generated figures
+figures/
+*.png
+
