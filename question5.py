@@ -21,7 +21,7 @@ df = pd.DataFrame(metrics_data)
 # Calculate absolute Cohen's d for ranking
 df['abs_cohens_d'] = df['cohens_d'].abs()
 
-# Determine effect size category
+# Cohen's (1988) thresholds: <0.2 Negligible, 0.2-0.5 Small, 0.5-0.8 Medium, >=0.8 Large
 def effect_size_category(d):
     d = abs(d)
     if d < 0.2:
@@ -35,7 +35,9 @@ def effect_size_category(d):
 
 df['effect_category'] = df['cohens_d'].apply(effect_size_category)
 
-# Rank by: 1) Significance (significant first), 2) Absolute Cohen's d (descending)
+# Composite ranking: significant metrics score 100+ (always ranked above non-significant),
+# then sorted by |Cohen's d| descending within each significance group.
+# This prioritises statistical significance first, then practical effect size magnitude.
 df['rank_score'] = df['significant'].astype(int) * 100 + df['abs_cohens_d']
 df = df.sort_values('rank_score', ascending=False).reset_index(drop=True)
 df['Rank'] = range(1, len(df) + 1)
@@ -81,3 +83,23 @@ print("""
 RECOMMENDATION: Prioritize eye-tracking (fixation sparsity) and time-based metrics
 for surgical skill assessment. Error metrics need refinement to capture quality.
 """)
+
+# Generate effect size bar chart
+import matplotlib.pyplot as plt
+import os
+os.makedirs('figures', exist_ok=True)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+colors = ['green' if sig else 'grey' for sig in df['significant']]
+bars = ax.barh(df['Metric'], df['abs_cohens_d'], color=colors, alpha=0.8, edgecolor='black')
+ax.set_xlabel("|Cohen's d|")
+ax.set_title("Effect Size by Metric (Green = Significant, Grey = Not Significant)")
+ax.axvline(x=0.8, color='red', linestyle='--', linewidth=1, label='Large effect threshold')
+ax.axvline(x=0.5, color='orange', linestyle='--', linewidth=1, label='Medium effect threshold')
+ax.axvline(x=0.2, color='yellow', linestyle='--', linewidth=1, label='Small effect threshold')
+ax.legend(loc='lower right')
+ax.invert_yaxis()
+plt.tight_layout()
+plt.savefig('figures/barchart_q5_effect_sizes.png', dpi=150)
+plt.show()
+print("Saved: figures/barchart_q5_effect_sizes.png")

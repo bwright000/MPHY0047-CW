@@ -8,7 +8,8 @@ from dataloader import expert_total, expert_needle, expert_knot, novice_total, n
 
 def calculate_mean(data):
     '''
-    Compute the mean of a list of numbers.
+    Compute the arithmetic mean of a list of numbers.
+    Formula: x_bar = (1/n) * sum(x_i)  for i = 1..n
     '''
 
     n = len(data)
@@ -20,6 +21,9 @@ def calculate_mean(data):
 def calculate_median(data):
     '''
     Compute the median of a list of numbers.
+    For sorted data x_(1) <= x_(2) <= ... <= x_(n):
+      If n is odd:  median = x_((n+1)/2)
+      If n is even: median = (x_(n/2) + x_(n/2 + 1)) / 2
     '''
 
     sorted_data = sorted(data)
@@ -36,8 +40,9 @@ def calculate_median(data):
 def calculate_variance(data, population=True):
     '''
     Compute the variance of a list of numbers.
-    If population is True, compute population variance.
-    If population is False, compute sample variance.
+    Population variance: sigma^2 = (1/N) * sum((x_i - mu)^2)
+    Sample variance:     s^2     = (1/(n-1)) * sum((x_i - x_bar)^2)
+    The (n-1) divisor is Bessel's correction for unbiased estimation.
     '''
 
     n = len(data)
@@ -57,8 +62,8 @@ def calculate_variance(data, population=True):
 def calculate_stddev(data, population=True):
     '''
     Compute the standard deviation of a list of numbers.
-    If population is True, compute population standard deviation.
-    If population is False, compute sample standard deviation.
+    Formula: sigma = sqrt(variance)
+    Uses population or sample variance depending on the population flag.
     '''
 
     variance = calculate_variance(data, population)
@@ -67,9 +72,10 @@ def calculate_stddev(data, population=True):
 
 def skewness(data, population=True):
     '''
-    Compute the skewness of a list of numbers.
-    If Population is tru, compute population skewness.
-    If Population is false, compute sample skewness.
+    Compute Fisher's skewness (population) of a list of numbers.
+    Formula: gamma_1 = (1/n) * sum( ((x_i - mu) / sigma)^3 )
+    Positive = right-skewed, Negative = left-skewed, 0 = symmetric.
+    Ref: Joanes & Gill (1998), "Comparing measures of sample skewness and kurtosis"
     '''
 
     n = len(data)
@@ -84,7 +90,11 @@ def skewness(data, population=True):
 
 def kurtosis(data, population=True):
     '''
-    Compute the kurtosis of a list of numbers.
+    Compute standard (Pearson) kurtosis (population) of a list of numbers.
+    Formula: kappa = (1/n) * sum( ((x_i - mu) / sigma)^4 )
+    NOTE: This is standard kurtosis where a normal distribution = 3.
+    Excess kurtosis = kappa - 3 (where normal = 0).
+    Ref: Westfall (2014), "Kurtosis as Peakedness, 1905-2014. R.I.P."
     '''
     n = len(data)
     mean = calculate_mean(data)
@@ -201,8 +211,17 @@ def generate_all_figures():
 
 def identify_outliers(data, group_name, task_name):
     '''
-    Identify outliers using IQR method.
-    Outliers are values below Q1 - 1.5*IQR or above Q3 + 1.5*IQR.
+    Identify outliers using Tukey's fences (Tukey, 1977).
+    Tukey's inner fences:
+      Lower fence = Q1 - 1.5 * IQR
+      Upper fence = Q3 + 1.5 * IQR
+      where IQR = Q3 - Q1
+    Any value outside [lower fence, upper fence] is classified as an outlier.
+
+    Quartiles computed via linear interpolation (Hyndman & Fan Method 7,
+    the NumPy/Excel default):
+      h = (n - 1) * p       (0-indexed)
+      Q_p = x[floor(h)] * (1 - frac(h)) + x[floor(h) + 1] * frac(h)
     '''
     sorted_data = sorted(data)
     n = len(sorted_data)
@@ -240,8 +259,11 @@ def identify_outliers(data, group_name, task_name):
 
 def analyze_robustness():
     '''
-    Compare robustness of time parameters using coefficient of variation (CV).
-    Lower CV indicates more robust (less dispersed) measurements.
+    Compare robustness of time parameters using the Coefficient of Variation.
+    Formula: CV = sigma / x_bar
+    Lower CV = less relative dispersion = more robust.
+    CV is dimensionless, allowing comparison across parameters with different scales.
+    Ref: NIST/SEMATECH e-Handbook of Statistical Methods
     '''
     params = [
         ('Total Duration', expert_total, novice_total),

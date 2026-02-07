@@ -8,7 +8,11 @@ from question2 import calculate_descriptive_stats, cohens_d, interpret_cohens_d,
 
 def calculate_sparsity(image_path):
     '''
-    Calculates the fixation sparsity for a single heatmap image
+    Calculates the fixation sparsity for a single heatmap image.
+    Formula: Sparsity = N_nonwhite / (W * H)
+    where W = 1920, H = 1080 (image resolution), total = 2,073,600 pixels.
+    Non-white pixels (value < 255) indicate locations where fixations were recorded.
+    Higher sparsity = more dispersed gaze; lower sparsity = more focused attention.
     '''
     img = Image.open(image_path).convert('L') # Grayscale conversion
     pixels = np.array(img)
@@ -62,7 +66,13 @@ lev_stat, lev_p = stats.levene(data['sparsity']['experts'], data['sparsity']['no
 equal_var = lev_p > ALPHA
 print(f"\nLevene's Test: statistic={lev_stat:.4f}, p={lev_p:.4f} => {'Equal variance' if equal_var else 'Unequal variance'}")
 
-# Statistical Test Selection (data-driven)
+# Data-driven test selection decision tree:
+#   Step 1: Shapiro-Wilk -> both groups normal?
+#     Yes -> Step 2: Levene's test -> equal variances?
+#       Yes -> Independent t-test (most powerful parametric test)
+#       No  -> Welch's t-test (does not assume equal variances)
+#     No  -> Mann-Whitney U (non-parametric, no normality assumption)
+# See question2.py for full hypothesis definitions of each test.
 print("\nStatistical Test Selection:")
 if exp_normal and nov_normal:
     if equal_var:
@@ -104,3 +114,24 @@ sig_str = "Yes" if significant else "No"
 
 print(f"{'Fixation Sparsity':<20} {exp_str:<25} {nov_str:<25} {p_val:>10.4f} {d:>10.4f} {sig_str:>6}")
 print("-" * 100)
+
+# Generate box plot for fixation sparsity
+import matplotlib.pyplot as plt
+os.makedirs('figures', exist_ok=True)
+
+plt.figure(figsize=(8, 5))
+bp = plt.boxplot(
+    [data['sparsity']['experts'], data['sparsity']['novices']],
+    tick_labels=['Experts', 'Novices'],
+    patch_artist=True
+)
+bp['boxes'][0].set_facecolor('blue')
+bp['boxes'][0].set_alpha(0.7)
+bp['boxes'][1].set_facecolor('orange')
+bp['boxes'][1].set_alpha(0.7)
+plt.title('Fixation Sparsity - Experts vs Novices')
+plt.ylabel('Sparsity (ratio)')
+plt.tight_layout()
+plt.savefig('figures/boxplot_q4_fixation_sparsity.png', dpi=150)
+plt.show()
+print("Saved: figures/boxplot_q4_fixation_sparsity.png")

@@ -47,26 +47,36 @@ def calculate_descriptive_stats(data):
 def cohens_d(group1, group2):
     '''
     Calculate Cohen's d effect size between two groups.
+    Formula: d = (x_bar_1 - x_bar_2) / s_pooled
+    where s_pooled = sqrt((s1^2 + s2^2) / 2)
+    This is Cohen's (1988, p.67) original unweighted pooled SD.
+    Negative d = group 1 has lower values than group 2.
+    Ref: Cohen, J. (1988). Statistical Power Analysis for the Behavioral Sciences, 2nd ed.
     '''
     n1, n2 = len(group1), len(group2)
-    var1 = np.var(group1, ddof=1)
+    var1 = np.var(group1, ddof=1)  # Sample variance (Bessel-corrected)
     var2 = np.var(group2, ddof=1)
 
-    pooled_std = np.sqrt((var1 + var2) / 2)
+    pooled_std = np.sqrt((var1 + var2) / 2)  # Unweighted pooled SD
 
     d = (np.mean(group1) - np.mean(group2)) / pooled_std
     return d
 
 def interpret_cohens_d(d):
     '''
-    Interpret Cohen's d magnitude.
+    Interpret Cohen's d magnitude using conventional thresholds.
+    Cohen's (1988) thresholds:
+      |d| < 0.2:  Negligible
+      0.2 <= |d| < 0.5: Small
+      0.5 <= |d| < 0.8: Medium
+      |d| >= 0.8: Large
     '''
-    if abs(d) < 0.2:          # FIX 1: was d_abs(d)
+    if abs(d) < 0.2:
         return "Negligible"
-    elif abs(d) < 0.5:        # FIX 1: was d_abs(d)
+    elif abs(d) < 0.5:
         return "Small"
-    elif abs(d) < 0.8:        # FIX 1: was d_abs(d)
-        return "Medium" 
+    elif abs(d) < 0.8:
+        return "Medium"
     else:
         return "Large"
  
@@ -89,6 +99,11 @@ for param_key, param_name in param_names.items():
     print("Experts:", exp_stats)
     print("Novices:", nov_stats)
 
+# Shapiro-Wilk normality test (Shapiro & Wilk, 1965):
+#   H0: The data are normally distributed
+#   H1: The data are NOT normally distributed
+#   Decision: reject H0 if p <= alpha (data non-normal)
+#   W statistic close to 1 indicates normality.
 print("\n Normality Test - Shapiro-Wilk")
 
 normality_results = {}
@@ -108,6 +123,10 @@ for param_key, param_name in param_names.items():
 
 n_violations = sum(1 for r in normality_results.values() if not r['normal'])
 
+# Distribution shape assessment (supplementary to Shapiro-Wilk):
+#   |skewness| > 1 indicates substantial asymmetry (Bulmer, 1979)
+#   |excess kurtosis| > 2 indicates substantial tail deviation (George & Mallery, 2010)
+#   Note: excess kurtosis = kurtosis - 3 (our kurtosis function returns standard kurtosis)
 for param_key, param_name in param_names.items():
     for group in ['experts', 'novices']:
         dataset_name = f"{group.capitalize()} - {param_name}"
@@ -117,11 +136,16 @@ for param_key, param_name in param_names.items():
         status = "Yes" if concerns else "No"
         print(f"{dataset_name}: Skewness={skew_val:.2f}, Kurtosis={kurt_val:.2f}, Concerns={status}")
 
+# Levene's test for homogeneity of variance:
+#   H0: sigma_1^2 = sigma_2^2 (equal variances)
+#   H1: sigma_1^2 != sigma_2^2
+#   Decision: reject H0 if p <= alpha (unequal variances)
+#   SciPy default uses the median variant (Brown-Forsythe), robust to non-normality.
 variance_results = {}
 
 for param_key, param_name in param_names.items():
-    exp_var = descriptive_results[param_key]['experts']['variance']   # FIX 2: was 'var'
-    nov_var = descriptive_results[param_key]['novices']['variance']   # FIX 2: was 'var'
+    exp_var = descriptive_results[param_key]['experts']['variance']
+    nov_var = descriptive_results[param_key]['novices']['variance']
     ratio = max(exp_var, nov_var) / min(exp_var, nov_var)
     
     lev_stat, lev_p = stats.levene(
@@ -140,6 +164,11 @@ for param_key, param_name in param_names.items():
     
     status = "Yes" if equal_var else "No"
 
+# Mann-Whitney U test (non-parametric alternative to t-test, Mann & Whitney, 1947):
+#   H0: The distributions of both groups are identical
+#   H1: The distributions differ (one group tends to have higher values)
+#   Method: Ranks all observations from both groups, compares rank sums.
+#   Chosen over t-test because: small samples (n=9, n=11), normality violated in 3/6 datasets.
 test_results = {}
 
 for param_key, param_name in param_names.items():
@@ -148,10 +177,9 @@ for param_key, param_name in param_names.items():
         data[param_key]['novices'],
         alternative='two-sided'
     )
-    
+
     significant = p_val < ALPHA
 
-    # FIX 3: compute Cohen's d and store it in test_results
     d = cohens_d(data[param_key]['experts'], data[param_key]['novices'])
 
     test_results[param_key] = {
@@ -181,3 +209,32 @@ for param_key, param_name in param_names.items():
 
 print("-" * 95)
 print("Mdn = Median, IQR = Interquartile Range (Q1-Q3)")
+
+# Generate box plots for each time parameter
+import os
+os.makedirs('figures', exist_ok=True)
+
+figure_names = {
+    'total': 'Total Duration',
+    'needle': 'Needle Passing',
+    'knot': 'Knot Tying'
+}
+
+for param_key, display_name in figure_names.items():
+    plt.figure(figsize=(8, 5))
+    bp = plt.boxplot(
+        [data[param_key]['experts'], data[param_key]['novices']],
+        tick_labels=['Experts', 'Novices'],
+        patch_artist=True
+    )
+    bp['boxes'][0].set_facecolor('blue')
+    bp['boxes'][0].set_alpha(0.7)
+    bp['boxes'][1].set_facecolor('orange')
+    bp['boxes'][1].set_alpha(0.7)
+    plt.title(f'{display_name} - Experts vs Novices')
+    plt.ylabel('Time (seconds)')
+    plt.tight_layout()
+    fname = f'figures/boxplot_q2_{display_name.lower().replace(" ", "_")}.png'
+    plt.savefig(fname, dpi=150)
+    plt.show()
+    print(f"Saved: {fname}")

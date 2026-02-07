@@ -43,10 +43,28 @@ All statistics were calculated analytically without using Python statistical lib
 
 ### 1.2 Histograms and Boxplots
 
-Twelve figures were generated (3 time parameters x 2 plot types x 2 groups per figure):
-- Figure 1: Total Duration - Histogram and Boxplot
-- Figure 2: Needle Passing - Histogram and Boxplot
-- Figure 3: Knot Tying - Histogram and Boxplot
+Twelve figures were generated (3 time parameters x 2 plot types x 2 groups):
+
+#### Total Duration
+
+| | Experts | Novices |
+|:-:|:-:|:-:|
+| **Histogram** | ![Figure 1](figures/histogram_total_duration_experts.png) | ![Figure 2](figures/histogram_total_duration_novices.png) |
+| **Boxplot** | ![Figure 3](figures/boxplot_total_duration_experts.png) | ![Figure 4](figures/boxplot_total_duration_novices.png) |
+
+#### Needle Passing
+
+| | Experts | Novices |
+|:-:|:-:|:-:|
+| **Histogram** | ![Figure 5](figures/histogram_needle_passing_experts.png) | ![Figure 6](figures/histogram_needle_passing_novices.png) |
+| **Boxplot** | ![Figure 7](figures/boxplot_needle_passing_experts.png) | ![Figure 8](figures/boxplot_needle_passing_novices.png) |
+
+#### Knot Tying
+
+| | Experts | Novices |
+|:-:|:-:|:-:|
+| **Histogram** | ![Figure 9](figures/histogram_knot_tying_experts.png) | ![Figure 10](figures/histogram_knot_tying_novices.png) |
+| **Boxplot** | ![Figure 11](figures/boxplot_knot_tying_experts.png) | ![Figure 12](figures/boxplot_knot_tying_novices.png) |
 
 The plots visually confirm that novice distributions are shifted toward higher values with greater spread compared to experts.
 
@@ -138,6 +156,20 @@ While variances are homogeneous, the normality violations still warrant non-para
 | Needle Passing | 19.0 (17.0-24.0) | 30.1 (23.3-40.3) | 22.0 | **0.0402** | -0.94 | **Yes** |
 | Knot Tying | 12.7 (9.5-13.8) | 16.4 (14.9-27.0) | 13.0 | **0.0062** | -1.29 | **Yes** |
 
+#### Figure 13: Total Duration - Experts vs Novices
+
+![Figure 13: Total Duration Box Plot](figures/boxplot_q2_total_duration.png)
+
+#### Figure 14: Needle Passing - Experts vs Novices
+
+![Figure 14: Needle Passing Box Plot](figures/boxplot_q2_needle_passing.png)
+
+#### Figure 15: Knot Tying - Experts vs Novices
+
+![Figure 15: Knot Tying Box Plot](figures/boxplot_q2_knot_tying.png)
+
+*All three parameters show clear separation between groups, with novices exhibiting higher values and greater variability.*
+
 ### 2.5 Effect Size Interpretation
 
 | Cohen's d | Magnitude |
@@ -204,6 +236,12 @@ Following the coursework specification, errors were counted based on deviations 
 | 19 | [1, 4, 4, 4, 5] | 1 | S3 absent |
 | 25 | [1, 4, 4, 4, 5] | 1 | S3 absent |
 | 53 | [1, 3, 4, 4, 4, 5] | 0 | None |
+
+#### Figure 16: Error Metric - Experts vs Novices
+
+![Figure 16: Error Metric Box Plot](figures/boxplot_q3_error_metric.png)
+
+*Both groups show similar distributions of error counts, with median values of 1.0.*
 
 ### 3.3 Descriptive Statistics
 
@@ -272,6 +310,16 @@ Where total pixels = 1920 x 1080 = 2,073,600 (image resolution)
 
 Higher sparsity indicates more dispersed gaze patterns; lower sparsity indicates more focused attention.
 
+#### Example Fixation Heatmaps
+
+The heatmaps below illustrate the difference in gaze distribution between an expert and a novice participant. Warmer colours signify higher fixation concentration.
+
+| Expert (ID 24) | Novice (ID 34) |
+|:-:|:-:|
+| ![Expert Heatmap](fixation_maps/fixation_maps/experts/e24.png) | ![Novice Heatmap](fixation_maps/fixation_maps/novice/n34.png) |
+
+*The expert shows a tightly concentrated fixation pattern, while the novice exhibits a more dispersed gaze across the visual field.*
+
 ### 4.2 Descriptive Statistics
 
 #### Table 12: Fixation Sparsity Descriptive Statistics
@@ -307,6 +355,12 @@ Unlike Questions 2 and 3 where normality violations necessitated non-parametric 
 | Metric | Expert Median (IQR) | Novice Median (IQR) | t | p-value | Cohen's d | Significant? |
 |--------|---------------------|---------------------|---|---------|-----------|--------------|
 | Fixation Sparsity | 0.0362 (0.0276-0.0378) | 0.0516 (0.0474-0.0626) | -3.41 | **0.0031** | -1.57 | **Yes** |
+
+#### Figure 17: Fixation Sparsity - Experts vs Novices
+
+![Figure 17: Fixation Sparsity Box Plot](figures/boxplot_q4_fixation_sparsity.png)
+
+*Experts show significantly lower sparsity (more focused gaze) compared to novices.*
 
 ### 4.5 Interpretation of Results
 
@@ -344,6 +398,12 @@ Metrics are ranked by their ability to discriminate between expert and novice su
 | 3 | **Knot Tying Time** | 0.0062 | -1.29 | Large | Yes |
 | 4 | **Needle Passing Time** | 0.0402 | -0.94 | Large | Yes |
 | 5 | **Error Metric** | 0.7995 | 0.10 | Negligible | No |
+
+#### Figure 18: Effect Size Comparison Across All Metrics
+
+![Figure 18: Effect Size Bar Chart](figures/barchart_q5_effect_sizes.png)
+
+*Green bars indicate statistically significant metrics (p < 0.05); grey bars indicate non-significant. Dashed lines show conventional effect size thresholds.*
 
 ### 5.3 Ranking Justification
 

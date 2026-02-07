@@ -48,7 +48,13 @@ for i in range(11, 22):
 
 def count_errors(seq):
     '''
-    Apply error annotation rules from the coursework.
+    Apply error annotation rules from the coursework specification.
+    Ideal sequence: S1-S3-S4-S4-(S4)-S5
+    Error rules:
+      +1 if S2 (disentangling threads) is present in the sequence
+      +1 if S3 (picking appropriate instruments) is absent
+      +1 if S5 (suture cutting) is absent
+      +1 if fewer than 2 S4 (knot tying) gestures
     Returns (error_count, list_of_reasons).
     '''
     errors = 0
@@ -110,8 +116,8 @@ print(f"\nDescriptive Statistics for Error Metric")
 print("Experts:", exp_stats)
 print("Novices:", nov_stats)
 
-# Normality Test - Shapiro-Wilk
-
+# Same statistical testing pipeline as Q2 - see question2.py for full methodology.
+# Shapiro-Wilk: H0 = data is normal, reject if p <= alpha
 print("\n Normality Test - Shapiro-Wilk")
 
 normality_results = {}
@@ -162,7 +168,7 @@ variance_results['error'] = {
 
 status = "Yes" if equal_var else "No"
 
-# Mann-Whitney U Test
+# Mann-Whitney U Test (see question2.py for full hypothesis definitions)
 # Selected because: discrete count data, normality violated, small samples
 
 test_results = {}
@@ -204,3 +210,25 @@ print(f"{'Error Metric':<20} {exp_str:<22} {nov_str:<22} {res['u_stat']:>6.1f} {
 
 print("-" * 120)
 print("Mdn = Median, IQR = Interquartile Range (Q1-Q3)")
+
+# Generate box plot for error metric
+import matplotlib.pyplot as plt
+import os
+os.makedirs('figures', exist_ok=True)
+
+plt.figure(figsize=(8, 5))
+bp = plt.boxplot(
+    [data['error']['experts'], data['error']['novices']],
+    tick_labels=['Experts', 'Novices'],
+    patch_artist=True
+)
+bp['boxes'][0].set_facecolor('blue')
+bp['boxes'][0].set_alpha(0.7)
+bp['boxes'][1].set_facecolor('orange')
+bp['boxes'][1].set_alpha(0.7)
+plt.title('Error Metric - Experts vs Novices')
+plt.ylabel('Error Count')
+plt.tight_layout()
+plt.savefig('figures/boxplot_q3_error_metric.png', dpi=150)
+plt.show()
+print("Saved: figures/boxplot_q3_error_metric.png")
