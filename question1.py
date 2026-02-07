@@ -75,7 +75,6 @@ def skewness(data, population=True):
     Compute Fisher's skewness (population) of a list of numbers.
     Formula: gamma_1 = (1/n) * sum( ((x_i - mu) / sigma)^3 )
     Positive = right-skewed, Negative = left-skewed, 0 = symmetric.
-    Ref: Joanes & Gill (1998), "Comparing measures of sample skewness and kurtosis"
     '''
 
     n = len(data)
@@ -94,7 +93,6 @@ def kurtosis(data, population=True):
     Formula: kappa = (1/n) * sum( ((x_i - mu) / sigma)^4 )
     NOTE: This is standard kurtosis where a normal distribution = 3.
     Excess kurtosis = kappa - 3 (where normal = 0).
-    Ref: Westfall (2014), "Kurtosis as Peakedness, 1905-2014. R.I.P."
     '''
     n = len(data)
     mean = calculate_mean(data)
