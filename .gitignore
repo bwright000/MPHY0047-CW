@@ -4,7 +4,3 @@ __pycache__/
 *$py.class
 *.pyc
 
-# Generated figures
-figures/
-*.png
-
