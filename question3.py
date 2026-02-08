@@ -11,7 +11,6 @@ from question2 import calculate_descriptive_stats, cohens_d, interpret_cohens_d,
 
 OUTPUT_DIR = "outputs/"
 
-# Load and parse gesture sequences from Excel
 # The spreadsheet has experts in rows 0-8, a blank row, a second header,
 # then novices in rows 11-21. Sequences span columns 1-6, terminated by '-'.
 
@@ -75,7 +74,7 @@ def count_errors(seq):
 
     return errors, reasons
 
-# Verify against coursework examples
+# Verify against provided examples
 assert count_errors([1,2,4,5]) == (3, ['S2 present', 'S3 absent', '<2 S4'])
 assert count_errors([1,3,4,4,4,5]) == (0, [])
 

@@ -49,9 +49,8 @@ def cohens_d(group1, group2):
     Calculate Cohen's d effect size between two groups.
     Formula: d = (x_bar_1 - x_bar_2) / s_pooled
     where s_pooled = sqrt((s1^2 + s2^2) / 2)
-    This is Cohen's (1988, p.67) original unweighted pooled SD.
+    Uses the original unweighted pooled SD.
     Negative d = group 1 has lower values than group 2.
-    Ref: Cohen, J. (1988). Statistical Power Analysis for the Behavioral Sciences, 2nd ed.
     '''
     n1, n2 = len(group1), len(group2)
     var1 = np.var(group1, ddof=1)  # Sample variance (Bessel-corrected)
@@ -65,7 +64,7 @@ def cohens_d(group1, group2):
 def interpret_cohens_d(d):
     '''
     Interpret Cohen's d magnitude using conventional thresholds.
-    Cohen's (1988) thresholds:
+    Thresholds:
       |d| < 0.2:  Negligible
       0.2 <= |d| < 0.5: Small
       0.5 <= |d| < 0.8: Medium
@@ -99,7 +98,7 @@ for param_key, param_name in param_names.items():
     print("Experts:", exp_stats)
     print("Novices:", nov_stats)
 
-# Shapiro-Wilk normality test (Shapiro & Wilk, 1965):
+# Shapiro-Wilk normality test:
 #   H0: The data are normally distributed
 #   H1: The data are NOT normally distributed
 #   Decision: reject H0 if p <= alpha (data non-normal)
@@ -124,9 +123,6 @@ for param_key, param_name in param_names.items():
 n_violations = sum(1 for r in normality_results.values() if not r['normal'])
 
 # Distribution shape assessment (supplementary to Shapiro-Wilk):
-#   |skewness| > 1 indicates substantial asymmetry (Bulmer, 1979)
-#   |excess kurtosis| > 2 indicates substantial tail deviation (George & Mallery, 2010)
-#   Note: excess kurtosis = kurtosis - 3 (our kurtosis function returns standard kurtosis)
 for param_key, param_name in param_names.items():
     for group in ['experts', 'novices']:
         dataset_name = f"{group.capitalize()} - {param_name}"
@@ -140,7 +136,6 @@ for param_key, param_name in param_names.items():
 #   H0: sigma_1^2 = sigma_2^2 (equal variances)
 #   H1: sigma_1^2 != sigma_2^2
 #   Decision: reject H0 if p <= alpha (unequal variances)
-#   SciPy default uses the median variant (Brown-Forsythe), robust to non-normality.
 variance_results = {}
 
 for param_key, param_name in param_names.items():
@@ -164,7 +159,7 @@ for param_key, param_name in param_names.items():
     
     status = "Yes" if equal_var else "No"
 
-# Mann-Whitney U test (non-parametric alternative to t-test, Mann & Whitney, 1947):
+# Mann-Whitney U test:
 #   H0: The distributions of both groups are identical
 #   H1: The distributions differ (one group tends to have higher values)
 #   Method: Ranks all observations from both groups, compares rank sums.

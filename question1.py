@@ -220,15 +220,14 @@ def generate_all_figures():
 
 def identify_outliers(data, group_name, task_name):
     '''
-    Identify outliers using Tukey's fences (Tukey, 1977).
+    Identify outliers using Tukey's fences.
     Tukey's inner fences:
       Lower fence = Q1 - 1.5 * IQR
       Upper fence = Q3 + 1.5 * IQR
       where IQR = Q3 - Q1
     Any value outside [lower fence, upper fence] is classified as an outlier.
 
-    Quartiles computed via linear interpolation (Hyndman & Fan Method 7,
-    the NumPy/Excel default):
+    Quartiles computed via linear interpolation:
       h = (n - 1) * p       (0-indexed)
       Q_p = x[floor(h)] * (1 - frac(h)) + x[floor(h) + 1] * frac(h)
     '''
@@ -272,7 +271,6 @@ def analyze_robustness():
     Formula: CV = sigma / x_bar
     Lower CV = less relative dispersion = more robust.
     CV is dimensionless, allowing comparison across parameters with different scales.
-    Ref: NIST/SEMATECH e-Handbook of Statistical Methods
     '''
     params = [
         ('Total Duration', expert_total, novice_total),

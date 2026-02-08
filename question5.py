@@ -21,7 +21,7 @@ df = pd.DataFrame(metrics_data)
 # Calculate absolute Cohen's d for ranking
 df['abs_cohens_d'] = df['cohens_d'].abs()
 
-# Cohen's (1988) thresholds: <0.2 Negligible, 0.2-0.5 Small, 0.5-0.8 Medium, >=0.8 Large
+# Effect size thresholds: <0.2 Negligible, 0.2-0.5 Small, 0.5-0.8 Medium, >=0.8 Large
 def effect_size_category(d):
     d = abs(d)
     if d < 0.2:
