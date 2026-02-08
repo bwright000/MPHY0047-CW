@@ -2,7 +2,7 @@
 
 ## How to Run
 
-To execute all analysis scripts and generate figures:
+To execute all analysis scripts and generate figures (This report assumes the sds environment is used):
 
 ```bash
 python run_all_scripts.py
@@ -60,7 +60,7 @@ Twelve figures were generated as per QU1 requirements - It should be noted that 
 | **Histogram** | ![Figure 9](figures/histogram_knot_tying_experts.png) | ![Figure 10](figures/histogram_knot_tying_novices.png) |
 | **Boxplot** | ![Figure 11](figures/boxplot_knot_tying_experts.png) | ![Figure 12](figures/boxplot_knot_tying_novices.png) |
 
-The plots confirm that novice distributions are shifted toward higher values with greater spread compared to experts.
+The plots visually confirm that novice distributions are shifted toward higher values with greater spread compared to experts. The boxplots are especially useful in showing these distributions, where experts are consistently better at the task, while also remaining a tighter distribution - suggestive of both a lack of errors and lots of experience.
 
 ### 1.3 Outlier Identification
 
