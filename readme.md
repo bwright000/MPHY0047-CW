@@ -2,7 +2,7 @@
 
 ## How to Run
 
-To execute all analysis scripts and generate figures:
+To execute all analysis scripts and generate figures (This report assumes the sds environment is used):
 
 ```bash
 python run_all_scripts.py
@@ -23,8 +23,6 @@ python question5.py  # Metric ranking
 
 ### 1.1 Summary Statistics
 
-All statistics were calculated analytically without using Python statistical libraries as noted in the requirements of the CW.
-
 #### Table 1: Descriptive Statistics for Time Parameters (Seconds)
 
 | Group | Parameter | Mean | Median | Variance | Skewness | Kurtosis |
@@ -36,14 +34,11 @@ All statistics were calculated analytically without using Python statistical lib
 | Novices | Needle Passing | 34.27 | 30.12 | 283.64 | 1.4997 | 4.8031 |
 | Novices | Knot Tying | 21.37 | 16.44 | 70.57 | 0.9840 | 2.7558 |
 
-**Key observations:**
-- Novices consistently show higher mean and median values across all parameters
-- Novices exhibit greater variance, indicating more heterogeneous performance
-- Positive skewness in novice data suggests right-tailed distributions with some participants taking considerably longer
+The above table shows the results for the descriptive statistics taken for the time taken for tasks to be completed by novices and experts. It shows the novices consistently have higher median and mean values across all statistics indicating that their lack of experience requires them to complete tasks at a slower pace; this could also be a result of them making errors along the way. Novices also exhibit greater variance, suggesting that on some attempts the novices are able to complete the task much faster; possibly due to luck or an absence of errors; alternatively this could be the result of outliers (i.e., one novice being particularly skilled). Finally, the positive skewness of the novice data sugests a right-tailed distribution, with some participants taking considerably longer.
 
 ### 1.2 Histograms and Boxplots
 
-Twelve figures were generated (3 time parameters x 2 plot types x 2 groups):
+Twelve figures were generated as a requirement of question 1:
 
 #### Total Duration
 
@@ -66,7 +61,7 @@ Twelve figures were generated (3 time parameters x 2 plot types x 2 groups):
 | **Histogram** | ![Figure 9](figures/histogram_knot_tying_experts.png) | ![Figure 10](figures/histogram_knot_tying_novices.png) |
 | **Boxplot** | ![Figure 11](figures/boxplot_knot_tying_experts.png) | ![Figure 12](figures/boxplot_knot_tying_novices.png) |
 
-The plots visually confirm that novice distributions are shifted toward higher values with greater spread compared to experts.
+The plots visually confirm that novice distributions are shifted toward higher values with greater spread compared to experts. The boxplots are especially useful in showing these distributions, where experts are consistently better at the task, while also remaining a tighter distribution - suggestive of both a lack of errors and lots of experience.
 
 ### 1.3 Outlier Identification
 
