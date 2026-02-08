@@ -23,8 +23,6 @@ python question5.py  # Metric ranking
 
 ### 1.1 Summary Statistics
 
-All statistics were calculated analytically without using Python statistical libraries as noted in the requirements of the CW.
-
 #### Table 1: Descriptive Statistics for Time Parameters (Seconds)
 
 | Group | Parameter | Mean | Median | Variance | Skewness | Kurtosis |
@@ -36,15 +34,11 @@ All statistics were calculated analytically without using Python statistical lib
 | Novices | Needle Passing | 34.27 | 30.12 | 283.64 | 1.4997 | 4.8031 |
 | Novices | Knot Tying | 21.37 | 16.44 | 70.57 | 0.9840 | 2.7558 |
 
-**Key observations:**
-- Novices consistently show higher mean and median values across all parameters
-- Novices exhibit greater variance, indicating more heterogeneous performance
-- Positive skewness in novice data suggests right-tailed distributions with some participants taking considerably longer
+The above table shows the results for the descriptive statistics taken for the time taken for tasks to be completed by novices and experts. It shows the novices consistently have higher median and mean values across all statistics indicating that their lack of experience requires them to complete tasks at a slower pace; this could also be a result of them making errors along the way. Novices also exhibit greater variance, suggesting that on some attempts the novices are able to complete the task much faster; possibly due to luck or an absence of errors; alternatively this could be the result of outliers (i.e., one novice being particularly skilled). Finally, the positive skewness of the novice data suggests a right-tailed distribution, with some participants taking considerably longer.
 
 ### 1.2 Histograms and Boxplots
 
-Twelve figures were generated (3 time parameters x 2 plot types x 2 groups):
-
+Twelve figures were generated as per QU1 requirements - It should be noted that all box plots have shared axis to show a comparison; whereas histograms use per group axis to show the distribution:
 #### Total Duration
 
 | | Experts | Novices |
@@ -66,7 +60,7 @@ Twelve figures were generated (3 time parameters x 2 plot types x 2 groups):
 | **Histogram** | ![Figure 9](figures/histogram_knot_tying_experts.png) | ![Figure 10](figures/histogram_knot_tying_novices.png) |
 | **Boxplot** | ![Figure 11](figures/boxplot_knot_tying_experts.png) | ![Figure 12](figures/boxplot_knot_tying_novices.png) |
 
-The plots visually confirm that novice distributions are shifted toward higher values with greater spread compared to experts.
+The plots confirm that novice distributions are shifted toward higher values with greater spread compared to experts.
 
 ### 1.3 Outlier Identification
 
@@ -83,10 +77,7 @@ Outliers were identified using the IQR method: values below Q1 - 1.5*IQR or abov
 | Novices | Needle Passing | 23.34 | 40.26 | 16.92 | -2.04 | 65.64 | **79.04** |
 | Novices | Knot Tying | 14.92 | 27.04 | 12.12 | -3.26 | 45.22 | None |
 
-**Observations:**
-- 3 outliers identified across all datasets
-- Needle Passing shows outliers in both groups
-- Novice Total Duration has one extreme outlier (191.28 sec)
+3 outliers were identified across all data, with Needle Passing being the only parameter to show outliers in both groups. This aligns with it also having the highest variability as demonstrated in the robustness analysis below. The most severe outlier belongs to a novice participant in Total Duration (~ 191 seconds), which is substantially above the upper bound and may reflect a particularly difficult attempt or a significant error being made.
 
 ### 1.4 Robustness Analysis
 
@@ -100,11 +91,7 @@ Robustness was assessed using the Coefficient of Variation (CV = Standard Deviat
 | Needle Passing | 27.9% | 49.1% | 50.7% |
 | Knot Tying | 33.7% | 39.3% | 47.1% |
 
-**Conclusion on Robustness:**
-- **Most robust parameter: Total Duration** (CV = 38.3%)
-- **Least robust parameter: Needle Passing** (CV = 50.7%)
-
-Total Duration presents the smallest relative dispersion, making it the most reliable metric for comparing performance between groups. Needle Passing shows the highest variability, particularly among novices (49.1%), suggesting this subtask is most sensitive to individual differences in skill level.
+Total Duration is the most robust parameter with the lowest combined CV of 38.3%, presenting the smallest relative dispersion and making it the most reliable metric for comparing performance between groups. On the other hand, Needle Passing is the least robust parameter (CV = 50.7%), showing the highest variability particularly among novices (49.1%). Suggesting that the needle passing task is the most sensitive to individual differences in skill level, and its high variability may reduce its reliability as a standalone performance indicator.
 
 ---
 
@@ -112,12 +99,7 @@ Total Duration presents the smallest relative dispersion, making it the most rel
 
 ### 2.1 Test Selection Justification
 
-**Selected Test: Mann-Whitney U Test (Wilcoxon rank-sum test)**
-
-**Rationale:**
-1. **Sample size**: Small samples (n=9 experts, n=11 novices) limit the reliability of parametric assumptions
-2. **Normality violations**: Shapiro-Wilk tests revealed non-normal distributions for several parameters (see Table 4)
-3. **Non-parametric robustness**: Mann-Whitney U does not assume normality and is appropriate for comparing two independent groups
+The Mann-Whitney U test was selected for comparing expert and novice time parameters. This choice was driven by the small sample sizes (n=9 experts, n=11 novices), which limit the reliability of parametric assumptions, and by the Shapiro-Wilk normality tests which revealed non-normal distributions for several parameters (see Table 4). The Mann-Whitney U test does not assume normality and is therefore, appropriate for comparing 2 independent groups, making it a suitable test given the aforementioned.
 
 ### 2.2 Normality Testing
 
@@ -127,12 +109,12 @@ Total Duration presents the smallest relative dispersion, making it the most rel
 |-------|-----------|-------------|---------|---------|
 | Experts | Total Duration | 0.9277 | 0.4593 | Yes |
 | Novices | Total Duration | 0.8862 | 0.1244 | Yes |
-| Experts | Needle Passing | 0.8338 | 0.0492 | **No** |
-| Novices | Needle Passing | 0.8463 | 0.0382 | **No** |
+| Experts | Needle Passing | 0.8338 | 0.0492 | No |
+| Novices | Needle Passing | 0.8463 | 0.0382 | No |
 | Experts | Knot Tying | 0.9455 | 0.6406 | Yes |
-| Novices | Knot Tying | 0.8338 | 0.0262 | **No** |
+| Novices | Knot Tying | 0.8338 | 0.0262 | No |
 
-Three of six datasets violate normality assumptions, justifying the use of non-parametric testing.
+3 of the 6 data groups violate normality assumptions, justifying the use of non-parametric testing.
 
 ### 2.3 Homogeneity of Variance
 
@@ -144,7 +126,7 @@ Three of six datasets violate normality assumptions, justifying the use of non-p
 | Needle Passing | 2.4074 | 0.1382 | Yes |
 | Knot Tying | 1.5189 | 0.2336 | Yes |
 
-While variances are homogeneous, the normality violations still warrant non-parametric testing.
+While variances are homogeneous, the normality violations suggest that non-parametric testing should be adopted.
 
 ### 2.4 Statistical Test Results
 
@@ -180,15 +162,9 @@ While variances are homogeneous, the normality violations still warrant non-para
 
 ### 2.6 Interpretation of Results
 
-**All three time parameters show statistically significant differences between experts and novices (p < 0.05).**
+All 3 time parameters show statistically significant differences between experts and novices (p < 0.05). The Total Duration demonstrates the strongest evidence of group separation (p = 0.0011, d = -1.56), indicating that experts complete the entire suturing task significantly faster than novices. Knot Tying follows with strong significance (p = 0.0062, d = -1.29), suggesting that this subtask is a key differentiator of skill level. Needle Passing also reaches significance (p = 0.0402, d = -0.94); however, this parameter has the smallest effect size among the three and a p-value closer to the significance threshold, making it a less reliable discriminator.
 
-1. **Total Duration** (p = 0.0011, d = -1.56): Experts complete the entire task significantly faster than novices. The large effect size indicates a substantial practical difference.
-
-2. **Needle Passing** (p = 0.0402, d = -0.94): Experts are significantly faster at needle passing. This has the smallest effect among the three parameters but remains practically significant.
-
-3. **Knot Tying** (p = 0.0062, d = -1.29): Experts tie knots significantly faster. The large effect size suggests this is a key differentiator of surgical skill.
-
-The negative Cohen's d values indicate experts have lower (faster) times compared to novices.
+The negative Cohen's d values across all three parameters indicate that experts consistently have lower (i.e., faster) times compared to novices, which is consistent with the descriptive statistics presented in QU 1.
 
 ---
 
@@ -241,7 +217,9 @@ Following the coursework specification, errors were counted based on deviations 
 
 ![Figure 16: Error Metric Box Plot](figures/boxplot_q3_error_metric.png)
 
-*Both groups show similar distributions of error counts, with median values of 1.0.*
+*The box plot above shows that despite both groups showing similar distributions of error counts, with median values of 1.0. The actual distribution of the errors is much different, with the experts having almost no variation - With all errors being as a result of S2 being present, or S3 being absent. This consistent error could therefore be attributed to the experience of the surgeons.*
+
+
 
 ### 3.3 Descriptive Statistics
 
@@ -254,13 +232,7 @@ Following the coursework specification, errors were counted based on deviations 
 
 ### 3.4 Test Selection Justification
 
-**Selected Test: Mann-Whitney U Test**
-
-**Rationale:**
-1. **Discrete count data**: Error counts are discrete integers (0, 1, 2, ...), not continuous measurements
-2. **Non-normal distributions**: Shapiro-Wilk tests indicate non-normality (Experts: p = 0.0122; Novices: p = 0.0183)
-3. **Small sample sizes**: n=9 experts, n=11 novices
-4. **Ordinal nature**: Error counts represent ordinal levels of performance deviation
+The Mann-Whitney U test was selected for the error metric analysis. Error counts are discrete integers (0, 1, 2, ...) rather than continuous measurements, and the Shapiro-Wilk tests confirm non-normal distributions for both groups (Experts: p = 0.0122; Novices: p = 0.0183). Combined with the small sample sizes (n=9 experts, n=11 novices) and the ordinal nature of error counts, which represent ordered levels of performance deviation, a non-parametric approach is the most appropriate choice.
 
 ### 3.5 Normality Testing
 
@@ -268,8 +240,8 @@ Following the coursework specification, errors were counted based on deviations 
 
 | Group | W-statistic | p-value | Normal? |
 |-------|-------------|---------|---------|
-| Experts | 0.7805 | 0.0122 | **No** |
-| Novices | 0.8219 | 0.0183 | **No** |
+| Experts | 0.7805 | 0.0122 | No |
+| Novices | 0.8219 | 0.0183 | No |
 
 Both groups violate normality assumptions, confirming the appropriateness of non-parametric testing.
 
@@ -279,22 +251,13 @@ Both groups violate normality assumptions, confirming the appropriateness of non
 
 | Metric | Expert Median (IQR) | Novice Median (IQR) | U | p-value | Cohen's d | Significant? |
 |--------|---------------------|---------------------|---|---------|-----------|--------------|
-| Error Count | 1.0 (1.0-1.0) | 1.0 (0.0-1.0) | 53.0 | 0.7995 | 0.10 | **No** |
+| Error Count | 1.0 (1.0-1.0) | 1.0 (0.0-1.0) | 53.0 | 0.7995 | 0.10 | No |
 
 ### 3.7 Interpretation of Results
 
-**The error metric does NOT show a statistically significant difference between experts and novices (p = 0.7995).**
+The error metric does not show a statistically significant difference between experts and novices (p = 0.7995). Both groups have median error counts of 1.0, indicating that both groups are attempting to adhere to guidelines, and Cohen's d of 0.10 confirms a negligible practical difference. The most frequent error in both groups is S3 absent (skipping instrument selection), occurring in 7 of 9 experts and 6 of 11 novices, suggesting this deviation is common regardless of experience level.
 
-**Key findings:**
-1. **Similar error rates**: Both groups have median error counts of 1.0, indicating comparable procedural adherence
-2. **Negligible effect size**: Cohen's d = 0.10 indicates a negligible practical difference
-3. **Common error pattern**: The most frequent error in both groups is S3 absent (skipping instrument selection), occurring in 7/9 experts and 6/11 novices
-
-**Possible explanations:**
-- The task environment (training board rather than live surgery) may allow shortcuts without consequence
-- The error metric captures procedural deviations but not execution quality
-- Both groups received pre-task education, potentially standardizing procedural knowledge
-- Time-based metrics may be more sensitive discriminators of expertise than error counts in this context
+Several factors may explain the absence of a significant difference. The task environment (a training board rather than live surgery) may allow participants to take procedural shortcuts without consequence. Furthermore, the error metric captures procedural deviations (i.e., whether the correct gestures were performed) but does not account for execution quality (i.e., how well those gestures were performed). It is also possible that pre-task education standardised procedural knowledge across both groups, leaving time-based and gaze-based metrics as more sensitive discriminators of expertise. It is also acknowledged that the experts are making 'the same' amount of errors as the novices in significantly less time; so while the error values are similar in comparison, the reality is the experienced surgeons are doing it in significantly less time. Which suggests that the error analysis is not a good identifier of performance (Novices could simply taking more time to ensure they don't make an error - While experts could not making errors out of experience with the procedure).
 
 ---
 
@@ -306,8 +269,6 @@ Fixation sparsity quantifies the spatial distribution of gaze fixations during t
 
 **Fixation Sparsity = (Number of non-white pixels) / (Total pixels)**
 
-Where total pixels = 1920 x 1080 = 2,073,600 (image resolution)
-
 Higher sparsity indicates more dispersed gaze patterns; lower sparsity indicates more focused attention.
 
 #### Example Fixation Heatmaps
@@ -318,7 +279,7 @@ The heatmaps below illustrate the difference in gaze distribution between an exp
 |:-:|:-:|
 | ![Expert Heatmap](fixation_maps/fixation_maps/experts/e24.png) | ![Novice Heatmap](fixation_maps/fixation_maps/novice/n34.png) |
 
-*The expert shows a tightly concentrated fixation pattern, while the novice exhibits a more dispersed gaze across the visual field.*
+*The expert shows a tightly concentrated fixation pattern, while the novice exhibits a more dispersed pattern.*
 
 ### 4.2 Descriptive Statistics
 
@@ -329,24 +290,11 @@ The heatmaps below illustrate the difference in gaze distribution between an exp
 | Experts | 0.0344 (3.44%) | 0.0362 | 5.91e-05 | 0.0077 | 0.0276-0.0378 |
 | Novices | 0.0523 (5.23%) | 0.0516 | 1.77e-04 | 0.0133 | 0.0474-0.0626 |
 
-**Key observations:**
-- Novices show approximately 50% higher fixation sparsity than experts
-- Novices exhibit greater variance in sparsity values
-- Expert fixations are more concentrated (lower sparsity = more focused gaze)
+The above statistics reveal that novices show approximately 50% higher fixation sparsity than experts (5.23% vs 3.44%), indicating a substantially more dispersed fixation distribution. Novices also exhibit greater variance in their sparsity values, suggesting more heterogeneous visual attention strategies within the novice group. The lower sparsity among experts reflects a more concentrated and focused gaze pattern during the knot tying task.
 
 ### 4.3 Test Selection Justification
 
-**Selected Test: Independent t-test**
-
-**Rationale (data-driven selection):**
-1. **Normality satisfied**: Shapiro-Wilk tests confirm both groups are normally distributed
-   - Experts: W = 0.9581, p = 0.7784 (Normal)
-   - Novices: W = 0.9161, p = 0.2871 (Normal)
-2. **Equal variances**: Levene's test confirms homogeneity of variance
-   - Levene statistic = 1.7561, p = 0.2017 (Equal variance)
-3. **Continuous ratio data**: Sparsity is a continuous measure between 0 and 1
-
-Unlike Questions 2 and 3 where normality violations necessitated non-parametric testing, the fixation sparsity data meets parametric assumptions, allowing use of the more powerful t-test.
+An independent t-test was selected for the fixation sparsity comparison, following a data-driven test selection process. The Shapiro-Wilk tests confirm that both groups are normally distributed (Experts: W = 0.9581, p = 0.7784; Novices: W = 0.9161, p = 0.2871), and Levene's test confirms similarity of variance (statistic = 1.7561, p = 0.2017). As fixation sparsity is a continuous ratio  between the values of 0 and 1, all assumptions for a parametric test are satisfied. Unlike Questions 2 and 3 where normality violations necessitated non-parametric testing, the fixation sparsity data meets parametric assumptions.
 
 ### 4.4 Statistical Test Results
 
@@ -364,17 +312,9 @@ Unlike Questions 2 and 3 where normality violations necessitated non-parametric 
 
 ### 4.5 Interpretation of Results
 
-**Fixation sparsity shows a statistically significant difference between experts and novices (p = 0.0031).**
+Fixation sparsity shows a statistically significant difference between experts and novices (p = 0.0031), with Cohen's d = -1.57 indicating a substantial practical difference. Experts demonstrate lower sparsity (3.6%), reflecting concentrated visual attention on task-relevant areas, while novices exhibit higher sparsity (5.2%), indicating more dispersed fixation patterns across the visual field.
 
-**Key findings:**
-1. **Large effect size**: Cohen's d = -1.57 indicates a substantial practical difference
-2. **Experts show focused gaze**: Lower sparsity (3.6%) reflects concentrated visual attention on task-relevant areas
-3. **Novices show scattered gaze**: Higher sparsity (5.2%) indicates more dispersed fixation patterns across the visual field
-
-**Clinical interpretation:**
-- Experts demonstrate more efficient visual search strategies, focusing attention on critical task elements
-- Novices exhibit exploratory gaze behaviour, potentially indicating uncertainty or less developed mental models of the task
-- This aligns with eye-tracking research showing experts fixate on regions of interest before performing actions [3]
+From a clinical perspective, these results suggest that experts employ more efficient visual search strategies, focusing their attention on critical  elements. Novices, by contrast, exhibit more exploratory behaviour, which may indicate uncertainty or just less overall experience.
 
 ---
 
@@ -382,10 +322,7 @@ Unlike Questions 2 and 3 where normality violations necessitated non-parametric 
 
 ### 5.1 Ranking Criteria
 
-Metrics are ranked by their ability to discriminate between expert and novice surgeons based on:
-1. **Statistical significance** (p-value < 0.05)
-2. **Effect size magnitude** (|Cohen's d|)
-3. **Practical interpretability**
+Metrics are ranked by their ability to discriminate between expert and novice surgeons. The ranking considers statistical significance (p-value < 0.05) as the primary criterion, followed by effect size magnitude (|Cohen's d|) to assess the practical importance of any observed differences, and finally practical interpretability of the metric in a clinical context.
 
 ### 5.2 Summary of All Metrics
 
@@ -407,47 +344,15 @@ Metrics are ranked by their ability to discriminate between expert and novice su
 
 ### 5.3 Ranking Justification
 
-**1. Fixation Sparsity (Best Discriminator)**
-- Highest effect size (|d| = 1.57) and highly significant (p = 0.0031)
-- Captures cognitive differences in visual attention strategy
-- Parametric assumptions satisfied, providing robust statistical inference
-- Directly measures gaze behaviour differences between expertise levels
+Fixation Sparsity ranks as the best discriminator, achieving the highest effect size (|d| = 1.57) with strong statistical significance (p = 0.0031). It captures cognitive differences in visual attention strategy between the two groups, and its parametric assumptions are satisfied, providing robust statistical inference.
 
-**2. Total Duration**
-- Comparable effect size (|d| = 1.56) with lowest p-value (0.0011)
-- Most robust time parameter (lowest CV = 38.3% from Q1)
-- Holistic measure capturing overall task performance
-- Ranked second due to slightly lower effect size than fixation sparsity
+Total Duration ranks second with a comparable effect size (|d| = 1.56) and the lowest p-value of all metrics (p = 0.0011). It is also the most robust time parameter, as previous stated in Question 1. As a complete measure of overall task performance, it provides a practical and reliable indicator of surgical proficiency. It is ranked below fixation sparsity due to its slightly lower effect size.
 
-**3. Knot Tying Time**
-- Large effect size (|d| = 1.29) with strong significance (p = 0.0062)
-- Measures core surgical skill directly
-- More specific than total duration but less discriminating
+Knot Tying Time ranks third with a large effect size (|d| = 1.29) and strong significance (p = 0.0062). This parameter measures a core surgical skill directly, making it clinically meaningful, though it is more specific than total duration and less discriminating overall.
 
-**4. Needle Passing Time**
-- Large effect size (|d| = 0.94) but borderline significance (p = 0.0402)
-- Highest variability among time parameters (CV = 50.7%)
-- Less reliable discriminator due to high within-group variation
+Needle Passing Time ranks fourth. Although it achieves a large effect size (|d| = 0.94), its significance is borderline (p = 0.0402) and it exhibits the highest variability among time parameters (CV = 50.7%). This high within-group variation makes it a less reliable discriminator compared to the other time-based metrics.
 
-**5. Error Metric (Poorest Discriminator)**
-- Not statistically significant (p = 0.7995)
-- Negligible effect size (|d| = 0.10)
-- Both groups show similar procedural adherence
-- Does not capture execution quality, only sequence deviations
-
-### 5.4 Conclusions
-
-**Primary finding:** Eye-tracking derived metrics (fixation sparsity) and time-based metrics effectively discriminate between expert and novice ophthalmic surgeons, while procedural error counts do not.
-
-**Recommendations for skill assessment:**
-1. **Fixation sparsity** should be prioritized as a cognitive marker of expertise
-2. **Total duration** provides a reliable, easy-to-measure performance indicator
-3. **Error metrics** require refinement to capture execution quality, not just procedural deviations
-
-**Clinical implications:**
-- Training programmes could use gaze pattern analysis to provide targeted feedback
-- Time-based metrics offer practical assessment tools without specialized equipment
-- Procedural knowledge appears well-established across experience levels; skill differences manifest in execution efficiency and visual attention
+The Error Metric ranks last as the poorest discriminator. It is not statistically significant (p = 0.7995) and shows a negligible effect size (|d| = 0.10). Both groups demonstrate similar procedural adherence, and as previously mentioned, this metric fails to account for the time to complete the tasks - with novices taking significantly longer on average and therefore expected to be more careful. Noting that experts were most likely to skip 'S3' or instrument selection, likely out of experience more than in error.
 
 ---
 

@@ -153,9 +153,10 @@ def plot_histogram(data, group_name, task_name, color):
     plt.show()
 
 
-def plot_boxplot(data, group_name, task_name, color):
+def plot_boxplot(data, group_name, task_name, color, ylim=None):
     '''
     Plot a single boxplot for one group.
+    ylim: optional (ymin, ymax) tuple to enforce a shared y-axis scale across groups.
     '''
     plt.figure(figsize=(6, 5))
     bp = plt.boxplot(data, patch_artist=True)
@@ -164,6 +165,8 @@ def plot_boxplot(data, group_name, task_name, color):
     plt.title(f'Boxplot of {task_name} - {group_name}')
     plt.ylabel('Time (seconds)')
     plt.xticks([1], [group_name])
+    if ylim is not None:
+        plt.ylim(ylim)
     plt.tight_layout()
     plt.savefig(f'figures/boxplot_{task_name.lower().replace(" ", "_")}_{group_name.lower()}.png', dpi=150)
     plt.show()
@@ -184,6 +187,14 @@ def generate_all_figures():
 
     figure_count = 0
     for param_name, exp_data, nov_data in params:
+        # Compute shared y-axis range so expert and novice boxplots use the same scale,
+        # making visual comparison easier. 5% padding added for readability.
+        all_values = exp_data + nov_data
+        ymin = min(all_values)
+        ymax = max(all_values)
+        padding = (ymax - ymin) * 0.05
+        shared_ylim = (ymin - padding, ymax + padding)
+
         # Expert histogram
         plot_histogram(exp_data, 'Experts', param_name, 'blue')
         figure_count += 1
@@ -194,13 +205,13 @@ def generate_all_figures():
         figure_count += 1
         print(f"Figure {figure_count}: Histogram - {param_name} - Novices")
 
-        # Expert boxplot
-        plot_boxplot(exp_data, 'Experts', param_name, 'blue')
+        # Expert boxplot (shared y-axis with novice)
+        plot_boxplot(exp_data, 'Experts', param_name, 'blue', ylim=shared_ylim)
         figure_count += 1
         print(f"Figure {figure_count}: Boxplot - {param_name} - Experts")
 
-        # Novice boxplot
-        plot_boxplot(nov_data, 'Novices', param_name, 'orange')
+        # Novice boxplot (shared y-axis with expert)
+        plot_boxplot(nov_data, 'Novices', param_name, 'orange', ylim=shared_ylim)
         figure_count += 1
         print(f"Figure {figure_count}: Boxplot - {param_name} - Novices")
 
