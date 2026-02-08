@@ -277,7 +277,7 @@ The heatmaps below illustrate the difference in gaze distribution between an exp
 
 | Expert (ID 24) | Novice (ID 34) |
 |:-:|:-:|
-| ![Expert Heatmap](fixation_maps/fixation_maps/experts/e24.png) | ![Novice Heatmap](fixation_maps/fixation_maps/novice/n34.png) |
+| ![Expert Heatmap](fixation_maps/fixation_maps/experts/e06.png) | ![Novice Heatmap](fixation_maps/fixation_maps/novice/n16.png) |
 
 *The expert shows a tightly concentrated fixation pattern, while the novice exhibits a more dispersed pattern.*
 
