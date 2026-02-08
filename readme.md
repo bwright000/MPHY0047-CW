@@ -275,7 +275,7 @@ Higher sparsity indicates more dispersed gaze patterns; lower sparsity indicates
 
 The heatmaps below illustrate the difference in gaze distribution between an expert and a novice participant. Warmer colours signify higher fixation concentration.
 
-| Expert (ID 24) | Novice (ID 34) |
+| Expert (ID 06) | Novice (ID 16) |
 |:-:|:-:|
 | ![Expert Heatmap](fixation_maps/fixation_maps/experts/e06.png) | ![Novice Heatmap](fixation_maps/fixation_maps/novice/n16.png) |
 
