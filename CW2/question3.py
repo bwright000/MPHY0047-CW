@@ -77,33 +77,34 @@ def polynomial_regression_lasso(x_vals, y_vals, metric_name, score_name, max_deg
             continue
         x_valid = x[valid_idx].reshape(-1, 1)
         y_valid = y[valid_idx]
-        best_rmse = np.inf
-        best_r2 = -np.inf
+        best_cv_rmse = np.inf
         best_model = None
         best_degree = 0
         best_poly = None
-        best_predicted = None
 
         for degree in range(1, max_degree + 1):
-            poly = PolynomialFeatures(degree, include_bias=False)       
+            poly = PolynomialFeatures(degree, include_bias=False)
             x_poly = poly.fit_transform(x_valid)
-            model = LassoCV(cv=5, max_iter=10000, random_state=0)       
+            model = LassoCV(cv=5, max_iter=10000, random_state=0)
             model.fit(x_poly, y_valid)
 
-            # Zero out coefficients < 0.01 (spec constraint)            
-            model.coef_[np.abs(model.coef_) < 0.01] = 0
+            # Use LassoCV's cross-validated MSE at optimal alpha for degree selection
+            alpha_idx = np.argmin(np.abs(model.alphas_ - model.alpha_))
+            cv_rmse = np.sqrt(model.mse_path_[alpha_idx].mean())
 
-            y_pred = model.predict(x_poly)
-            rmse = np.sqrt(mean_squared_error(y_valid, y_pred))
-            r2 = r2_score(y_valid, y_pred)
-
-            if rmse < best_rmse:
-                best_rmse = rmse
-                best_r2 = r2
+            if cv_rmse < best_cv_rmse:
+                best_cv_rmse = cv_rmse
                 best_model = model
                 best_degree = degree
-                best_poly = poly                                     
-                best_predicted = y_pred
+                best_poly = poly
+
+        # Refit best degree on full data and apply coefficient threshold
+        x_poly = best_poly.fit_transform(x_valid)
+        best_model.fit(x_poly, y_valid)
+        best_model.coef_[np.abs(best_model.coef_) < 0.01] = 0
+        best_predicted = best_model.predict(x_poly)
+        best_rmse = np.sqrt(mean_squared_error(y_valid, best_predicted))
+        best_r2 = r2_score(y_valid, best_predicted)
 
         results.append({
             "view": VIEW_NAMES[v],
@@ -156,10 +157,9 @@ def gaussian_basis_regression(ssi_vals, gi_vals, max_order=10):
         x_valid = x[valid]
         y_valid = y[valid]
 
-        best_rmse = np.inf
-        best_r2 = -np.inf
+        best_cv_rmse = np.inf
         best_order = 2
-        best_predicted = None
+        best_model = None
 
         for order in range(2, max_order + 1):
             # Build Gaussian basis feature matrix
@@ -169,15 +169,21 @@ def gaussian_basis_regression(ssi_vals, gi_vals, max_order=10):
             model = LassoCV(cv=5, max_iter=10000, random_state=0)
             model.fit(X_basis, y_valid)
 
-            y_pred = model.predict(X_basis)
-            rmse = np.sqrt(mean_squared_error(y_valid, y_pred))
-            r2 = r2_score(y_valid, y_pred)
+            # Use LassoCV's cross-validated MSE at optimal alpha for order selection
+            alpha_idx = list(model.alphas_).index(model.alpha_)
+            cv_rmse = np.sqrt(model.mse_path_[alpha_idx].mean())
 
-            if rmse < best_rmse:
-                best_rmse = rmse
-                best_r2 = r2
+            if cv_rmse < best_cv_rmse:
+                best_cv_rmse = cv_rmse
                 best_order = order
-                best_predicted = y_pred
+                best_model = model
+
+        # Refit best order on full data
+        X_basis = gaussian_basis_matrix(x_valid, best_order)
+        best_model.fit(X_basis, y_valid)
+        best_predicted = best_model.predict(X_basis)
+        best_rmse = np.sqrt(mean_squared_error(y_valid, best_predicted))
+        best_r2 = r2_score(y_valid, best_predicted)
 
         results.append({
             "view": VIEW_NAMES[v],

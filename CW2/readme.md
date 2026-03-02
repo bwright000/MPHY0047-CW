@@ -248,10 +248,10 @@ LASSO regularization was selected to handle overfitting in polynomial regression
 | View | RMSE | R² | Optimal Degree |
 |------|------|-----|----------------|
 | View 1 | 13.12 | 0.3000 | 7 |
-| View 2 | 11.80 | 0.3593 | 7 |
-| View 3 | 14.79 | 0.2124 | 6 |
+| View 2 | 11.81 | 0.3584 | 4 |
+| View 3 | 14.79 | 0.2123 | 7 |
 | View 4 | 17.38 | 0.1604 | 1 |
-| View 5 | 16.41 | 0.2440 | 6 |
+| View 5 | 16.41 | 0.2438 | 5 |
 | View 6 | 25.40 | 0.2047 | 7 |
 | View 7 | 29.39 | 0.0000 | 1 |
 | View 8 | 14.31 | 0.1111 | 7 |
@@ -266,12 +266,12 @@ LASSO regularization was selected to handle overfitting in polynomial regression
 | View 2 | 0.7572 | 0.0715 | 1 |
 | View 3 | 0.6912 | 0.1580 | 7 |
 | View 4 | 0.8225 | 0.0000 | 1 |
-| View 5 | 0.6784 | 0.4433 | 1 |
+| View 5 | 0.6788 | 0.4426 | 3 |
 | View 6 | 0.8804 | 0.3051 | 7 |
-| View 7 | 1.1816 | 0.0869 | 6 |
+| View 7 | 1.1826 | 0.0852 | 2 |
 | View 8 | 0.8949 | 0.0000 | 1 |
-| View 9 | 1.5680 | 0.0000 | 1 |
-| View 10 | 1.0243 | 0.1148 | 7 |
+| View 9 | 1.5680 | 0.0000 | 4 |
+| View 10 | 1.0248 | 0.1139 | 6 |
 
 #### Table 13: LASSO Polynomial Regression - MI -> crit_perc
 
@@ -295,7 +295,7 @@ LASSO regularization was selected to handle overfitting in polynomial regression
 | View 1 | 0.5145 | 0.5458 | 1 |
 | View 2 | 0.7813 | 0.0116 | 1 |
 | View 3 | 0.7200 | 0.0865 | 1 |
-| View 4 | 0.6994 | 0.2769 | 1 |
+| View 4 | 0.6994 | 0.2769 | 2 |
 | View 5 | 0.8098 | 0.2068 | 1 |
 | View 6 | 0.9157 | 0.2484 | 1 |
 | View 7 | 1.0906 | 0.2220 | 1 |
@@ -309,8 +309,8 @@ LASSO regularization was selected to handle overfitting in polynomial regression
 |------|------|-----|----------------|
 | View 1 | 10.71 | 0.5338 | 1 |
 | View 2 | 14.74 | 0.0000 | 1 |
-| View 3 | 15.40 | 0.1463 | 2 |
-| View 4 | 17.59 | 0.1404 | 2 |
+| View 3 | 15.40 | 0.1463 | 4 |
+| View 4 | 17.59 | 0.1404 | 4 |
 | View 5 | 17.67 | 0.1236 | 1 |
 | View 6 | 23.22 | 0.3351 | 1 |
 | View 7 | 25.63 | 0.2395 | 1 |
@@ -324,13 +324,13 @@ LASSO regularization was selected to handle overfitting in polynomial regression
 |------|------|-----|----------------|
 | View 1 | 0.5263 | 0.5248 | 1 |
 | View 2 | 0.7859 | 0.0000 | 1 |
-| View 3 | 0.6153 | 0.3329 | 4 |
-| View 4 | 0.6826 | 0.3112 | 2 |
+| View 3 | 0.6153 | 0.3329 | 2 |
+| View 4 | 0.6826 | 0.3112 | 4 |
 | View 5 | 0.8001 | 0.2255 | 1 |
 | View 6 | 0.9144 | 0.2505 | 1 |
 | View 7 | 1.0717 | 0.2488 | 1 |
-| View 8 | 0.8949 | 0.0000 | 1 |
-| View 9 | 1.5680 | 0.0000 | 1 |
+| View 8 | 0.8949 | 0.0000 | 2 |
+| View 9 | 1.5680 | 0.0000 | 4 |
 | View 10 | 1.0002 | 0.1560 | 1 |
 
 #### Best 3 Performing Views (Top 3 per combination plotted)
@@ -343,7 +343,6 @@ LASSO regularization was selected to handle overfitting in polynomial regression
 | ![SSI->CP View 5](figures/q3ii_SSI_crit_perc_view_5.png) | |
 
 **SSI -> gen_impr:** Views 5 (R²=0.44), 1 (R²=0.34), 6 (R²=0.31)
-
 | | |
 |:-:|:-:|
 | ![SSI->GI View 5](figures/q3ii_SSI_gen_impr_view_5.png) | ![SSI->GI View 1](figures/q3ii_SSI_gen_impr_view_1.png) |
@@ -389,18 +388,18 @@ Linear regression using Gaussian basis functions was performed for SSI (independ
 
 | View | RMSE | R² | Optimal Order |
 |------|------|-----|---------------|
-| View 1 | 0.4185 | 0.6996 | 10 |
-| View 2 | 0.7091 | 0.1857 | 9 |
-| View 3 | 0.6649 | 0.2210 | 6 |
+| View 1 | 0.4535 | 0.6472 | 8 |
+| View 2 | 0.7534 | 0.0809 | 2 |
+| View 3 | 0.6775 | 0.1912 | 4 |
 | View 4 | 0.3785 | 0.7883 | 10 |
-| View 5 | 0.6549 | 0.4812 | 6 |
-| View 6 | 0.8218 | 0.3947 | 5 |
+| View 5 | 0.6747 | 0.4494 | 2 |
+| View 6 | 0.8337 | 0.3770 | 4 |
 | View 7 | 0.9067 | 0.4622 | 5 |
-| View 8 | 0.8483 | 0.1014 | 10 |
-| View 9 | 1.4023 | 0.2001 | 10 |
+| View 8 | 0.8949 | 0.0000 | 2 |
+| View 9 | 1.4337 | 0.1639 | 6 |
 | View 10 | 0.7563 | 0.5174 | 6 |
 
-**Top 3 views:** View 4 (R² = 0.7883), View 1 (R² = 0.6996), View 10 (R² = 0.5174)
+**Top 3 views:** View 4 (R² = 0.7883), View 1 (R² = 0.6472), View 10 (R² = 0.5174)
 
 #### Figures: Top 3 Gaussian Basis Regression Plots
 
@@ -409,7 +408,7 @@ Linear regression using Gaussian basis functions was performed for SSI (independ
 | ![GB View 4](figures/q3iii_gaussian_view_4.png) | ![GB View 1](figures/q3iii_gaussian_view_1.png) |
 | ![GB View 10](figures/q3iii_gaussian_view_10.png) | |
 
-> **[YOUR ANALYSIS]** Discuss: how Gaussian basis regression compares to the polynomial LASSO regression (e.g., View 4 improved from R²=0.00 polynomial to R²=0.79 Gaussian basis), what the optimal orders suggest about the nonlinearity of the SSI-gen_impr relationship, and whether the improvement justifies the additional model complexity.
+> **[YOUR ANALYSIS]** Discuss: how Gaussian basis regression compares to the polynomial LASSO regression (e.g., View 4 improved from R²=0.00 polynomial to R²=0.79 Gaussian basis), what the optimal orders suggest about the nonlinearity of the SSI-gen_impr relationship, and whether the improvement justifies the additional model complexity. Note that CV-based model selection was used to determine optimal order, avoiding overfitting.
 >
 > ...
 
@@ -609,5 +608,5 @@ Rotation (degrees) and translation (pixel displacement) were extracted from the 
 |----------|-------------|
 | Q1 | View 1 has the highest Pearson correlation (r = 0.9274) between the two quality scores; linear regression achieves R² = 0.86 for View 1 |
 | Q2 | MI and CS are the best differentiating similarity metrics (each significant in 2/10 views); SSI significant in only 1/10 views |
-| Q3 | MI -> gen_impr at View 1 achieves the best polynomial regression (R² = 0.55); Gaussian basis regression substantially improves fit (View 4 R² = 0.79) |
+| Q3 | MI -> gen_impr at View 1 achieves the best polynomial regression (R² = 0.55); Gaussian basis regression (with CV-based order selection) substantially improves fit (View 4 R² = 0.79) |
 | Q4 | Neither rotation nor translation significantly differentiates experts from novices in any view; low R² values across all linear regressions |
