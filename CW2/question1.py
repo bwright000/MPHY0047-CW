@@ -1,9 +1,11 @@
 from dataloader import gen_impr, crit_perc, NUM_PARTICIPANTS, NUM_VIEWS, EXPERT_RANGE, NOVICE_RANGE, MISSING, get_valid_scores
+from plot_style import apply_style, scatter_points, reference_line, finish_figure, BLUE, GREEN, GREY, RED
 from scipy import stats
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+apply_style()
 os.makedirs("figures", exist_ok=True)
 VIEW_NAMES = [f"View {i+1}" for i in range(NUM_VIEWS)]
 
@@ -54,7 +56,8 @@ def linear_regression(view_idx):
 def plot_true_vs_estimated(view_idx, cp, predicted, rmse, r_squared):
     """
     Plot true criteria percentage vs estimated criteria percentage for a given view.
-    Includes a perfect prediction line (y = x) for reference.
+    Points are color-coded by criteria percentage range (40-70% and 70-100%)
+    to support performance commentary across different score ranges.
 
     Args:
         view_idx: Index of the view (0-9)
@@ -63,23 +66,38 @@ def plot_true_vs_estimated(view_idx, cp, predicted, rmse, r_squared):
         rmse: Root mean square error of the regression
         r_squared: R² score of the regression
     """
-    plt.figure(figsize=(8, 6))
+    fig, ax = plt.subplots()
 
-    # Scatter plot of true vs predicted values
-    plt.scatter(cp, predicted, color='blue', alpha=0.7, edgecolors='black', label='Data points')
+    cp = np.array(cp)
+    predicted = np.array(predicted)
+
+    # Define masks for the two criteria percentage ranges of interest
+    mask_low = (cp >= 40) & (cp < 70)
+    mask_high = (cp >= 70) & (cp <= 100)
+    mask_other = ~(mask_low | mask_high)
+
+    # Scatter plot with color-coding by criteria percentage range
+    if np.any(mask_other):
+        scatter_points(ax, cp[mask_other], predicted[mask_other],
+                       color=GREY, label='CP < 40%', alpha=0.55)
+    if np.any(mask_low):
+        scatter_points(ax, cp[mask_low], predicted[mask_low],
+                       color=BLUE, label='CP 40\u201370%')
+    if np.any(mask_high):
+        scatter_points(ax, cp[mask_high], predicted[mask_high],
+                       color=GREEN, label='CP 70\u2013100%')
 
     # Perfect prediction reference line (y = x)
-    min_val = min(min(cp), min(predicted))
-    max_val = max(max(cp), max(predicted))
-    plt.plot([min_val, max_val], [min_val, max_val], 'r--', label='Perfect prediction (y = x)')
+    min_val = min(cp.min(), predicted.min())
+    max_val = max(cp.max(), predicted.max())
+    reference_line(ax, min_val, max_val)
 
-    plt.title(f'{VIEW_NAMES[view_idx]} - True vs Estimated Criteria Percentage\nRMSE = {rmse:.2f}, R² = {r_squared:.4f}')
-    plt.xlabel('True Criteria Percentage (%)')
-    plt.ylabel('Estimated Criteria Percentage (%)')
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(f'figures/q1_true_vs_estimated_{VIEW_NAMES[view_idx].lower().replace(" ", "_")}.png', dpi=150)
-    plt.show()
+    ax.set_title(f'{VIEW_NAMES[view_idx]} \u2014 True vs Estimated Criteria Percentage\n'
+                 f'RMSE = {rmse:.2f}, R\u00b2 = {r_squared:.4f}')
+    ax.set_xlabel('True Criteria Percentage (%)')
+    ax.set_ylabel('Estimated Criteria Percentage (%)')
+    ax.legend()
+    finish_figure(fig, f'figures/q1_true_vs_estimated_{VIEW_NAMES[view_idx].lower().replace(" ", "_")}.png')
 
 
 # ============================================================
