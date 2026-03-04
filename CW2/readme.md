@@ -23,7 +23,7 @@ $$r = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x
 
 where $\bar{x}$ and $\bar{y}$ are the sample means. Values range from $-1$ (perfect negative) to $+1$ (perfect positive), with $0$ indicating no linear association. Here, $x$ = general impression and $y$ = criteria percentage for each view.
 
-#### Table 1: Pearson Correlation Between General Impression and Criteria Percentage per View
+<h4 align="center">Table 1: Pearson Correlation Between General Impression and Criteria Percentage per View</h4>
 
 <div align="center">
 
@@ -42,7 +42,7 @@ where $\bar{x}$ and $\bar{y}$ are the sample means. Values range from $-1$ (perf
 
 </div>
 
-**Highest agreement: View 1 (r = 0.9274)**
+<p align="center"><strong>Highest agreement: View 1 (r = 0.9274)</strong></p>
 
 Pearson's correlation coefficient measures the linear relationship between two variables; in this case measuring the relationship between the general impression and criteria percentage for each view. As previously stated, a result of +1 demonstrates a perfect positive correlation. The highest agreement is View 1 with an r value of 0.9274. High scores represent a strong correlation between the general impression — a holistic score given by an assessor, and the criteria percentage — a checklist-based score derived from predefined anatomical criteria. Therefore a high Pearson's r — like that given by View 1 — is representative of a view where the assessor's overall quality impression matches closely with the checklist-derived value.
 View 9 is nearly tied with View 1 at r = 0.9268 - these 2 views show essentially equivalent agreement between the scoring methods. At the other end, View 4 has the lowest correlation (r = 0.6545), suggesting this view has more ambiguous quality criteria where the assessor perception and the checklist diverge. Notably, all 10 views are statistically significant (p < 0.05), confirming a genuine positive linear relationship between the two scores across every view - The p-value test is used to test the null hypothesis; it gives the probability of observing a similar correlation if the null hypothesis is true (i.e., that there is no relationship). The r values range from 0.6545 to 0.9274 — all positive and at least moderate-strong — indicating that holistic and checklist-based assessments broadly agree across all TOE views, just to varying degrees. The views cluster naturally: very strong agreement (Views 1 and 9, r ≈ 0.93), strong agreement (Views 5 and 10, r ≈ 0.87), and moderate agreement (View 4, r ≈ 0.65), suggesting some views have more straightforward quality criteria than others.
@@ -67,7 +67,7 @@ $$R^2 = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y
 
 where $R^2 = 1$ indicates a perfect fit and $R^2 = 0$ indicates the model explains no variance beyond the mean.
 
-#### Table 2: Linear Regression Results (gen_impr -> crit_perc) per View
+<h4 align="center">Table 2: Linear Regression Results (gen_impr -> crit_perc) per View</h4>
 
 <div align="center">
 
@@ -96,19 +96,19 @@ The slope values are broadly consistent across views, ranging from 12.03 (View 8
 
 The three best performing views by R² are: **View 1** (R² = 0.8600), **View 9** (R² = 0.8590), and **View 10** (R² = 0.7567).
 
-#### Figure 1: View 1 - True vs Estimated Criteria Percentage
+<h4 align="center">Figure 1: View 1 - True vs Estimated Criteria Percentage</h4>
 
 <p align="center"><img src="figures/q1_true_vs_estimated_view_1.png" alt="Figure 1" width="70%"></p>
 
-#### Figure 2: View 9 - True vs Estimated Criteria Percentage
+<h4 align="center">Figure 2: View 9 - True vs Estimated Criteria Percentage</h4>
 
 <p align="center"><img src="figures/q1_true_vs_estimated_view_9.png" alt="Figure 2" width="70%"></p>
 
-#### Figure 3: View 10 - True vs Estimated Criteria Percentage
+<h4 align="center">Figure 3: View 10 - True vs Estimated Criteria Percentage</h4>
 
 <p align="center"><img src="figures/q1_true_vs_estimated_view_10.png" alt="Figure 3" width="70%"></p>
 
-*Points are colour-coded by criteria percentage range: blue = CP 40-70%, green = CP 70-100%. The red dashed line represents perfect prediction (y = x).*
+<p align="center"><em>Points are colour-coded by criteria percentage range: blue = CP 40-70%, green = CP 70-100%. The red dashed line represents perfect prediction (y = x).</em></p>
 
 Across the three best-performing views, the model tends to predict differently for the two criteria percentage ranges. In View 1, the blue points (CP 40–70%) tend to sit above the y = x line, meaning the model overpredicts the criteria percentage for lower-quality images. The green points (CP 70–100%) cluster more tightly around the perfect prediction line, indicating the model is more accurate for higher-scoring images. This suggests the linear relationship is stronger at the upper end of the quality spectrum, where high general impression reliably corresponds to high criteria percentage.
 
@@ -146,7 +146,7 @@ where $I_a, I_b$ are the flattened image vectors and $\|I\| = \sqrt{I \cdot I}$.
 
 ### 2.1 Top 3 Participants per View by Similarity Metric (Part i)
 
-#### Table 3: Top 3 Participants by SSI per View
+<h4 align="center">Table 3: Top 3 Participants by SSI per View</h4>
 
 <div align="center">
 
@@ -165,7 +165,7 @@ where $I_a, I_b$ are the flattened image vectors and $\|I\| = \sqrt{I \cdot I}$.
 
 </div>
 
-#### Table 4: Top 3 Participants by MI per View
+<h4 align="center">Table 4: Top 3 Participants by MI per View</h4>
 
 <div align="center">
 
@@ -184,7 +184,7 @@ where $I_a, I_b$ are the flattened image vectors and $\|I\| = \sqrt{I \cdot I}$.
 
 </div>
 
-#### Table 5: Top 3 Participants by CS per View
+<h4 align="center">Table 5: Top 3 Participants by CS per View</h4>
 
 <div align="center">
 
@@ -221,7 +221,7 @@ where $\{x_i\}$ are expert values ($n_1 = 7$) and $\{y_j\}$ are novice values ($
 **$H_1$:** Expert and novice groups differ in similarity metric.
 **Significance level:** $\alpha = 0.05$
 
-#### Table 6: Mann-Whitney U Test Results - SSI
+<h4 align="center">Table 6: Mann-Whitney U Test Results - SSI</h4>
 
 <div align="center">
 
@@ -240,7 +240,7 @@ where $\{x_i\}$ are expert values ($n_1 = 7$) and $\{y_j\}$ are novice values ($
 
 </div>
 
-#### Table 7: Mann-Whitney U Test Results - MI
+<h4 align="center">Table 7: Mann-Whitney U Test Results - MI</h4>
 
 <div align="center">
 
@@ -259,7 +259,7 @@ where $\{x_i\}$ are expert values ($n_1 = 7$) and $\{y_j\}$ are novice values ($
 
 </div>
 
-#### Table 8: Mann-Whitney U Test Results - CS
+<h4 align="center">Table 8: Mann-Whitney U Test Results - CS</h4>
 
 <div align="center">
 
@@ -278,7 +278,7 @@ where $\{x_i\}$ are expert values ($n_1 = 7$) and $\{y_j\}$ are novice values ($
 
 </div>
 
-#### Table 9: Summary - Significant Views per Metric
+<h4 align="center">Table 9: Summary - Significant Views per Metric</h4>
 
 <div align="center">
 
@@ -290,7 +290,7 @@ where $\{x_i\}$ are expert values ($n_1 = 7$) and $\{y_j\}$ are novice values ($
 
 </div>
 
-**Best differentiating metric: MI and CS** (each significant in 2 / 10 views)
+<p align="center"><strong>Best differentiating metric: MI and CS</strong> (each significant in 2 / 10 views)</p>
 
 The Mann-Whitney U test was chosen because the sample sizes are small (7 experts, 13 novices) and normality of the score distributions cannot be assumed. It is a non-parametric alternative to the independent samples t-test, comparing the rank distributions of the two groups rather than their means.
 
@@ -308,7 +308,7 @@ MI and CS are tied as the best differentiating metrics, each achieving significa
 
 The Pearson correlation coefficient (as defined in Section 1.1) is computed between each pair of similarity metrics (SSI-MI, SSI-CS, MI-CS) for each view to assess their agreement.
 
-#### Table 10: Pearson Correlation Between SSI-MI, SSI-CS, and MI-CS per View
+<h4 align="center">Table 10: Pearson Correlation Between SSI-MI, SSI-CS, and MI-CS per View</h4>
 
 <div align="center">
 
@@ -327,10 +327,14 @@ The Pearson correlation coefficient (as defined in Section 1.1) is computed betw
 
 </div>
 
+<div align="center">
+
 **Highest agreement per pair:**
 - SSI-MI: **View 10** (r = 0.8252)
 - SSI-CS: **View 10** (r = 0.8540)
 - MI-CS: **View 4** (r = 0.9962)
+
+</div>
 
 The most striking pattern is the consistently very high correlation between MI and CS across all views, with r values ranging from 0.6421 (View 2) to 0.9962 (View 4) and exceeding 0.98 in 8 out of 10 views. This near-perfect agreement indicates that MI and CS are capturing essentially the same information about image similarity — they are largely redundant metrics. This makes intuitive sense: both measure pixel-level overlap between two images, just through different mathematical formulations (entropy-based vs vector angle).
 
@@ -348,7 +352,7 @@ $$\hat{y} = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_d x^d$$
 
 where $x$ is the similarity metric value and $d \in \{1, 2, \ldots, 7\}$. To prevent overfitting, **LASSO (Least Absolute Shrinkage and Selection Operator)** regularization is applied. LASSO minimises:
 
-$$\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n}(y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{d} |\beta_j| \right\}$$
+$$\min_{\beta} \lbrace \frac{1}{2n} \sum_{i=1}^{n}(y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{d} |\beta_j| \rbrace$$
 
 where $\lambda \geq 0$ is the regularization parameter selected via 5-fold cross-validation (`LassoCV`). The $L_1$ penalty $\lambda \sum |\beta_j|$ drives small coefficients to exactly zero, performing automatic feature selection. Coefficients with $|\beta_j| < 0.01$ are treated as not contributing.
 
@@ -360,12 +364,17 @@ Ridge regression, by contrast, uses an L2 penalty that shrinks coefficients towa
 
 The regularization parameter lambda is selected via 5-fold cross-validation using LassoCV, and the optimal polynomial degree is chosen by comparing the cross-validated RMSE across degrees 1 to 7, minimising generalisation error rather than training error.
 
-#### Table 11: LASSO Polynomial Regression - SSI -> crit_perc
+<h4 align="center">Table 11: LASSO Polynomial Regression -> crit_perc</h4>
 
 <div align="center">
+<table>
+<tr>
+<td align="center">
 
-| View | RMSE | R² | Optimal Degree |
-|------|------|-----|----------------|
+<strong>SSI</strong>
+
+| View | RMSE | R² | Degree |
+|------|------|-----|--------|
 | View 1 | 13.12 | 0.3000 | 7 |
 | View 2 | 11.81 | 0.3584 | 4 |
 | View 3 | 14.79 | 0.2123 | 7 |
@@ -377,33 +386,13 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 | View 9 | 31.41 | 0.1535 | 7 |
 | View 10 | 21.52 | 0.2250 | 1 |
 
-</div>
+</td>
+<td align="center">
 
-#### Table 12: LASSO Polynomial Regression - SSI -> gen_impr
+<strong>MI</strong>
 
-<div align="center">
-
-| View | RMSE | R² | Optimal Degree |
-|------|------|-----|----------------|
-| View 1 | 0.6190 | 0.3428 | 7 |
-| View 2 | 0.7572 | 0.0715 | 1 |
-| View 3 | 0.6912 | 0.1580 | 7 |
-| View 4 | 0.8225 | 0.0000 | 1 |
-| View 5 | 0.6788 | 0.4426 | 3 |
-| View 6 | 0.8804 | 0.3051 | 7 |
-| View 7 | 1.1826 | 0.0852 | 2 |
-| View 8 | 0.8949 | 0.0000 | 1 |
-| View 9 | 1.5680 | 0.0000 | 4 |
-| View 10 | 1.0248 | 0.1139 | 6 |
-
-</div>
-
-#### Table 13: LASSO Polynomial Regression - MI -> crit_perc
-
-<div align="center">
-
-| View | RMSE | R² | Optimal Degree |
-|------|------|-----|----------------|
+| View | RMSE | R² | Degree |
+|------|------|-----|--------|
 | View 1 | 10.63 | 0.5410 | 1 |
 | View 2 | 14.74 | 0.0000 | 1 |
 | View 3 | 16.33 | 0.0393 | 1 |
@@ -415,33 +404,13 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 | View 9 | 34.14 | 0.0000 | 1 |
 | View 10 | 22.14 | 0.1799 | 1 |
 
-</div>
+</td>
+<td align="center">
 
-#### Table 14: LASSO Polynomial Regression - MI -> gen_impr
+<strong>CS</strong>
 
-<div align="center">
-
-| View | RMSE | R² | Optimal Degree |
-|------|------|-----|----------------|
-| View 1 | 0.5145 | 0.5458 | 1 |
-| View 2 | 0.7813 | 0.0116 | 1 |
-| View 3 | 0.7200 | 0.0865 | 1 |
-| View 4 | 0.6994 | 0.2769 | 2 |
-| View 5 | 0.8098 | 0.2068 | 1 |
-| View 6 | 0.9157 | 0.2484 | 1 |
-| View 7 | 1.0906 | 0.2220 | 1 |
-| View 8 | 0.8949 | 0.0000 | 1 |
-| View 9 | 1.5680 | 0.0000 | 1 |
-| View 10 | 0.9904 | 0.1723 | 1 |
-
-</div>
-
-#### Table 15: LASSO Polynomial Regression - CS -> crit_perc
-
-<div align="center">
-
-| View | RMSE | R² | Optimal Degree |
-|------|------|-----|----------------|
+| View | RMSE | R² | Degree |
+|------|------|-----|--------|
 | View 1 | 10.71 | 0.5338 | 1 |
 | View 2 | 14.74 | 0.0000 | 1 |
 | View 3 | 15.40 | 0.1463 | 4 |
@@ -453,14 +422,58 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 | View 9 | 34.14 | 0.0000 | 1 |
 | View 10 | 21.85 | 0.2010 | 1 |
 
+</td>
+</tr>
+</table>
 </div>
 
-#### Table 16: LASSO Polynomial Regression - CS -> gen_impr
+<h4 align="center">Table 12: LASSO Polynomial Regression -> gen_impr</h4>
 
 <div align="center">
+<table>
+<tr>
+<td align="center">
 
-| View | RMSE | R² | Optimal Degree |
-|------|------|-----|----------------|
+<strong>SSI</strong>
+
+| View | RMSE | R² | Degree |
+|------|------|-----|--------|
+| View 1 | 0.6190 | 0.3428 | 7 |
+| View 2 | 0.7572 | 0.0715 | 1 |
+| View 3 | 0.6912 | 0.1580 | 7 |
+| View 4 | 0.8225 | 0.0000 | 1 |
+| View 5 | 0.6788 | 0.4426 | 3 |
+| View 6 | 0.8804 | 0.3051 | 7 |
+| View 7 | 1.1826 | 0.0852 | 2 |
+| View 8 | 0.8949 | 0.0000 | 1 |
+| View 9 | 1.5680 | 0.0000 | 4 |
+| View 10 | 1.0248 | 0.1139 | 6 |
+
+</td>
+<td align="center">
+
+<strong>MI</strong>
+
+| View | RMSE | R² | Degree |
+|------|------|-----|--------|
+| View 1 | 0.5145 | 0.5458 | 1 |
+| View 2 | 0.7813 | 0.0116 | 1 |
+| View 3 | 0.7200 | 0.0865 | 1 |
+| View 4 | 0.6994 | 0.2769 | 2 |
+| View 5 | 0.8098 | 0.2068 | 1 |
+| View 6 | 0.9157 | 0.2484 | 1 |
+| View 7 | 1.0906 | 0.2220 | 1 |
+| View 8 | 0.8949 | 0.0000 | 1 |
+| View 9 | 1.5680 | 0.0000 | 1 |
+| View 10 | 0.9904 | 0.1723 | 1 |
+
+</td>
+<td align="center">
+
+<strong>CS</strong>
+
+| View | RMSE | R² | Degree |
+|------|------|-----|--------|
 | View 1 | 0.5263 | 0.5248 | 1 |
 | View 2 | 0.7859 | 0.0000 | 1 |
 | View 3 | 0.6153 | 0.3329 | 2 |
@@ -472,72 +485,69 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 | View 9 | 1.5680 | 0.0000 | 4 |
 | View 10 | 1.0002 | 0.1560 | 1 |
 
+</td>
+</tr>
+</table>
 </div>
 
-#### Best 3 Performing Views (Top 3 per combination plotted)
+<h4 align="center">Best 3 Performing Views (Top 3 per combination plotted)</h4>
 
-**SSI -> crit_perc:** Views 2 (R²=0.36), 1 (R²=0.30), 5 (R²=0.24)
+<p align="center"><strong>SSI -> crit_perc:</strong> Views 2 (R²=0.36), 1 (R²=0.30), 5 (R²=0.24)</p>
 
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q3ii_SSI_crit_perc_view_1.png" alt="SSI->CP View 1" width="70%"> | <img src="figures/q3ii_SSI_crit_perc_view_2.png" alt="SSI->CP View 2" width="70%"> |
-| <img src="figures/q3ii_SSI_crit_perc_view_5.png" alt="SSI->CP View 5" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q3ii_SSI_crit_perc_view_1.png" alt="SSI-> | <img src="figures/q3ii_SSI_crit_perc_view_2.png" alt="SSI-> | <img src="figures/q3ii_SSI_crit_perc_view_5.png" alt="SSI-> |
 
 </div>
 
-**SSI -> gen_impr:** Views 5 (R²=0.44), 1 (R²=0.34), 6 (R²=0.31)
+<p align="center"><strong>SSI -> gen_impr:</strong> Views 5 (R²=0.44), 1 (R²=0.34), 6 (R²=0.31)</p>
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q3ii_SSI_gen_impr_view_5.png" alt="SSI->GI View 5" width="70%"> | <img src="figures/q3ii_SSI_gen_impr_view_1.png" alt="SSI->GI View 1" width="70%"> |
-| <img src="figures/q3ii_SSI_gen_impr_view_6.png" alt="SSI->GI View 6" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q3ii_SSI_gen_impr_view_5.png" alt="SSI-> | <img src="figures/q3ii_SSI_gen_impr_view_1.png" alt="SSI-> | <img src="figures/q3ii_SSI_gen_impr_view_6.png" alt="SSI-> |
 
 </div>
 
-**MI -> crit_perc:** Views 1 (R²=0.54), 6 (R²=0.30), 8 (R²=0.28)
+<p align="center"><strong>MI -> crit_perc:</strong> Views 1 (R²=0.54), 6 (R²=0.30), 8 (R²=0.28)</p>
 
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q3ii_MI_crit_perc_view_1.png" alt="MI->CP View 1" width="70%"> | <img src="figures/q3ii_MI_crit_perc_view_6.png" alt="MI->CP View 6" width="70%"> |
-| <img src="figures/q3ii_MI_crit_perc_view_8.png" alt="MI->CP View 8" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q3ii_MI_crit_perc_view_1.png" alt="MI-> | <img src="figures/q3ii_MI_crit_perc_view_6.png" alt="MI-> | <img src="figures/q3ii_MI_crit_perc_view_8.png" alt="MI-> |
 
 </div>
 
-**MI -> gen_impr:** Views 1 (R²=0.55), 4 (R²=0.28), 6 (R²=0.25)
+<p align="center"><strong>MI -> gen_impr:</strong> Views 1 (R²=0.55), 4 (R²=0.28), 6 (R²=0.25)</p>
 
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q3ii_MI_gen_impr_view_1.png" alt="MI->GI View 1" width="70%"> | <img src="figures/q3ii_MI_gen_impr_view_4.png" alt="MI->GI View 4" width="70%"> |
-| <img src="figures/q3ii_MI_gen_impr_view_6.png" alt="MI->GI View 6" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q3ii_MI_gen_impr_view_1.png" alt="MI-> | <img src="figures/q3ii_MI_gen_impr_view_4.png" alt="MI-> | <img src="figures/q3ii_MI_gen_impr_view_6.png" alt="MI-> |
 
 </div>
 
-**CS -> crit_perc:** Views 1 (R²=0.53), 6 (R²=0.34), 8 (R²=0.30)
+<p align="center"><strong>CS -> crit_perc:</strong> Views 1 (R²=0.53), 6 (R²=0.34), 8 (R²=0.30)</p>
 
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q3ii_CS_crit_perc_view_1.png" alt="CS->CP View 1" width="70%"> | <img src="figures/q3ii_CS_crit_perc_view_6.png" alt="CS->CP View 6" width="70%"> |
-| <img src="figures/q3ii_CS_crit_perc_view_8.png" alt="CS->CP View 8" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q3ii_CS_crit_perc_view_1.png" alt="CS-> | <img src="figures/q3ii_CS_crit_perc_view_6.png" alt="CS-> | <img src="figures/q3ii_CS_crit_perc_view_8.png" alt="CS-> |
 
 </div>
 
-**CS -> gen_impr:** Views 1 (R²=0.52), 3 (R²=0.33), 4 (R²=0.31)
+<p align="center"><strong>CS -> gen_impr:</strong> Views 1 (R²=0.52), 3 (R²=0.33), 4 (R²=0.31)</p>
 
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q3ii_CS_gen_impr_view_1.png" alt="CS->GI View 1" width="70%"> | <img src="figures/q3ii_CS_gen_impr_view_3.png" alt="CS->GI View 3" width="70%"> |
-| <img src="figures/q3ii_CS_gen_impr_view_4.png" alt="CS->GI View 4" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q3ii_CS_gen_impr_view_1.png" alt="CS-> | <img src="figures/q3ii_CS_gen_impr_view_3.png" alt="CS-> | <img src="figures/q3ii_CS_gen_impr_view_4.png" alt="CS-> |
 
 </div>
 
@@ -553,7 +563,7 @@ The performance of crit_perc and gen_impr as dependent variables is broadly comp
 
 Instead of polynomial features, the input $x$ (SSI) is transformed using Gaussian basis functions. For a given order $M$, the $j$-th basis function is:
 
-$$\phi_j(x) = \exp\!\left(-\frac{(x - \mu_j)^2}{2s^2}\right), \quad j = 1, \ldots, M$$
+$$\phi_j(x) = \exp\!\bigg(-\frac{(x - \mu_j)^2}{2s^2}\bigg), \quad j = 1, \ldots, M$$
 
 where $\mu_j$ are $M$ centres equally spaced across the range of $x$, and $s = (\max(x) - \min(x)) / M$ is the basis width. The regression model becomes:
 
@@ -561,7 +571,7 @@ $$\hat{y} = \beta_0 + \sum_{j=1}^{M} \beta_j \, \phi_j(x)$$
 
 LASSO regularization with 5-fold cross-validation is applied (as in Section 3.2). The optimal order $M \in \{2, 3, \ldots, 10\}$ is selected by minimising the cross-validated RMSE.
 
-#### Table 17: Gaussian Basis Regression Results (SSI -> gen_impr)
+<h4 align="center">Table 13: Gaussian Basis Regression Results (SSI -> gen_impr)</h4>
 
 <div align="center">
 
@@ -580,16 +590,15 @@ LASSO regularization with 5-fold cross-validation is applied (as in Section 3.2)
 
 </div>
 
-**Top 3 views:** View 4 (R² = 0.7883), View 1 (R² = 0.6472), View 10 (R² = 0.5174)
+<p align="center"><strong>Top 3 views:</strong> View 4 (R² = 0.7883), View 1 (R² = 0.6472), View 10 (R² = 0.5174)</p>
 
-#### Figures: Top 3 Gaussian Basis Regression Plots
+<h4 align="center">Figures: Top 3 Gaussian Basis Regression Plots</h4>
 
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q3iii_gaussian_view_4.png" alt="GB View 4" width="70%"> | <img src="figures/q3iii_gaussian_view_1.png" alt="GB View 1" width="70%"> |
-| <img src="figures/q3iii_gaussian_view_10.png" alt="GB View 10" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q3iii_gaussian_view_4.png" alt="GB View 4" width="70%"> | <img src="figures/q3iii_gaussian_view_1.png" alt="GB View 1" width="70%"> | <img src="figures/q3iii_gaussian_view_10.png" alt="GB View 10" width="70%"> |
 
 </div>
 
@@ -619,7 +628,7 @@ $$\theta = \arctan2(m_{21}, m_{11}) \times \frac{180}{\pi}$$
 
 $$d = \sqrt{t_x^2 + t_y^2} = \sqrt{m_{13}^2 + m_{23}^2}$$
 
-#### Table 18: Rotation Values (degrees) per Participant per View
+<h4 align="center">Table 14: Rotation Values (degrees) per Participant per View</h4>
 
 <div align="center">
 
@@ -648,7 +657,7 @@ $$d = \sqrt{t_x^2 + t_y^2} = \sqrt{m_{13}^2 + m_{23}^2}$$
 
 </div>
 
-#### Table 19: Translation Values (pixels) per Participant per View
+<h4 align="center">Table 15: Translation Values (pixels) per Participant per View</h4>
 
 <div align="center">
 
@@ -687,7 +696,7 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 **$H_1$:** Expert and novice groups differ in alignment metric.
 **Significance level:** $\alpha = 0.05$
 
-#### Table 20: Mann-Whitney U Test Results - Rotation (degrees)
+<h4 align="center">Table 16: Mann-Whitney U Test Results - Rotation (degrees)</h4>
 
 <div align="center">
 
@@ -706,7 +715,7 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 
 </div>
 
-#### Table 21: Mann-Whitney U Test Results - Translation (pixels)
+<h4 align="center">Table 17: Mann-Whitney U Test Results - Translation (pixels)</h4>
 
 <div align="center">
 
@@ -725,7 +734,7 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 
 </div>
 
-#### Table 22: Summary - Significant Views per Alignment Metric
+<h4 align="center">Table 18: Summary - Significant Views per Alignment Metric</h4>
 
 <div align="center">
 
@@ -746,7 +755,7 @@ One possible explanation is that the HeartWorks simulator constrains the range o
 
 Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_1 x$) is fitted for each combination of alignment metric (rotation or translation) as independent variable and quality score (crit_perc or gen_impr) as dependent variable, yielding $2 \times 2 \times 10 = 40$ models.
 
-#### Table 23: Linear Regression - Rotation -> crit_perc
+<h4 align="center">Table 19: Linear Regression - Rotation -> crit_perc</h4>
 
 <div align="center">
 
@@ -765,7 +774,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-#### Table 24: Linear Regression - Rotation -> gen_impr
+<h4 align="center">Table 20: Linear Regression - Rotation -> gen_impr</h4>
 
 <div align="center">
 
@@ -784,7 +793,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-#### Table 25: Linear Regression - Translation -> crit_perc
+<h4 align="center">Table 21: Linear Regression - Translation -> crit_perc</h4>
 
 <div align="center">
 
@@ -803,7 +812,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-#### Table 26: Linear Regression - Translation -> gen_impr
+<h4 align="center">Table 22: Linear Regression - Translation -> gen_impr</h4>
 
 <div align="center">
 
@@ -822,7 +831,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-#### Top 3 Best Performing Views (across all combinations, by R²)
+<h4 align="center">Top 3 Best Performing Views (across all combinations, by R²)</h4>
 
 <div align="center">
 
@@ -834,14 +843,13 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-#### Figures: Top 3 Linear Regression Plots
+<h4 align="center">Figures: Top 3 Linear Regression Plots</h4>
 
 <div align="center">
 
-| | |
-|:-:|:-:|
-| <img src="figures/q4iii_Rotation_crit_perc_view_6.png" alt="Rotation->CP View 6" width="70%"> | <img src="figures/q4iii_Rotation_crit_perc_view_3.png" alt="Rotation->CP View 3" width="70%"> |
-| <img src="figures/q4iii_Translation_crit_perc_view_7.png" alt="Translation->CP View 7" width="70%"> | |
+| | | |
+|:-:|:-:|:-:|
+| <img src="figures/q4iii_Rotation_crit_perc_view_6.png" alt="Rotation-> | <img src="figures/q4iii_Rotation_crit_perc_view_3.png" alt="Rotation-> | <img src="figures/q4iii_Translation_crit_perc_view_7.png" alt="Translation-> |
 
 </div>
 
