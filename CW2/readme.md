@@ -86,9 +86,9 @@ where $R^2 = 1$ indicates a perfect fit and $R^2 = 0$ indicates the model explai
 
 </div>
 
-The linear regression results are similar to the Pearson correlation findings. View 1 achieves the best fit with the lowest RMSE (5.87) and highest R² (0.86), meaning the model explains 86% of the variance in criteria percentage from general impression alone. View 9 is again close  with an R² = 0.8590, though its higher RMSE (12.82) reflects greater spread in the criteria percentage values for that view.
+The linear regression results are similar to the Pearson correlation findings. View 1 achieves the best fit with the lowest RMSE (5.87) and highest R² (0.86), meaning the model explains 86% of the variance in criteria percentage from general impression alone (i.e., the residual is 0.14) . View 9 is again close  with an R² = 0.8590, though its higher RMSE (12.82) reflects greater spread in the criteria percentage values for that view.
 
-On the other hand, View 4 has the worst fit (R² = 0.4284, RMSE = 14.34), consistent with its lowest Pearson correlation. Views 6 and 7 also show high RMSE values (17.1 and 17.71 respectively), suggesting these views have wider variability in criteria percentage that a simple linear model struggles to capture.
+On the other hand, View 4 has the worst fit (R² = 0.4284, RMSE = 14.34), consistent with its lowest Pearson correlation. Views 6 and 7 also show high RMSE values (17.1 and 17.71 respectively), suggesting these views have wider variability in criteria percentage that the simple linear regression model struggles to capture.
 
 The slope values are broadly consistent across views, ranging from 12.03 (View 8) to 21.55 (View 6). This means that for each 1-point increase in general impression, the criteria percentage increases by roughly 12–22 percentage points depending on the view. The intercepts vary more widely — View 8 has the highest intercept (43.95) with the shallowest slope, suggesting that even participants scoring 0 on general impression still meet a substantial proportion of the checklist criteria for this view. Conversely, View 6 has a low intercept (10.35) but the steepest slope (21.55), indicating the quality scores for this view span a wider range and are more sensitive to changes in general impression.
 
@@ -110,19 +110,17 @@ The three best performing views by R² are: **View 1** (R² = 0.8600), **View 9*
 
 <p align="center"><em>Points are colour-coded by criteria percentage range: blue = CP 40-70%, green = CP 70-100%. The red dashed line represents perfect prediction (y = x).</em></p>
 
-Across the three best-performing views, the model tends to predict differently for the two criteria percentage ranges. In View 1, the blue points (CP 40–70%) tend to sit above the y = x line, meaning the model overpredicts the criteria percentage for lower-quality images. The green points (CP 70–100%) cluster more tightly around the perfect prediction line, indicating the model is more accurate for higher-scoring images. This suggests the linear relationship is stronger at the upper end of the quality spectrum, where high general impression reliably corresponds to high criteria percentage.
+Across the three best-performing views, the model tends to predict differently for the two criteria percentage ranges. In View 1, the blue points (CP 40–70%) tend to sit on or above the y = x line, meaning the model tends to slightly overpredict the criteria percentage for lower-quality images. The green points (CP 70–100%) cluster more tightly around the perfect prediction line, with 3 points drifting below the true fit line. In view 1 the model also shows 6 out of 12 points closely or directly on the true fit line. 
 
-In View 10, this pattern becomes more pronounced — the blue points (40–70%) are consistently overpredicted, while the green points (70–100%) are underpredicted. The model regresses toward the mean, pulling extreme values toward the centre: Linear Regression tends to compress predictions toward the average, overpredicting low-scoring images and underpredicting high-scoring ones.
+In View 9 — the grey points (>40%) are consistently overpredicted, while the green points (70–100%) are underpredicted. The model also shows a possible outlier in View 9 @ 80% True CP and ~35% Estimated CP, as this is a severe underestimation.
 
-View 9 shows a different distribution, with scores clustering at the extremes (very low and very high) rather than in the mid-range. Most high-scoring predictions sit close to the line, though one notable outlier at approximately 80% true criteria percentage is severely underpredicted. The absence of points in the 40–70% range for View 9 suggests this view produces either clearly good or clearly poor images, with little ambiguity in between.
-
----
+View 10 shows a spread with results earlier in the distribution (<70% CP) consistently predicted above the 'Perfect-Prediction' line, and those >70% CP consistently predicted below the 'Perfect-Prediction' line.
 
 ## Question 2: Image Similarity Metrics [20 marks]
 
 Three similarity metrics are computed between each participant's test image and the gold standard image for the corresponding view.
 
-**Structural Similarity Index (SSI)** — Equation (1): Compares luminance, contrast, and structure:
+**Structural Similarity Index (SSI)** — Equation (1): Compares luminance (l), contrast (c), and structure (s):
 
 $$\text{SSI}(a, b) = l(a, b) \cdot c(a, b) \cdot s(a, b)$$
 
@@ -324,13 +322,13 @@ The Pearson correlation coefficient (as defined in Section 1.1) is computed betw
 
 </div>
 
-The most striking pattern is the consistently very high correlation between MI and CS across all views, with r values ranging from 0.6421 (View 2) to 0.9962 (View 4) and exceeding 0.98 in 8 out of 10 views. This near-perfect agreement indicates that MI and CS are capturing essentially the same information about image similarity — they are largely redundant metrics. This makes intuitive sense: both measure pixel-level overlap between two images, just through different mathematical formulations (entropy-based vs vector angle).
+The most important pattern is the very high correlation between MI and CS across all views, with r values ranging from 0.6421 (View 2) to 0.9962 (View 4) and exceeding 0.98 in 8 out of 10 views. This near-perfect agreement indicates that MI and CS are capturing essentially the same information about image similarity - they are largely redundant metrics. This makes sense: both measure pixel-level overlap between two images, just through different mathematical formulations (entropy-based vs vector angle).
 
 In contrast, SSI shows weaker and more variable correlations with both MI and CS. The SSI-MI and SSI-CS correlations range from near-zero to 0.85, suggesting SSI captures different aspects of image quality. SSI compares luminance, contrast, and structural patterns rather than raw pixel overlap, making it sensitive to different image properties.
 
-View 9 is a notable outlier, with SSI-MI correlation of just 0.0144 and SSI-CS correlation of -0.0703. This near-zero correlation means SSI provides entirely independent information from MI and CS for this view. View 10 shows the opposite, with the highest SSI-MI (0.8252) and SSI-CS (0.8540) correlations, suggesting the three metrics converge more for this particular view.
+View 9 is a notable outlier, with SSI-MI correlation of just 0.0144 and SSI-CS correlation of -0.0703. This near-zero correlation means SSI provides entirely independent information from MI and CS for this view. View 10 shows the opposite, with the highest SSI-MI (0.8252) and SSI-CS (0.8540) correlations, suggesting that this view may also be an outlier or a coincidental relationship. 
 
-The practical implication is that MI and CS provide little additional information beyond each other, while SSI offers a complementary perspective. A comprehensive assessment of image similarity benefits from using both SSI and at least one of MI/CS, rather than relying on any single metric.
+The practical implication is that MI and CS provide little additional information beyond each other, while SSI offers a complementary perspective.
 
 ### 3.2 Polynomial Regression with LASSO Regularization (Part ii)
 
@@ -338,19 +336,19 @@ For each similarity metric (SSI, MI, CS) as the independent variable and each qu
 
 $$\hat{y} = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_d x^d$$
 
-where $x$ is the similarity metric value and $d \in \{1, 2, \ldots, 7\}$. To prevent overfitting, **LASSO (Least Absolute Shrinkage and Selection Operator)** regularization is applied. LASSO minimises:
+where $x$ is the similarity metric value and $d \in \{1, 2, \ldots, 7\}$. To prevent overfitting, **LASSO (Least Absolute Shrinkage and Selection Operator)** regularisation is applied. LASSO minimises:
 
 $$\min_{\beta} \lbrace \frac{1}{2n} \sum_{i=1}^{n}(y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{d} |\beta_j| \rbrace$$
 
-where $\lambda \geq 0$ is the regularization parameter selected via 5-fold cross-validation (`LassoCV`). The $L_1$ penalty $\lambda \sum |\beta_j|$ drives small coefficients to exactly zero, performing automatic feature selection. Coefficients with $|\beta_j| < 0.01$ are treated as not contributing.
+where $\lambda \geq 0$ is the regularisation parameter selected via 5-fold cross-validation (`LassoCV`). The $L_1$ penalty $\lambda \sum |\beta_j|$ drives small coefficients to exactly zero, performing automatic feature selection. Coefficients with $|\beta_j| < 0.01$ are treated as not contributing.
 
 The optimal polynomial degree is selected by comparing the **cross-validated RMSE** (from `LassoCV`'s internal CV at the optimal $\lambda$) across degrees $1$ to $7$, choosing the degree that minimises generalisation error. RMSE and $R^2$ are then reported on the full training set for the selected degree.
 
-LASSO was selected over Ridge and Elastic Net regression for its ability to perform automatic feature selection through the L1 penalty. When fitting a polynomial up to degree 7, many of the higher-order terms may not meaningfully contribute to the model. LASSO's L1 penalty drives the coefficients of irrelevant terms to exactly zero, effectively removing them from the model. This is particularly desirable here because the coursework specifies that coefficients smaller than 0.01 should be considered as not contributing — LASSO naturally enforces this sparsity.
+LASSO was selected over Ridge and Elastic Net regression for its ability to perform automatic feature selection through the L1 penalty. When fitting a polynomial up to degree 7, many of the higher-order terms may not meaningfully contribute to the model. LASSO's L1 penalty drives the coefficients of irrelevant terms to exactly zero, effectively removing them from the model. This is particularly desirable here because the coursework guidelines specify that coefficients smaller than 0.01 should be considered as not contributing — LASSO naturally enforces this sparsity.
 
-Ridge regression, by contrast, uses an L2 penalty that shrinks coefficients toward zero but never sets them exactly to zero. This means all polynomial terms would remain in the model regardless of their relevance, making it harder to identify which terms genuinely contribute. Elastic Net combines both L1 and L2 penalties, but introduces an additional hyperparameter (the L1/L2 mixing ratio) without clear benefit in this context where the primary goal is feature elimination rather than handling correlated predictors.
+Ridge regression, by contrast, uses an L2 penalty that shrinks coefficients toward zero but never sets them exactly to zero. This means all polynomial terms would remain in the model regardless of their relevance, making it harder to identify which terms genuinely contribute. Elastic Net could also be a beneficial option, as it combines both L1 and L2 penalties,  introducing an additional hyperparameter (the L1/L2 mixing ratio). However, without a clear benefit over LASSO, it is not utilised.
 
-The regularization parameter lambda is selected via 5-fold cross-validation using LassoCV, and the optimal polynomial degree is chosen by comparing the cross-validated RMSE across degrees 1 to 7, minimising generalisation error rather than training error.
+The regularisation parameter lambda is selected via 5-fold cross-validation using LassoCV, and the optimal polynomial degree is chosen by comparing the cross-validated RMSE across degrees 1 to 7, minimising generalisation error rather than training error.
 
 <h4 align="center">Table 10: LASSO Polynomial Regression -> crit_perc</h4>
 
@@ -539,7 +537,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 
 </div>
 
-Across all metric-score combinations, MI and CS consistently produce the strongest regression fits. The best overall result is MI -> gen_impr at View 1 (R² = 0.55), followed closely by MI -> crit_perc at View 1 (R² = 0.54) and CS -> crit_perc at View 1 (R² = 0.53). View 1 performs well across nearly every combination, consistent with its strong Pearson correlation in Q1 and significant Mann-Whitney results in Q2 — this view appears to have the most informative relationship between image content and quality scores.
+Across all metric-score combinations, MI and CS consistently produce the strongest regression fits. The best overall result is MI -> gen_impr at View 1 (R² = 0.55), followed closely by MI -> crit_perc at View 1 (R² = 0.54) and CS -> crit_perc at View 1 (R² = 0.53). View 1 performs well across nearly every combination, consistent with its strong Pearson correlation in Q1 and significant Mann-Whitney results in Q2. View 1 is therefore seen as the view that best demonstrates the relationship between the image content and quality scores.
 
 A notable observation is that many MI and CS regressions collapse to degree 1 (linear), with LASSO zeroing all higher-order polynomial coefficients. This suggests the relationship between these metrics and quality scores is predominantly linear, and higher-order terms do not improve generalisation. SSI regressions are more likely to retain higher degrees (5–7), indicating a more complex, nonlinear relationship between structural similarity and quality scores.
 
@@ -590,7 +588,7 @@ LASSO regularization with 5-fold cross-validation is applied (as in Section 3.2)
 
 </div>
 
-The Gaussian basis regression substantially outperforms the polynomial LASSO regression for several views. The most dramatic improvement is View 4, which achieved R² = 0.00 with polynomial regression (the model explained none of the variance) but R² = 0.79 with Gaussian basis functions at order 10. View 1 improved from R² = 0.34 to R² = 0.65, and View 10 from R² = 0.11 to R² = 0.52. These improvements suggest the relationship between SSI and general impression is better captured by localised, bell-shaped basis functions than by global polynomial terms.
+The Gaussian basis regression outperforms the polynomial LASSO regression for several views. The most significant improvement is View 4, which achieved R² = 0.00 with polynomial regression (the model explained none of the variance) but R² = 0.79 with Gaussian basis functions at order 10. View 1 improved from R² = 0.34 to R² = 0.65, and View 10 from R² = 0.11 to R² = 0.52. These improvements suggest the relationship between SSI and general impression is better captured by localised, bell-shaped basis functions than by global polynomial terms.
 
 The optimal orders vary across views — from 2 (Views 2, 5, 8) to 10 (View 4) — indicating different levels of nonlinearity in the SSI-gen_impr relationship depending on the view. Lower orders suggest a simpler, smoother relationship, while higher orders allow the model to fit more localised patterns in the data. Cross-validated model selection was used to determine the optimal order, avoiding overfitting by selecting the order that minimises generalisation error rather than training error.
 
@@ -615,66 +613,6 @@ $$\theta = \arctan2(m_{21}, m_{11}) \times \frac{180}{\pi}$$
 **Translation** (total pixel displacement) is the Euclidean norm of the translation vector:
 
 $$d = \sqrt{t_x^2 + t_y^2} = \sqrt{m_{13}^2 + m_{23}^2}$$
-
-<h4 align="center">Table 13: Rotation Values (degrees) per Participant per View</h4>
-
-<div align="center">
-
-| Participant | View 1 | View 2 | View 3 | View 4 | View 5 | View 6 | View 7 | View 8 | View 9 | View 10 |
-|-------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|---------|
-| P1 | -3.76 | 0.70 | 4.68 | 4.90 | -7.54 | 1.91 | -4.19 | 1.76 | 7.71 | 5.70 |
-| P2 | -1.37 | 0.41 | -5.05 | 9.10 | 1.68 | 1.14 | 5.81 | -3.86 | -0.60 | -0.12 |
-| P3 | 0.29 | 4.34 | 1.27 | -18.44 | -2.63 | 0.13 | 1.62 | 1.98 | -4.06 | -0.00 |
-| P4 | 0.28 | -1.69 | -0.21 | 1.65 | 4.02 | 2.98 | -1.87 | 8.30 | 1.33 | -0.31 |
-| P5 | -1.97 | -3.34 | -3.01 | 3.07 | 1.66 | -1.46 | -2.52 | -4.23 | -2.04 | -0.24 |
-| P6 | 2.65 | 3.09 | -8.26 | -1.10 | -5.90 | -3.43 | 3.21 | 1.18 | 3.21 | -1.92 |
-| P7 | -3.66 | 6.46 | 4.70 | -8.04 | 0.27 | 3.17 | 4.78 | 0.00 | 4.00 | -2.57 |
-| P8 | -0.61 | 2.91 | -17.30 | -5.07 | -1.73 | -9.74 | -11.63 | -3.75 | 5.41 | -0.63 |
-| P9 | -1.04 | 5.34 | 0.31 | -7.66 | 3.32 | -0.28 | -4.26 | -0.99 | 2.86 | N/A |
-| P10 | -19.14 | -0.80 | 2.02 | 5.06 | 6.04 | -3.07 | 3.97 | -2.71 | 0.27 | -1.99 |
-| P11 | 0.44 | 3.02 | 2.22 | -6.57 | 5.39 | -0.65 | -0.81 | -1.46 | -8.26 | 2.75 |
-| P12 | 5.69 | -1.60 | -1.38 | -2.97 | 1.63 | 3.07 | -1.03 | 0.01 | -0.14 | -1.74 |
-| P13 | -1.60 | -0.30 | -9.73 | -4.29 | -4.33 | 3.01 | -7.48 | N/A | -2.07 | -2.86 |
-| P14 | 7.84 | 0.15 | -1.02 | -4.90 | -2.87 | -2.25 | -2.32 | 4.11 | 5.29 | N/A |
-| P15 | N/A | 1.48 | 1.17 | -2.53 | 5.69 | 2.40 | 0.44 | -1.63 | -2.61 | -2.72 |
-| P16 | 2.22 | 4.02 | -0.77 | N/A | -0.95 | 1.20 | 5.97 | 4.98 | -1.18 | -1.85 |
-| P17 | -3.41 | -4.76 | -4.88 | -5.71 | -1.55 | 0.00 | -1.53 | -1.31 | -7.50 | 0.61 |
-| P18 | -3.72 | 2.73 | -6.06 | 2.76 | 3.60 | -1.83 | -5.81 | -4.75 | -3.22 | 1.43 |
-| P19 | -3.31 | 1.29 | 4.72 | 2.29 | 0.80 | -0.82 | -1.10 | 1.20 | 0.39 | 0.31 |
-| P20 | 1.64 | -0.63 | 0.33 | 19.85 | -2.99 | 3.61 | 0.01 | 8.17 | 0.84 | 5.94 |
-
-</div>
-
-<h4 align="center">Table 14: Translation Values (pixels) per Participant per View</h4>
-
-<div align="center">
-
-| Participant | View 1 | View 2 | View 3 | View 4 | View 5 | View 6 | View 7 | View 8 | View 9 | View 10 |
-|-------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|---------|
-| P1 | 29.92 | 6.15 | 15.51 | 16.66 | 29.70 | 7.71 | 19.53 | 8.38 | 30.83 | 21.74 |
-| P2 | 2.91 | 5.50 | 13.38 | 33.98 | 4.82 | 4.72 | 24.93 | 12.70 | 7.49 | 0.97 |
-| P3 | 3.08 | 15.87 | 15.63 | 62.63 | 11.35 | 1.05 | 15.56 | 16.73 | 10.72 | 1.34 |
-| P4 | 5.85 | 8.82 | 4.77 | 9.52 | 4.81 | 22.84 | 3.02 | 36.71 | 12.92 | 0.82 |
-| P5 | 10.22 | 13.99 | 11.47 | 9.03 | 15.06 | 3.36 | 12.10 | 16.10 | 9.88 | 2.62 |
-| P6 | 16.65 | 9.98 | 31.88 | 4.37 | 39.17 | 10.50 | 17.27 | 6.56 | 4.73 | 6.24 |
-| P7 | 22.15 | 35.05 | 22.97 | 33.73 | 9.86 | 12.58 | 27.17 | 1.86 | 17.90 | 7.29 |
-| P8 | 4.07 | 12.03 | 46.67 | 16.68 | 2.50 | 35.68 | 47.30 | 23.34 | 17.04 | 5.04 |
-| P9 | 9.83 | 19.02 | 0.60 | 32.79 | 12.41 | 4.18 | 19.43 | 4.91 | 11.26 | N/A |
-| P10 | 72.02 | 1.75 | 4.04 | 14.49 | 21.52 | 10.70 | 17.50 | 12.57 | 5.11 | 7.77 |
-| P11 | 2.63 | 13.73 | 9.38 | 25.37 | 25.03 | 11.80 | 5.84 | 11.13 | 28.65 | 10.96 |
-| P12 | 36.26 | 7.07 | 9.33 | 9.02 | 10.36 | 12.12 | 1.84 | 3.55 | 0.40 | 8.03 |
-| P13 | 7.37 | 4.23 | 33.82 | 15.23 | 12.75 | 8.20 | 28.44 | N/A | 6.64 | 11.18 |
-| P14 | 39.46 | 2.57 | 2.85 | 22.47 | 7.16 | 8.73 | 2.20 | 15.88 | 27.51 | N/A |
-| P15 | N/A | 5.89 | 4.33 | 7.10 | 15.87 | 8.85 | 3.36 | 7.30 | 8.68 | 18.81 |
-| P16 | 9.12 | 12.77 | 5.68 | N/A | 2.72 | 6.43 | 33.83 | 20.20 | 8.95 | 16.23 |
-| P17 | 16.73 | 19.72 | 16.64 | 17.04 | 2.98 | 1.79 | 5.14 | 5.37 | 40.18 | 1.37 |
-| P18 | 15.43 | 11.95 | 29.37 | 11.16 | 13.85 | 4.85 | 29.28 | 14.60 | 12.69 | 15.51 |
-| P19 | 17.22 | 7.09 | 19.76 | 11.85 | 13.84 | 2.87 | 9.58 | 6.20 | 2.11 | 4.52 |
-| P20 | 11.45 | 1.03 | 2.83 | 70.52 | 17.90 | 12.07 | 0.60 | 48.38 | 13.55 | 26.13 |
-
-</div>
-
-
 
 ### 4.2 Statistical Testing - Expert vs Novice (Part ii)
 
@@ -724,7 +662,7 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 
 Neither rotation nor translation produces a statistically significant difference between the expert and novice groups for any of the 10 views (all p > 0.05). This is in contrast to the similarity metric results from Q2, where MI and CS each achieved significance in 2 views and SSI in 1 view. The alignment parameters appear to be even less discriminative of expertise than the similarity metrics.
 
-The mean rotation values are close to zero for both groups across most views, suggesting that neither experts nor novices systematically over- or under-rotate the probe. The mean translation values are also comparable between groups, with overlapping ranges in every view. This implies that the physical positioning of the probe — at least as captured by rigid transformation parameters — is not what differentiates expert from novice performance.
+The mean rotation values are close to zero for both groups across most views, suggesting that neither experts nor novices systematically over- or under-rotate the probe. The mean translation values are also comparable between groups, with overlapping ranges in every view. This implies that the physical positioning of the probe - at least as captured by rigid transformation parameters - is not what differentiates expert from novice performance.
 
 One possible explanation is that the HeartWorks simulator constrains the range of probe movements, limiting the variability in rotation and translation between participants regardless of experience. Another is that image quality depends more on subtle aspects of probe orientation and image plane selection that are not fully captured by a simple Euclidean (rigid) transformation model. The ECC algorithm estimates the best global rotation and translation to align two images, but cannot account for differences in image content that arise from probe angulation, depth, or gain settings.
 
