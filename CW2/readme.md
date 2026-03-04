@@ -278,19 +278,7 @@ where $\{x_i\}$ are expert values ($n_1 = 7$) and $\{y_j\}$ are novice values ($
 
 </div>
 
-<h4 align="center">Table 9: Summary - Significant Views per Metric</h4>
-
-<div align="center">
-
-| Metric | Significant Views (p < 0.05) | Count |
-|--------|------------------------------|-------|
-| SSI | View 8 | 1 / 10 |
-| MI | Views 1, 8 | 2 / 10 |
-| CS | Views 1, 8 | 2 / 10 |
-
-</div>
-
-<p align="center"><strong>Best differentiating metric: MI and CS</strong> (each significant in 2 / 10 views)</p>
+<p align="center"><strong>Best differentiating metric: MI and CS</strong> (each significant in 2 / 10 views; SSI significant in 1 / 10)</p>
 
 The Mann-Whitney U test was chosen because the sample sizes are small (7 experts, 13 novices) and normality of the score distributions cannot be assumed. It is a non-parametric alternative to the independent samples t-test, comparing the rank distributions of the two groups rather than their means.
 
@@ -308,7 +296,7 @@ MI and CS are tied as the best differentiating metrics, each achieving significa
 
 The Pearson correlation coefficient (as defined in Section 1.1) is computed between each pair of similarity metrics (SSI-MI, SSI-CS, MI-CS) for each view to assess their agreement.
 
-<h4 align="center">Table 10: Pearson Correlation Between SSI-MI, SSI-CS, and MI-CS per View</h4>
+<h4 align="center">Table 9: Pearson Correlation Between SSI-MI, SSI-CS, and MI-CS per View</h4>
 
 <div align="center">
 
@@ -364,7 +352,7 @@ Ridge regression, by contrast, uses an L2 penalty that shrinks coefficients towa
 
 The regularization parameter lambda is selected via 5-fold cross-validation using LassoCV, and the optimal polynomial degree is chosen by comparing the cross-validated RMSE across degrees 1 to 7, minimising generalisation error rather than training error.
 
-<h4 align="center">Table 11: LASSO Polynomial Regression -> crit_perc</h4>
+<h4 align="center">Table 10: LASSO Polynomial Regression -> crit_perc</h4>
 
 <div align="center">
 <table>
@@ -427,7 +415,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 </table>
 </div>
 
-<h4 align="center">Table 12: LASSO Polynomial Regression -> gen_impr</h4>
+<h4 align="center">Table 11: LASSO Polynomial Regression -> gen_impr</h4>
 
 <div align="center">
 <table>
@@ -498,7 +486,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="figures/q3ii_SSI_crit_perc_view_1.png" alt="SSI-> | <img src="figures/q3ii_SSI_crit_perc_view_2.png" alt="SSI-> | <img src="figures/q3ii_SSI_crit_perc_view_5.png" alt="SSI-> |
+| <img src="figures/q3ii_SSI_crit_perc_view_1.png" alt="q3ii_SSI_crit_perc_view_1" width="70%"> | <img src="figures/q3ii_SSI_crit_perc_view_2.png" alt="q3ii_SSI_crit_perc_view_2" width="70%"> | <img src="figures/q3ii_SSI_crit_perc_view_5.png" alt="q3ii_SSI_crit_perc_view_5" width="70%"> |
 
 </div>
 
@@ -507,7 +495,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="figures/q3ii_SSI_gen_impr_view_5.png" alt="SSI-> | <img src="figures/q3ii_SSI_gen_impr_view_1.png" alt="SSI-> | <img src="figures/q3ii_SSI_gen_impr_view_6.png" alt="SSI-> |
+| <img src="figures/q3ii_SSI_gen_impr_view_5.png" alt="q3ii_SSI_gen_impr_view_5" width="70%"> | <img src="figures/q3ii_SSI_gen_impr_view_1.png" alt="q3ii_SSI_gen_impr_view_1" width="70%"> | <img src="figures/q3ii_SSI_gen_impr_view_6.png" alt="q3ii_SSI_gen_impr_view_6" width="70%"> |
 
 </div>
 
@@ -517,7 +505,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="figures/q3ii_MI_crit_perc_view_1.png" alt="MI-> | <img src="figures/q3ii_MI_crit_perc_view_6.png" alt="MI-> | <img src="figures/q3ii_MI_crit_perc_view_8.png" alt="MI-> |
+| <img src="figures/q3ii_MI_crit_perc_view_1.png" alt="q3ii_MI_crit_perc_view_1" width="70%"> | <img src="figures/q3ii_MI_crit_perc_view_6.png" alt="q3ii_MI_crit_perc_view_6" width="70%"> | <img src="figures/q3ii_MI_crit_perc_view_8.png" alt="q3ii_MI_crit_perc_view_8" width="70%"> |
 
 </div>
 
@@ -527,7 +515,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="figures/q3ii_MI_gen_impr_view_1.png" alt="MI-> | <img src="figures/q3ii_MI_gen_impr_view_4.png" alt="MI-> | <img src="figures/q3ii_MI_gen_impr_view_6.png" alt="MI-> |
+| <img src="figures/q3ii_MI_gen_impr_view_1.png" alt="q3ii_MI_gen_impr_view_1" width="70%"> | <img src="figures/q3ii_MI_gen_impr_view_4.png" alt="q3ii_MI_gen_impr_view_4" width="70%"> | <img src="figures/q3ii_MI_gen_impr_view_6.png" alt="q3ii_MI_gen_impr_view_6" width="70%"> |
 
 </div>
 
@@ -537,7 +525,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="figures/q3ii_CS_crit_perc_view_1.png" alt="CS-> | <img src="figures/q3ii_CS_crit_perc_view_6.png" alt="CS-> | <img src="figures/q3ii_CS_crit_perc_view_8.png" alt="CS-> |
+| <img src="figures/q3ii_CS_crit_perc_view_1.png" alt="q3ii_CS_crit_perc_view_1" width="70%"> | <img src="figures/q3ii_CS_crit_perc_view_6.png" alt="q3ii_CS_crit_perc_view_6" width="70%"> | <img src="figures/q3ii_CS_crit_perc_view_8.png" alt="q3ii_CS_crit_perc_view_8" width="70%"> |
 
 </div>
 
@@ -547,7 +535,7 @@ The regularization parameter lambda is selected via 5-fold cross-validation usin
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="figures/q3ii_CS_gen_impr_view_1.png" alt="CS-> | <img src="figures/q3ii_CS_gen_impr_view_3.png" alt="CS-> | <img src="figures/q3ii_CS_gen_impr_view_4.png" alt="CS-> |
+| <img src="figures/q3ii_CS_gen_impr_view_1.png" alt="q3ii_CS_gen_impr_view_1" width="70%"> | <img src="figures/q3ii_CS_gen_impr_view_3.png" alt="q3ii_CS_gen_impr_view_3" width="70%"> | <img src="figures/q3ii_CS_gen_impr_view_4.png" alt="q3ii_CS_gen_impr_view_4" width="70%"> |
 
 </div>
 
@@ -571,7 +559,7 @@ $$\hat{y} = \beta_0 + \sum_{j=1}^{M} \beta_j \, \phi_j(x)$$
 
 LASSO regularization with 5-fold cross-validation is applied (as in Section 3.2). The optimal order $M \in \{2, 3, \ldots, 10\}$ is selected by minimising the cross-validated RMSE.
 
-<h4 align="center">Table 13: Gaussian Basis Regression Results (SSI -> gen_impr)</h4>
+<h4 align="center">Table 12: Gaussian Basis Regression Results (SSI -> gen_impr)</h4>
 
 <div align="center">
 
@@ -628,7 +616,7 @@ $$\theta = \arctan2(m_{21}, m_{11}) \times \frac{180}{\pi}$$
 
 $$d = \sqrt{t_x^2 + t_y^2} = \sqrt{m_{13}^2 + m_{23}^2}$$
 
-<h4 align="center">Table 14: Rotation Values (degrees) per Participant per View</h4>
+<h4 align="center">Table 13: Rotation Values (degrees) per Participant per View</h4>
 
 <div align="center">
 
@@ -657,7 +645,7 @@ $$d = \sqrt{t_x^2 + t_y^2} = \sqrt{m_{13}^2 + m_{23}^2}$$
 
 </div>
 
-<h4 align="center">Table 15: Translation Values (pixels) per Participant per View</h4>
+<h4 align="center">Table 14: Translation Values (pixels) per Participant per View</h4>
 
 <div align="center">
 
@@ -696,7 +684,7 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 **$H_1$:** Expert and novice groups differ in alignment metric.
 **Significance level:** $\alpha = 0.05$
 
-<h4 align="center">Table 16: Mann-Whitney U Test Results - Rotation (degrees)</h4>
+<h4 align="center">Table 15: Mann-Whitney U Test Results - Rotation (degrees)</h4>
 
 <div align="center">
 
@@ -715,7 +703,7 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 
 </div>
 
-<h4 align="center">Table 17: Mann-Whitney U Test Results - Translation (pixels)</h4>
+<h4 align="center">Table 16: Mann-Whitney U Test Results - Translation (pixels)</h4>
 
 <div align="center">
 
@@ -734,17 +722,6 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 
 </div>
 
-<h4 align="center">Table 18: Summary - Significant Views per Alignment Metric</h4>
-
-<div align="center">
-
-| Metric | Significant Views (p < 0.05) | Count |
-|--------|------------------------------|-------|
-| Rotation | None | 0 / 10 |
-| Translation | None | 0 / 10 |
-
-</div>
-
 Neither rotation nor translation produces a statistically significant difference between the expert and novice groups for any of the 10 views (all p > 0.05). This is in contrast to the similarity metric results from Q2, where MI and CS each achieved significance in 2 views and SSI in 1 view. The alignment parameters appear to be even less discriminative of expertise than the similarity metrics.
 
 The mean rotation values are close to zero for both groups across most views, suggesting that neither experts nor novices systematically over- or under-rotate the probe. The mean translation values are also comparable between groups, with overlapping ranges in every view. This implies that the physical positioning of the probe — at least as captured by rigid transformation parameters — is not what differentiates expert from novice performance.
@@ -755,7 +732,7 @@ One possible explanation is that the HeartWorks simulator constrains the range o
 
 Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_1 x$) is fitted for each combination of alignment metric (rotation or translation) as independent variable and quality score (crit_perc or gen_impr) as dependent variable, yielding $2 \times 2 \times 10 = 40$ models.
 
-<h4 align="center">Table 19: Linear Regression - Rotation -> crit_perc</h4>
+<h4 align="center">Table 17: Linear Regression - Rotation -> crit_perc</h4>
 
 <div align="center">
 
@@ -774,7 +751,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-<h4 align="center">Table 20: Linear Regression - Rotation -> gen_impr</h4>
+<h4 align="center">Table 18: Linear Regression - Rotation -> gen_impr</h4>
 
 <div align="center">
 
@@ -793,7 +770,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-<h4 align="center">Table 21: Linear Regression - Translation -> crit_perc</h4>
+<h4 align="center">Table 19: Linear Regression - Translation -> crit_perc</h4>
 
 <div align="center">
 
@@ -812,7 +789,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 </div>
 
-<h4 align="center">Table 22: Linear Regression - Translation -> gen_impr</h4>
+<h4 align="center">Table 20: Linear Regression - Translation -> gen_impr</h4>
 
 <div align="center">
 
@@ -849,7 +826,7 @@ Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="figures/q4iii_Rotation_crit_perc_view_6.png" alt="Rotation-> | <img src="figures/q4iii_Rotation_crit_perc_view_3.png" alt="Rotation-> | <img src="figures/q4iii_Translation_crit_perc_view_7.png" alt="Translation-> |
+| <img src="figures/q4iii_Rotation_crit_perc_view_6.png" alt="q4iii_Rotation_crit_perc_view_6" width="70%"> | <img src="figures/q4iii_Rotation_crit_perc_view_3.png" alt="q4iii_Rotation_crit_perc_view_3" width="70%"> | <img src="figures/q4iii_Translation_crit_perc_view_7.png" alt="q4iii_Translation_crit_perc_view_7" width="70%"> |
 
 </div>
 
