@@ -1,9 +1,6 @@
-# Data loader for MPHY0047 Coursework 1.
-# Loads time parameters (in seconds) from CSV files for expert (n=9) and novice (n=11) groups.
-# Three parameters per participant:
-#   - total time: duration of entire suturing task (needle passing to suture cutting)
-#   - needle passing time: duration of needle passing subtask
-#   - knot tying time: duration of first knot tying subtask
+# Data loader for MPHY0047 Coursework 2.
+# Loads image data and quality scores from cw2.mat for 20 participants across 10 views.
+# Contains test images, gold standard images, general impression scores, and criteria percentage scores.
 
 import math
 import pandas as pd

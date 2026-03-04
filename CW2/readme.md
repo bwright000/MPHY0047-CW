@@ -17,6 +17,12 @@ python question4.py  # ECC rigid transformation + statistical testing (Q4)
 
 ### 1.1 Pearson Correlation Coefficient (Part i)
 
+The Pearson correlation coefficient measures the strength and direction of the linear relationship between two variables. For paired observations $(x_i, y_i)$:
+
+$$r = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2 \sum_{i=1}^{n}(y_i - \bar{y})^2}}$$
+
+where $\bar{x}$ and $\bar{y}$ are the sample means. Values range from $-1$ (perfect negative) to $+1$ (perfect positive), with $0$ indicating no linear association. Here, $x$ = general impression and $y$ = criteria percentage for each view.
+
 #### Table 1: Pearson Correlation Between General Impression and Criteria Percentage per View
 
 | View | Pearson r | p-value | Significant? (p < 0.05) |
@@ -40,7 +46,23 @@ python question4.py  # ECC rigid transformation + statistical testing (Q4)
 
 ### 1.2 Linear Regression Analysis (Part ii)
 
-Linear regression was performed using general impression as the independent variable and criteria percentage as the dependent variable for each view.
+A simple linear regression model is fitted for each view:
+
+$$\hat{y}_i = \beta_0 + \beta_1 x_i$$
+
+where $x_i$ = general impression score (independent variable), $\hat{y}_i$ = predicted criteria percentage (dependent variable), $\beta_1$ = slope, and $\beta_0$ = intercept. The parameters are estimated by ordinary least squares, minimising $\sum(y_i - \hat{y}_i)^2$.
+
+Model performance is evaluated using:
+
+**Root Mean Square Error (RMSE):**
+
+$$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$$
+
+**Coefficient of Determination ($R^2$):**
+
+$$R^2 = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}$$
+
+where $R^2 = 1$ indicates a perfect fit and $R^2 = 0$ indicates the model explains no variance beyond the mean.
 
 #### Table 2: Linear Regression Results (gen_impr -> crit_perc) per View
 
@@ -86,6 +108,30 @@ The three best performing views by R² are: **View 1** (R² = 0.8600), **View 9*
 ---
 
 ## Question 2: Image Similarity Metrics [20 marks]
+
+Three similarity metrics are computed between each participant's test image and the gold standard image for the corresponding view.
+
+**Structural Similarity Index (SSI)** — Equation (1): Compares luminance, contrast, and structure:
+
+$$\text{SSI}(a, b) = l(a, b) \cdot c(a, b) \cdot s(a, b)$$
+
+where:
+
+$$l(a,b) = \frac{2\mu_a\mu_b + C_l}{\mu_a^2 + \mu_b^2 + C_l}, \quad c(a,b) = \frac{2\sigma_a\sigma_b + C_c}{\sigma_a^2 + \sigma_b^2 + C_c}, \quad s(a,b) = \frac{\sigma_{ab} + C_s}{\sigma_a\sigma_b + C_s}$$
+
+$\mu$ = pixel mean, $\sigma$ = standard deviation, $\sigma_{ab}$ = covariance, and $C_l, C_c, C_s$ are stabilising constants. Implemented via `skimage.metrics.structural_similarity`.
+
+**Mutual Information (MI)** — Equation (2): Measures shared information via entropy:
+
+$$\text{MI}(a, b) = H(a) + H(b) - H(a, b)$$
+
+where $H(a) = -\sum_x p_a(x) \log p_a(x)$ is the marginal entropy and $H(a,b) = -\sum_{x,y} p_{ab}(x,y) \log p_{ab}(x,y)$ is the joint entropy. Implemented via `sklearn.metrics.mutual_info_score`.
+
+**Cosine Similarity (CS)** — Equation (3): Measures the cosine of the angle between two image vectors:
+
+$$\text{CS}(I_a, I_b) = \frac{I_a \cdot I_b}{\|I_a\| \, \|I_b\|}$$
+
+where $I_a, I_b$ are the flattened image vectors and $\|I\| = \sqrt{I \cdot I}$.
 
 ### 2.1 Top 3 Participants per View by Similarity Metric (Part i)
 
@@ -140,11 +186,15 @@ The three best performing views by R² are: **View 1** (R² = 0.8600), **View 9*
 
 ### 2.2 Statistical Testing - Expert vs Novice (Part ii)
 
-The Mann-Whitney U test was used to evaluate differences between expert (P1-P7) and novice (P8-P20) groups for each similarity metric per view.
+The Mann-Whitney U test is a non-parametric test comparing two independent groups. It is chosen here because the sample sizes are small and we cannot assume normality. The test statistic is:
 
-**H0:** No difference in similarity metric between expert and novice groups.
-**H1:** Expert and novice groups differ in similarity metric.
-**Significance level:** alpha = 0.05
+$$U = \sum_{i=1}^{n_1} \sum_{j=1}^{n_2} S(x_i, y_j), \quad S(x_i, y_j) = \begin{cases} 1 & \text{if } x_i > y_j \\ 0.5 & \text{if } x_i = y_j \\ 0 & \text{if } x_i < y_j \end{cases}$$
+
+where $\{x_i\}$ are expert values ($n_1 = 7$) and $\{y_j\}$ are novice values ($n_2 = 13$). A two-sided test is performed with:
+
+**$H_0$:** No difference in similarity metric between expert and novice groups.
+**$H_1$:** Expert and novice groups differ in similarity metric.
+**Significance level:** $\alpha = 0.05$
 
 #### Table 6: Mann-Whitney U Test Results - SSI
 
@@ -211,6 +261,8 @@ The Mann-Whitney U test was used to evaluate differences between expert (P1-P7) 
 
 ### 3.1 Correlation Between Similarity Metric Pairs (Part i)
 
+The Pearson correlation coefficient (as defined in Section 1.1) is computed between each pair of similarity metrics (SSI-MI, SSI-CS, MI-CS) for each view to assess their agreement.
+
 #### Table 10: Pearson Correlation Between SSI-MI, SSI-CS, and MI-CS per View
 
 | View | SSI-MI r | SSI-CS r | MI-CS r |
@@ -237,7 +289,17 @@ The Mann-Whitney U test was used to evaluate differences between expert (P1-P7) 
 
 ### 3.2 Polynomial Regression with LASSO Regularization (Part ii)
 
-LASSO regularization was selected to handle overfitting in polynomial regression up to degree 7. Coefficients smaller than 0.01 were treated as not contributing.
+For each similarity metric (SSI, MI, CS) as the independent variable and each quality score (crit_perc, gen_impr) as the dependent variable, a polynomial regression model up to degree $d$ is fitted:
+
+$$\hat{y} = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_d x^d$$
+
+where $x$ is the similarity metric value and $d \in \{1, 2, \ldots, 7\}$. To prevent overfitting, **LASSO (Least Absolute Shrinkage and Selection Operator)** regularization is applied. LASSO minimises:
+
+$$\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n}(y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{d} |\beta_j| \right\}$$
+
+where $\lambda \geq 0$ is the regularization parameter selected via 5-fold cross-validation (`LassoCV`). The $L_1$ penalty $\lambda \sum |\beta_j|$ drives small coefficients to exactly zero, performing automatic feature selection. Coefficients with $|\beta_j| < 0.01$ are treated as not contributing.
+
+The optimal polynomial degree is selected by comparing the **cross-validated RMSE** (from `LassoCV`'s internal CV at the optimal $\lambda$) across degrees $1$ to $7$, choosing the degree that minimises generalisation error. RMSE and $R^2$ are then reported on the full training set for the selected degree.
 
 > **[YOUR ANALYSIS - justify regularization method selection]** Explain why LASSO was chosen over Ridge or Elastic Net. Consider: LASSO's L1 penalty drives coefficients to exactly zero (feature selection), which is desirable when many polynomial terms may not contribute; the 0.01 coefficient threshold aligns with LASSO's sparsity-inducing properties; comparison with alternatives.
 >
@@ -382,7 +444,15 @@ LASSO regularization was selected to handle overfitting in polynomial regression
 
 ### 3.3 Gaussian Basis Regression - SSI -> gen_impr (Part iii)
 
-Linear regression using Gaussian basis functions was performed for SSI (independent) against general impression (dependent). LASSO regularization with cross-validation was used to select the optimal basis order (range 2-10).
+Instead of polynomial features, the input $x$ (SSI) is transformed using Gaussian basis functions. For a given order $M$, the $j$-th basis function is:
+
+$$\phi_j(x) = \exp\!\left(-\frac{(x - \mu_j)^2}{2s^2}\right), \quad j = 1, \ldots, M$$
+
+where $\mu_j$ are $M$ centres equally spaced across the range of $x$, and $s = (\max(x) - \min(x)) / M$ is the basis width. The regression model becomes:
+
+$$\hat{y} = \beta_0 + \sum_{j=1}^{M} \beta_j \, \phi_j(x)$$
+
+LASSO regularization with 5-fold cross-validation is applied (as in Section 3.2). The optimal order $M \in \{2, 3, \ldots, 10\}$ is selected by minimising the cross-validated RMSE.
 
 #### Table 17: Gaussian Basis Regression Results (SSI -> gen_impr)
 
@@ -418,7 +488,19 @@ Linear regression using Gaussian basis functions was performed for SSI (independ
 
 ### 4.1 Rotation and Translation Values (Part i)
 
-Rotation (degrees) and translation (pixel displacement) were extracted from the 2x3 ECC warp matrix using MOTION_EUCLIDEAN for each test image against its gold standard.
+The **Enhanced Correlation Coefficient (ECC)** algorithm (`cv2.findTransformECC`) is used to estimate a rigid (Euclidean) transformation aligning each test image to its gold standard. The motion model `MOTION_EUCLIDEAN` yields a $2 \times 3$ warp matrix:
+
+$$M = \begin{bmatrix} \cos\theta & -\sin\theta & t_x \\ \sin\theta & \cos\theta & t_y \end{bmatrix}$$
+
+with parameters: 500 iterations, termination threshold $\varepsilon = 10^{-10}$.
+
+**Rotation** (degrees) is extracted from the matrix elements:
+
+$$\theta = \arctan2(m_{21}, m_{11}) \times \frac{180}{\pi}$$
+
+**Translation** (total pixel displacement) is the Euclidean norm of the translation vector:
+
+$$d = \sqrt{t_x^2 + t_y^2} = \sqrt{m_{13}^2 + m_{23}^2}$$
 
 #### Table 18: Rotation Values (degrees) per Participant per View
 
@@ -474,9 +556,11 @@ Rotation (degrees) and translation (pixel displacement) were extracted from the 
 
 ### 4.2 Statistical Testing - Expert vs Novice (Part ii)
 
-**H0:** No difference in alignment metric between expert and novice groups.
-**H1:** Expert and novice groups differ in alignment metric.
-**Significance level:** alpha = 0.05
+The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert and novice groups on rotation and translation for each view.
+
+**$H_0$:** No difference in alignment metric between expert and novice groups.
+**$H_1$:** Expert and novice groups differ in alignment metric.
+**Significance level:** $\alpha = 0.05$
 
 #### Table 20: Mann-Whitney U Test Results - Rotation (degrees)
 
@@ -520,6 +604,8 @@ Rotation (degrees) and translation (pixel displacement) were extracted from the 
 > ...
 
 ### 4.3 Linear Regression - Alignment Metrics vs Quality Scores (Part iii)
+
+Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_1 x$) is fitted for each combination of alignment metric (rotation or translation) as independent variable and quality score (crit_perc or gen_impr) as dependent variable, yielding $2 \times 2 \times 10 = 40$ models.
 
 #### Table 23: Linear Regression - Rotation -> crit_perc
 
