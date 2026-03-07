@@ -100,18 +100,13 @@ def plot_true_vs_estimated(view_idx, cp, predicted, rmse, r_squared):
     finish_figure(fig, f'figures/q1_true_vs_estimated_{VIEW_NAMES[view_idx].lower().replace(" ", "_")}.png')
 
 
-# ============================================================
-# MAIN EXECUTION
-# ============================================================
+# Main execution.
 
 if __name__ == "__main__":
 
-    # --- Part i: Pearson Correlation ---
-    print("=" * 60)
+    # Part i: Pearson Correlation.
     print("PART i: Pearson Correlation Coefficient")
-    print("=" * 60)
     print(f"{'View':<10} {'Pearson r':<12} {'p-value':<12}")
-    print("-" * 34)
 
     pearson_results = []
     for v in range(NUM_VIEWS):
@@ -123,12 +118,9 @@ if __name__ == "__main__":
     best_view = max(pearson_results, key=lambda x: abs(x[1]))
     print(f"\nHighest agreement: {VIEW_NAMES[best_view[0]]} (r = {best_view[1]:.4f})")
 
-    # --- Part ii: Linear Regression ---
-    print("\n" + "=" * 60)
-    print("PART ii: Linear Regression (gen_impr -> crit_perc)")
-    print("=" * 60)
+    # Part ii: Linear Regression.
+    print("\nPART ii: Linear Regression (gen_impr -> crit_perc)")
     print(f"{'View':<10} {'Slope':<10} {'Intercept':<12} {'RMSE':<10} {'R²':<10}")
-    print("-" * 52)
 
     regression_results = []
     for v in range(NUM_VIEWS):
@@ -138,10 +130,8 @@ if __name__ == "__main__":
         regression_results.append((v, slope, intercept, predicted, cp, rmse, r_sq))
         print(f"{VIEW_NAMES[v]:<10} {slope:<10.4f} {intercept:<12.4f} {rmse:<10.4f} {r_sq:<10.4f}")
 
-    # --- Part iii: Plot 3 best performing views ---
-    print("\n" + "=" * 60)
-    print("PART iii: True vs Estimated Plots (3 best views by R²)")
-    print("=" * 60)
+    # Part iii: Plot 3 best performing views.
+    print("\nPART iii: True vs Estimated Plots (3 best views by R²)")
 
     # Rank by R² (highest = best fit) and select top 3
     ranked = sorted(regression_results, key=lambda x: x[6], reverse=True)

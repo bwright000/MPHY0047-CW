@@ -118,18 +118,16 @@ def get_group_values(metric_vals, view_idx, group_range):
     return np.array(values)
 
 
-# ============================================================
-# MAIN EXECUTION
-# ============================================================
+# Main execution.
 
 if __name__ == "__main__":
 
     os.makedirs("figures", exist_ok=True)
 
-    # --- Compute rigid transforms ---
+    # Compute rigid transforms.
     rotation_vals, translation_vals = compute_rigid_transforms()
 
-    # --- Part i: List rotation and translation values ---
+    # Part i: List rotation and translation values.
     print("PART i: Rotation and Translation Values")
 
     metric_names = ["Rotation (degrees)", "Translation (pixels)"]
@@ -140,7 +138,6 @@ if __name__ == "__main__":
         print(f"Full {m_name} values per participant per view")
         header = f"{'Participant':<14}" + "".join([f"{VIEW_NAMES[v]:<10}" for v in range(NUM_VIEWS)])
         print(header)
-        print("-" * (14 + 10 * NUM_VIEWS))
         for p in range(NUM_PARTICIPANTS):
             row = f"{'P' + str(p+1):<14}"
             for v in range(NUM_VIEWS):
@@ -148,7 +145,7 @@ if __name__ == "__main__":
                 row += f"{val:<10.4f}" if not np.isnan(val) else f"{'N/A':<10}"
             print(row)
 
-    # --- Part ii: Statistical testing (expert vs novice) ---
+    # Part ii: Statistical testing (expert vs novice).
     print("PART ii: Mann-Whitney U Test — Expert vs Novice")
     print("\nH0: No difference in alignment metric between expert and novice groups")
     print("H1: Expert and novice groups differ in alignment metric")
@@ -158,7 +155,7 @@ if __name__ == "__main__":
     sig_counts = {name: 0 for name in metric_names}
 
     for m_name, m_vals in zip(metric_names, metric_arrays):
-        print(f"\n--- {m_name} ---")
+        print(f"\n{m_name}")
         print(f"{'View':<10} {'Expert mean':<14} {'Novice mean':<14} {'U-stat':<12} {'p-value':<12} {'Significant?':<12}")
 
         for v in range(NUM_VIEWS):
@@ -184,10 +181,8 @@ if __name__ == "__main__":
     print(f"\nBest differentiating metric: {best_metric} "
           f"(significant in {sig_counts[best_metric]} / {NUM_VIEWS} views)")
 
-    # --- Part iii: Linear Regression ---
-    print("\n" + "=" * 70)
-    print("PART iii: Linear Regression (rotation/translation -> quality scores)")
-    print("=" * 70)
+    # Part iii: Linear Regression.
+    print("\nPART iii: Linear Regression (rotation/translation -> quality scores)")
 
     indep_vars = [("Rotation", rotation_vals), ("Translation", translation_vals)]
     dep_vars = [("crit_perc", crit_perc), ("gen_impr", gen_impr)]
@@ -198,9 +193,8 @@ if __name__ == "__main__":
     for indep_name, indep_vals in indep_vars:
         for dep_name, dep_vals in dep_vars:
             combo = f"{indep_name} -> {dep_name}"
-            print(f"\n--- {combo} ---")
+            print(f"\n{combo}")
             print(f"{'View':<10} {'Slope':<10} {'Intercept':<12} {'RMSE':<10} {'R²':<10}")
-            print("-" * 52)
 
             results = linear_regression_q4(indep_vals, dep_vals)
 
@@ -217,9 +211,7 @@ if __name__ == "__main__":
     valid_results = [r for r in all_results if not np.isnan(r['r2'])]
     ranked = sorted(valid_results, key=lambda r: r['r2'], reverse=True)
 
-    print("\n" + "=" * 70)
-    print("Top 3 Best Performing Views (by R² across all combinations)")
-    print("=" * 70)
+    print("\nTop 3 Best Performing Views (by R² across all combinations)")
 
     for r in ranked[:3]:
         print(f"  {r['view']} — {r['combo']}: R² = {r['r2']:.4f}, RMSE = {r['rmse']:.4f}")

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import seaborn as sns
 
-# --- Colour palette (colorblind-friendly) ---
+# Colour palette (colorblind-friendly).
 BLUE    = "#3C78D8"
 GREEN   = "#6AA84F"
 RED     = "#E06666"
@@ -15,11 +15,11 @@ DARK    = "#2F2F2F"
 
 PALETTE = [BLUE, GREEN, ORANGE, RED, GREY]
 
-# --- Figure defaults ---
+# Figure defaults.
 DPI = 200
 FIGSIZE = (8, 6)
 
-# --- Marker defaults ---
+# Marker defaults.
 MARKER_SIZE = 60
 MARKER_ALPHA = 0.75
 MARKER_EDGE  = "#2F2F2F"

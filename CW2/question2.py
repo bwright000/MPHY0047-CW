@@ -97,23 +97,21 @@ def get_group_values(metric_vals, view_idx, group_range):
     return np.array(values)
 
 
-# ============================================================
-# MAIN EXECUTION
-# ============================================================
+# Main execution.
 
 if __name__ == "__main__":
 
-    # --- Compute all similarity metrics ---
+    # Compute all similarity metrics.
     ssi_vals, mi_vals, cs_vals = compute_similarity_metrics()
 
-    # --- Part i: Report top 3 participants per view per metric ---
+    # Part i: Report top 3 participants per view per metric.
     print("PART i: Top 3 Participants per View by Similarity Metric")
 
     metric_names = ["SSI", "MI", "CS"]
     metric_arrays = [ssi_vals, mi_vals, cs_vals]
 
     for m_name, m_vals in zip(metric_names, metric_arrays):
-        print(f"\n--- {m_name} ---")
+        print(f"\n{m_name}")
         print(f"{'View':<10} {'#1':<20} {'#2':<20} {'#3':<20}")
         for v in range(NUM_VIEWS):
             top3 = get_top3_participants(m_vals, v)
@@ -123,12 +121,11 @@ if __name__ == "__main__":
                 entries.append(f"P{idx+1} ({m_vals[idx][v]:.4f})")
             print(f"{VIEW_NAMES[v]:<10} {entries[0]:<20} {entries[1]:<20} {entries[2]:<20}")
 
-    # --- Print full metric tables for reference ---
+    # Print full metric tables for reference.
     for m_name, m_vals in zip(metric_names, metric_arrays):
         print(f"Full {m_name} values per participant per view")
         header = f"{'Participant':<14}" + "".join([f"{VIEW_NAMES[v]:<10}" for v in range(NUM_VIEWS)])
         print(header)
-        print("-" * (14 + 10 * NUM_VIEWS))
         for p in range(NUM_PARTICIPANTS):
             row = f"{'P' + str(p+1):<14}"
             for v in range(NUM_VIEWS):
@@ -136,7 +133,7 @@ if __name__ == "__main__":
                 row += f"{val:<10.4f}" if not np.isnan(val) else f"{'N/A':<10}"
             print(row)
 
-    # --- Part ii: Statistical testing (expert vs novice) ---
+    # Part ii: Statistical testing (expert vs novice).
     print("PART ii: Mann-Whitney U Test — Expert vs Novice")
     print("\nH0: No difference in similarity metric between expert and novice groups")
     print("H1: Expert and novice groups differ in similarity metric")
@@ -146,7 +143,7 @@ if __name__ == "__main__":
     sig_counts = {name: 0 for name in metric_names}
 
     for m_name, m_vals in zip(metric_names, metric_arrays):
-        print(f"\n--- {m_name} ---")
+        print(f"\n{m_name}")
         print(f"{'View':<10} {'Expert mean':<14} {'Novice mean':<14} {'U-stat':<12} {'p-value':<12} {'Significant?':<12}")
 
         for v in range(NUM_VIEWS):

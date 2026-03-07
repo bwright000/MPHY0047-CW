@@ -199,17 +199,12 @@ def gaussian_basis_regression(ssi_vals, gi_vals, max_order=10):
 if __name__ == "__main__":
     os.makedirs("figures", exist_ok=True)
 
-    # ============================================================
-    # PART i: Correlation between similarity metric pairs
-    # ============================================================
-    print("=" * 70)
+    # Part i: Correlation between similarity metric pairs.
     print("PART i: Correlation Between Similarity Metrics")
-    print("=" * 70)
 
     correlations = compute_metric_correlations(ssi_vals, mi_vals, cs_vals)
 
     print(f"\n{'View':<10} {'SSI-MI r':<12} {'SSI-CS r':<12} {'MI-CS r':<12}")
-    print("-" * 46)
     for v in range(NUM_VIEWS):
         r_ssi_mi = correlations["SSI-MI"][v][0]
         r_ssi_cs = correlations["SSI-CS"][v][0]
@@ -222,12 +217,8 @@ if __name__ == "__main__":
         print(f"\nHighest agreement for {pair_name}: {VIEW_NAMES[best_v]} "
               f"(r = {results[best_v][0]:.4f})")
 
-    # ============================================================
-    # PART ii: Polynomial Regression with LASSO
-    # ============================================================
-    print("\n" + "=" * 70)
-    print("PART ii: Polynomial Regression with LASSO Regularization")
-    print("=" * 70)
+    # Part ii: Polynomial Regression with LASSO.
+    print("\nPART ii: Polynomial Regression with LASSO Regularization")
 
     metrics = [("SSI", ssi_vals), ("MI", mi_vals), ("CS", cs_vals)]
     scores = [("crit_perc", crit_perc), ("gen_impr", gen_impr)]
@@ -237,9 +228,8 @@ if __name__ == "__main__":
     for metric_name, metric_vals in metrics:
         for score_name, score_vals in scores:
             combo = f"{metric_name} -> {score_name}"
-            print(f"\n--- {combo} ---")
+            print(f"\n{combo}")
             print(f"{'View':<10} {'RMSE':<10} {'R²':<10} {'Degree':<10}")
-            print("-" * 40)
 
             results = polynomial_regression_lasso(metric_vals, score_vals,
                                                    metric_name, score_name)
@@ -266,9 +256,7 @@ if __name__ == "__main__":
                 fname = f"figures/q3ii_{metric_name}_{score_name}_{r['view'].lower().replace(' ', '_')}.png"
                 finish_figure(fig, fname)
 
-    # ============================================================
-    # PART iii: Gaussian Basis Regression (SSI -> gen_impr)
-    # ============================================================
+    # Part iii: Gaussian Basis Regression (SSI -> gen_impr).
     print("PART iii: Gaussian Basis Regression (SSI -> gen_impr)")
 
     gb_results = gaussian_basis_regression(ssi_vals, gen_impr)
