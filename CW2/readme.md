@@ -330,7 +330,7 @@ View 9 is a notable outlier, with SSI-MI correlation of just 0.0144 and SSI-CS c
 
 The practical implication is that MI and CS provide little additional information beyond each other, while SSI offers a complementary perspective.
 
-### 3.2 Polynomial Regression with LASSO Regularization (Part ii)
+### 3.2 Polynomial Regression with LASSO Regularisation (Part ii)
 
 For each similarity metric (SSI, MI, CS) as the independent variable and each quality score (crit_perc, gen_impr) as the dependent variable, a polynomial regression model up to degree $d$ is fitted:
 
@@ -555,7 +555,7 @@ where $\mu_j$ are $M$ centres equally spaced across the range of $x$, and $s = (
 
 $$\hat{y} = \beta_0 + \sum_{j=1}^{M} \beta_j \, \phi_j(x)$$
 
-LASSO regularization with 5-fold cross-validation is applied (as in Section 3.2). The optimal order $M \in \{2, 3, \ldots, 10\}$ is selected by minimising the cross-validated RMSE.
+LASSO regularisation with 5-fold cross-validation is applied (as in Section 3.2). The optimal order $M \in \{2, 3, \ldots, 10\}$ is selected by minimising the cross-validated RMSE.
 
 <h4 align="center">Table 12: Gaussian Basis Regression Results (SSI -> gen_impr)</h4>
 
