@@ -86,7 +86,7 @@ where $R^2 = 1$ indicates a perfect fit and $R^2 = 0$ indicates the model explai
 
 </div>
 
-The linear regression results are similar to the Pearson correlation findings. View 1 achieves the best fit with the lowest RMSE (5.87) and highest R² (0.86), meaning the model explains 86% of the variance in criteria percentage from general impression alone (i.e., the residual is 0.14) . View 9 is again close  with an R² = 0.8590, though its higher RMSE (12.82) reflects greater spread in the criteria percentage values for that view.
+The linear regression results are similar to the Pearson correlation findings. View 1 achieves the best fit with the lowest RMSE (5.87) and highest R² (0.86), meaning the model explains 86% of the variance in criteria percentage from general impression alone (i.e., the remaining 14% is unexplained) . View 9 is again close  with an R² = 0.8590, though its higher RMSE (12.82) reflects greater spread in the criteria percentage values for that view.
 
 On the other hand, View 4 has the worst fit (R² = 0.4284, RMSE = 14.34), consistent with its lowest Pearson correlation. Views 6 and 7 also show high RMSE values (17.1 and 17.71 respectively), suggesting these views have wider variability in criteria percentage that the simple linear regression model struggles to capture.
 
@@ -201,9 +201,9 @@ where $I_a, I_b$ are the flattened image vectors and $\|I\| = \sqrt{I \cdot I}$.
 
 </div>
 
-Participant 2 (P2, expert) stands out as the most consistently high-performing participant, appearing in the top 3 across the majority of views for all three metrics  -  including first place for SSI in Views 1, 4, 5, 6, 8, and 10. This suggests P2 produces images that are structurally, informationally, and directionally closest to the gold standard across most views.
+Participant 2 (P2, expert) stands out as the most consistently high-performing participant, appearing in the top 3 across the majority of views for all three metrics — including first place for SSI in Views 1, 4, 5, 6, and 8. This suggests P2 produces images that are the closest to the gold standard across most views.
 
-However, experts do not dominate the rankings overall. Several novice participants also rank highly: P14 (novice) appears frequently in the SSI top 3 for Views 2, 3, and 4, and P17 and P19 (both novices) rank in the top 3 for multiple views across MI and CS. This indicates that some novice participants are capable of producing images with comparable similarity to the gold standard, at least for certain views.
+However, experts do not dominate the rankings as several novice participants also rank highly: P14 - a novice - is in the SSI top 3 for Views 2, 3, and 4, and P17 and P19 (both novices) rank in the top 3 for multiple views across MI and CS. This indicates that some novice participants are capable of producing images with comparable similarity to the gold standard, and can be comparable to the experts in terms of abillity.
 
 The three metrics largely agree on which participants produce the best images, particularly MI and CS which tend to rank the same participants in the same order. This is consistent with the high MI-CS correlation observed later in Question 3. SSI occasionally diverges  -  for example, in View 9, SSI highlights P8 while MI and CS highlight P19. Overall, the agreement between metrics suggests the rankings reflect genuine image quality rather than artefacts of a particular metric.
 
@@ -284,7 +284,7 @@ Across all three metrics, the majority of views show no statistically significan
 
 The low number of significant results suggests that similarity metrics alone do not strongly differentiate expertise level for most views. This could be because both groups are imaging the same simulated heart using the same equipment, limiting the range of possible image variation. The simulator environment may constrain the degree to which expertise affects image content, particularly for views where the probe positioning is relatively straightforward.
 
-MI and CS are tied as the best differentiating metrics, each achieving significance in 2 out of 10 views, while SSI is significant in only 1 view. MI and CS may be more sensitive to the specific content differences between expert and novice images because they directly measure pixel-level information overlap, whereas SSI captures broader structural properties (luminance, contrast, structure) that may be similar regardless of expertise.
+MI and CS are tied as the best differentiating metrics, each achieving significance in 2 views, while SSI is significant in only 1 view. MI and CS may be more sensitive to the specific content differences between expert and novice images because they directly measure pixel-level information overlap, whereas SSI captures broader structural properties (luminance, contrast, structure) that may be similar regardless of expertise.
 
 ---
 
@@ -322,7 +322,7 @@ The Pearson correlation coefficient (as defined in Section 1.1) is computed betw
 
 </div>
 
-The most important pattern is the very high correlation between MI and CS across all views, with r values ranging from 0.6421 (View 2) to 0.9962 (View 4) and exceeding 0.98 in 8 out of 10 views. This near-perfect agreement indicates that MI and CS are capturing essentially the same information about image similarity - they are largely redundant metrics. This makes sense: both measure pixel-level overlap between two images, just through different mathematical formulations (entropy-based vs vector angle).
+The most important pattern is the very high correlation between MI and CS across all views, with r values ranging from 0.5692 (View 3) to 0.9962 (View 4) and exceeding 0.98 in 8 out of 10 views. This near-perfect agreement indicates that MI and CS are capturing essentially the same information about image similarity - they are largely redundant metrics. This makes sense: both measure pixel-level overlap between two images, just through different mathematical formulations (entropy-based vs vector angle).
 
 In contrast, SSI shows weaker and more variable correlations with both MI and CS. The SSI-MI and SSI-CS correlations range from near-zero to 0.85, suggesting SSI captures different aspects of image quality. SSI compares luminance, contrast, and structural patterns rather than raw pixel overlap, making it sensitive to different image properties.
 
@@ -614,6 +614,68 @@ $$\theta = \arctan2(m_{21}, m_{11}) \times \frac{180}{\pi}$$
 
 $$d = \sqrt{t_x^2 + t_y^2} = \sqrt{m_{13}^2 + m_{23}^2}$$
 
+<h4 align="center">Table 13: Rotation Values (degrees) per Participant per View</h4>
+
+<div align="center">
+
+| Participant | View 1 | View 2 | View 3 | View 4 | View 5 | View 6 | View 7 | View 8 | View 9 | View 10 |
+|-------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|---------|
+| P1 (E) | -3.76 | 0.70 | 4.68 | 4.90 | -7.54 | 1.91 | -4.19 | 1.76 | 7.71 | 5.70 |
+| P2 (E) | -1.37 | 0.41 | -5.05 | 9.10 | 1.68 | 1.14 | 5.81 | -3.86 | -0.60 | -0.12 |
+| P3 (E) | 0.28 | 4.34 | 1.27 | -18.44 | -2.63 | 0.13 | 1.62 | 1.99 | -4.06 | -0.00 |
+| P4 (E) | 0.28 | -1.69 | -0.21 | 1.65 | 4.02 | 2.99 | -1.86 | 8.30 | 1.33 | -0.31 |
+| P5 (E) | -1.97 | -3.34 | -3.01 | 3.07 | 1.66 | -1.46 | -2.52 | -4.23 | -2.04 | -0.24 |
+| P6 (E) | 2.65 | 3.09 | -8.26 | -1.10 | -5.90 | -3.43 | 3.21 | 1.18 | 3.21 | -1.92 |
+| P7 (E) | -3.66 | 6.46 | 4.70 | -8.04 | 0.27 | 3.17 | 4.78 | 0.00 | 4.00 | -2.57 |
+| P8 (N) | -0.62 | 2.91 | -17.30 | -5.09 | -1.73 | -9.74 | -11.63 | -3.75 | 5.41 | -0.63 |
+| P9 (N) | -1.04 | 5.34 | 0.31 | -7.66 | 3.32 | -0.28 | -4.26 | -0.99 | 2.86 | N/A |
+| P10 (N) | -19.14 | -0.80 | 2.00 | 5.06 | 6.04 | -3.07 | 3.97 | -2.70 | 0.27 | -1.99 |
+| P11 (N) | 0.44 | 3.02 | 2.22 | -6.57 | 5.39 | -0.65 | -0.81 | -1.46 | -8.26 | 2.75 |
+| P12 (N) | 5.69 | -1.60 | -1.38 | -2.97 | 1.63 | 3.07 | -1.03 | 0.01 | -0.14 | -1.74 |
+| P13 (N) | -1.60 | -0.30 | -9.73 | -4.29 | -4.33 | 3.02 | -7.48 | N/A | -2.08 | -2.86 |
+| P14 (N) | 7.84 | 0.15 | -1.02 | -4.90 | -2.87 | -2.25 | -2.32 | 4.11 | 5.29 | N/A |
+| P15 (N) | N/A | 1.48 | 1.17 | -2.53 | 5.69 | 2.40 | 0.44 | -1.63 | -2.61 | -2.72 |
+| P16 (N) | 2.21 | 4.02 | -0.77 | N/A | -0.95 | 1.20 | 5.97 | 4.98 | -1.18 | -1.85 |
+| P17 (N) | -3.41 | -4.76 | -4.88 | -5.71 | -1.55 | 0.00 | -1.53 | -1.31 | -7.50 | 0.61 |
+| P18 (N) | -3.72 | 2.73 | -6.06 | 2.76 | 3.60 | -1.83 | -5.81 | -4.75 | -3.22 | 1.43 |
+| P19 (N) | -3.30 | 1.29 | 4.72 | 2.29 | 0.80 | -0.82 | -1.10 | 1.20 | 0.39 | 0.32 |
+| P20 (N) | 1.64 | -0.63 | 0.33 | 19.85 | -2.99 | 3.61 | 0.01 | 8.17 | 0.84 | 5.94 |
+
+</div>
+
+<p align="center"><em>(E) = Expert, (N) = Novice. N/A = missing image. Positive = clockwise rotation, negative = anticlockwise.</em></p>
+
+<h4 align="center">Table 14: Translation Values (pixels) per Participant per View</h4>
+
+<div align="center">
+
+| Participant | View 1 | View 2 | View 3 | View 4 | View 5 | View 6 | View 7 | View 8 | View 9 | View 10 |
+|-------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|---------|
+| P1 (E) | 29.91 | 6.15 | 15.52 | 16.66 | 29.70 | 7.71 | 19.53 | 8.38 | 30.83 | 21.74 |
+| P2 (E) | 2.91 | 5.50 | 13.38 | 33.98 | 4.82 | 4.72 | 24.93 | 12.71 | 7.49 | 0.97 |
+| P3 (E) | 3.07 | 15.87 | 15.63 | 62.63 | 11.34 | 1.05 | 15.57 | 16.73 | 10.72 | 1.34 |
+| P4 (E) | 5.85 | 8.83 | 4.77 | 9.52 | 4.81 | 22.85 | 3.02 | 36.71 | 12.92 | 0.82 |
+| P5 (E) | 10.21 | 13.99 | 11.47 | 9.03 | 15.06 | 3.36 | 12.10 | 16.10 | 9.88 | 2.61 |
+| P6 (E) | 16.65 | 9.98 | 31.88 | 4.37 | 39.17 | 10.50 | 17.27 | 6.54 | 4.73 | 6.24 |
+| P7 (E) | 22.15 | 35.05 | 22.97 | 33.73 | 9.86 | 12.59 | 27.16 | 1.86 | 17.90 | 7.29 |
+| P8 (N) | 4.07 | 12.03 | 46.68 | 16.72 | 2.50 | 35.67 | 47.29 | 23.34 | 17.03 | 5.04 |
+| P9 (N) | 9.83 | 19.02 | 0.60 | 32.79 | 12.41 | 4.18 | 19.43 | 4.90 | 11.26 | N/A |
+| P10 (N) | 72.02 | 1.75 | 3.98 | 14.49 | 21.52 | 10.70 | 17.50 | 12.56 | 5.11 | 7.77 |
+| P11 (N) | 2.62 | 13.73 | 9.38 | 25.37 | 25.03 | 11.80 | 5.83 | 11.13 | 28.65 | 10.96 |
+| P12 (N) | 36.26 | 7.07 | 9.33 | 9.02 | 10.37 | 12.12 | 1.84 | 3.53 | 0.40 | 8.03 |
+| P13 (N) | 7.37 | 4.25 | 33.82 | 15.23 | 12.75 | 8.20 | 28.44 | N/A | 6.64 | 11.18 |
+| P14 (N) | 39.46 | 2.57 | 2.85 | 22.48 | 7.16 | 8.73 | 2.20 | 15.88 | 27.52 | N/A |
+| P15 (N) | N/A | 5.89 | 4.33 | 7.11 | 15.87 | 8.85 | 3.36 | 7.30 | 8.68 | 18.81 |
+| P16 (N) | 9.11 | 12.77 | 5.68 | N/A | 2.72 | 6.43 | 33.83 | 20.20 | 8.95 | 16.22 |
+| P17 (N) | 16.73 | 19.72 | 16.64 | 17.04 | 2.98 | 1.81 | 5.14 | 5.37 | 40.18 | 1.38 |
+| P18 (N) | 15.43 | 11.95 | 29.37 | 11.16 | 13.84 | 4.83 | 29.27 | 14.60 | 12.69 | 15.51 |
+| P19 (N) | 17.18 | 7.09 | 19.76 | 11.85 | 13.85 | 2.86 | 9.60 | 6.19 | 2.10 | 4.52 |
+| P20 (N) | 11.45 | 1.03 | 2.83 | 70.52 | 17.90 | 12.07 | 0.60 | 48.38 | 13.55 | 26.13 |
+
+</div>
+
+<p align="center"><em>(E) = Expert, (N) = Novice. N/A = missing image. Translation is total Euclidean displacement $\sqrt{t_x^2 + t_y^2}$ in pixels.</em></p>
+
 ### 4.2 Statistical Testing - Expert vs Novice (Part ii)
 
 The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert and novice groups on rotation and translation for each view.
@@ -662,7 +724,7 @@ The Mann-Whitney U test (as defined in Section 2.2) is applied to compare expert
 
 Neither rotation nor translation produces a statistically significant difference between the expert and novice groups for any of the 10 views (all p > 0.05). This is in contrast to the similarity metric results from Q2, where MI and CS each achieved significance in 2 views and SSI in 1 view. The alignment parameters appear to be even less discriminative of expertise than the similarity metrics.
 
-The mean rotation values are close to zero for both groups across most views, suggesting that neither experts nor novices systematically over- or under-rotate the probe. The mean translation values are also comparable between groups, with overlapping ranges in every view. This implies that the physical positioning of the probe - at least as captured by rigid transformation parameters - is not what differentiates expert from novice performance.
+The mean rotation values are close to zero for both groups across most views, suggesting that neither experts nor novices systematically over or under-rotate the probe. The mean translation values are also comparable between groups, with overlapping ranges in every view. This implies that the physical positioning of the probe - at least as captured by rigid transformation parameters - is not what differentiates expert from novice performance.
 
 One possible explanation is that the HeartWorks simulator constrains the range of probe movements, limiting the variability in rotation and translation between participants regardless of experience. Another is that image quality depends more on subtle aspects of probe orientation and image plane selection that are not fully captured by a simple Euclidean (rigid) transformation model. The ECC algorithm estimates the best global rotation and translation to align two images, but cannot account for differences in image content that arise from probe angulation, depth, or gain settings.
 
