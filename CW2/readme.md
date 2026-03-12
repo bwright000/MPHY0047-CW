@@ -112,9 +112,11 @@ The three best performing views by R² are: **View 1** (R² = 0.8600), **View 9*
 
 Across the three best-performing views, the model tends to predict differently for the two criteria percentage ranges. In View 1, the blue points (CP 40–70%) tend to sit on or above the y = x line, meaning the model tends to slightly overpredict the criteria percentage for lower-quality images. The green points (CP 70–100%) cluster more tightly around the perfect prediction line, with 3 points drifting below the true fit line. In view 1 the model also shows 6 out of 12 points closely or directly on the true fit line. 
 
-In View 9  -  the grey points (>40%) are consistently overpredicted, while the green points (70–100%) are underpredicted. The model also shows a possible outlier in View 9 @ 80% True CP and ~35% Estimated CP, as this is a severe underestimation.
+In View 9  -  the grey points (<40%) are consistently overpredicted, while the green points (70–100%) are underpredicted. The model also shows a possible outlier in View 9 @ 80% True CP and ~35% Estimated CP, as this is a severe underestimation.
 
 View 10 shows a spread with results earlier in the distribution (<70% CP) consistently predicted above the 'Perfect-Prediction' line, and those >70% CP consistently predicted below the 'Perfect-Prediction' line.
+
+**Note on Figures** I understand from a moodle post on 12/03/2026 that I am supposed to plot 30 views for this question, my understanding is this is impossible with the coursework outline, as you only have a single regression per view. I have therefore stuck with the initial assessment of the top 3 views only.
 
 ## Question 2: Image Similarity Metrics
 
@@ -201,7 +203,7 @@ where $I_a, I_b$ are the flattened image vectors and $\|I\| = \sqrt{I \cdot I}$.
 
 </div>
 
-Participant 2 (P2, expert) stands out as the most consistently high-performing participant, appearing in the top 3 across the majority of views for all three metrics — including first place for SSI in Views 1, 4, 5, 6, and 8. This suggests P2 produces images that are the closest to the gold standard across most views.
+Participant 2 (P2, expert) stands out as the most consistently high-performing participant, appearing in the top 3 across the majority of views for all three metrics - including first place for SSI in Views 1, 4, 5, 6, and 8. This suggests P2 produces images that are the closest to the gold standard across most views.
 
 However, experts do not dominate the rankings as several novice participants also rank highly: P14 - a novice - is in the SSI top 3 for Views 2, 3, and 4, and P17 and P19 (both novices) rank in the top 3 for multiple views across MI and CS. This indicates that some novice participants are capable of producing images with comparable similarity to the gold standard, and can be comparable to the experts in terms of abillity.
 
@@ -285,6 +287,8 @@ Across all three metrics, the majority of views show no statistically significan
 The low number of significant results suggests that similarity metrics alone do not strongly differentiate expertise level for most views. This could be because both groups are imaging the same simulated heart using the same equipment, limiting the range of possible image variation. The simulator environment may constrain the degree to which expertise affects image content, particularly for views where the probe positioning is relatively straightforward.
 
 MI and CS are tied as the best differentiating metrics, each achieving significance in 2 views, while SSI is significant in only 1 view. MI and CS may be more sensitive to the specific content differences between expert and novice images because they directly measure pixel-level information overlap, whereas SSI captures broader structural properties (luminance, contrast, structure) that may be similar regardless of expertise.
+
+**Note on image composition and metric sensitivity:** The ultrasound images are mosotly black (zero-valued) background pixels - approximately 98% of the image area are zero values. Since all 3 similarity metrics are computed on the full 360 × 300 flattened image vectors, the vast majority of both the test and gold standard vectors are zeros. This explains the notably low CS and MI values.
 
 ---
 
@@ -541,7 +545,7 @@ Across all metric-score combinations, MI and CS consistently produce the stronge
 
 A notable observation is that many MI and CS regressions collapse to degree 1 (linear), with LASSO zeroing all higher-order polynomial coefficients. This suggests the relationship between these metrics and quality scores is predominantly linear, and higher-order terms do not improve generalisation. SSI regressions are more likely to retain higher degrees (5–7), indicating a more complex, nonlinear relationship between structural similarity and quality scores.
 
-The R² values are generally low across all combinations  -  the best is 0.55 and most fall below 0.35. This indicates that individual similarity metrics explain only a limited portion of the variance in quality scores. This is not unexpected: image quality as assessed by human evaluators is likely influenced by factors beyond what any single pixel-based metric captures, such as anatomical landmark visibility and clinical interpretability.
+The R² values are generally low across all combinations  -  the best is 0.55 and most fall below 0.35. This indicates that individual similarity metrics explain only a limited portion of the variance in quality scores. This is expected: image quality as assessed by human evaluators is likely influenced by factors beyond what any single pixel-based metric captures, such as anatomical landmark visibility and clinical interpretability.
 
 The performance of crit_perc and gen_impr as dependent variables is broadly comparable, with no consistent advantage for either. This aligns with the strong Pearson correlation between the two scores found in Q1  -  since the two quality scores are closely related, predicting one is approximately as easy as predicting the other.
 
@@ -588,11 +592,13 @@ LASSO regularisation with 5-fold cross-validation is applied (as in Section 3.2)
 
 </div>
 
-The Gaussian basis regression outperforms the polynomial LASSO regression for several views. The most significant improvement is View 4, which achieved R² = 0.00 with polynomial regression (the model explained none of the variance) but R² = 0.79 with Gaussian basis functions at order 10. View 1 improved from R² = 0.34 to R² = 0.65, and View 10 from R² = 0.11 to R² = 0.52. These improvements suggest the relationship between SSI and general impression is better captured by localised, bell-shaped basis functions than by global polynomial terms.
+The Gaussian basis regression outperforms the polynomial LASSO regression for several views. The largest improvement is View 4, which achieved R² = 0.00 with polynomial regression (the model explained none of the variance) but R² = 0.79 with Gaussian basis functions at order 10. View 1 improved from R² = 0.34 to R² = 0.65, and View 10 from R² = 0.11 to R² = 0.52. These improvements suggest the relationship between SSI and general impression is better captured by localised, bell-shaped basis functions than by global polynomial terms.
 
 The optimal orders vary across views  -  from 2 (Views 2, 5, 8) to 10 (View 4)  -  indicating different levels of nonlinearity in the SSI-gen_impr relationship depending on the view. Lower orders suggest a simpler, smoother relationship, while higher orders allow the model to fit more localised patterns in the data. Cross-validated model selection was used to determine the optimal order, avoiding overfitting by selecting the order that minimises generalisation error rather than training error.
 
 However, the improvement is not universal. Views 8 and 9 remain poorly predicted (R² = 0.00 and R² = 0.16 respectively), suggesting that for these views, SSI simply does not contain sufficient information to predict general impression regardless of the regression approach. The Gaussian basis approach justifies its additional complexity for views where clear nonlinear patterns exist, but cannot compensate where the underlying relationship between the metrics is weak.
+
+**Limitation - in-sample metrics and small sample sizes:** The RMSE and R² values reported in Tables 11 and 12 are computed on the full training set (i.e. in-sample), as is standard practice when using regularisation to control overfitting. However, with only n ≈ 18–20 data points per view and models using up to 10 basis functions (e.g. View 4, order 10), the ratio of parameters to observations is high. LASSO regularisation mitigates this by shrinking coefficients towards zero, but may not fully prevent the model from fitting noise in such small samples. Leave-one-out cross-validation (LOO-CV) was conducted as a supplementary check (see CW2.1 validation tests) and revealed that the out-of-sample R² values are substantially lower than the in-sample values reported here - for example, View 4 Gaussian basis drops from R² = 0.79 (in-sample) to R² = −0.34 (LOO-CV), indicating that the model's apparent predictive power does not generalise. This is a fundamental limitation of the small dataset (20 participants) rather than a flaw in the regularisation approach. I have not includued any code for this as it was not part of the assignment; just done out of curiosity to explain the values.
 
 ---
 
