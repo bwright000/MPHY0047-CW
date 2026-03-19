@@ -732,8 +732,6 @@ Neither rotation nor translation produces a statistically significant difference
 
 The mean rotation values are close to zero for both groups across most views, suggesting that neither experts nor novices systematically over or under-rotate the probe. The mean translation values are also comparable between groups, with overlapping ranges in every view. This implies that the physical positioning of the probe - at least as captured by rigid transformation parameters - is not what differentiates expert from novice performance.
 
-One possible explanation is that the HeartWorks simulator constrains the range of probe movements, limiting the variability in rotation and translation between participants regardless of experience. Another is that image quality depends more on subtle aspects of probe orientation and image plane selection that are not fully captured by a simple Euclidean (rigid) transformation model. The ECC algorithm estimates the best global rotation and translation to align two images, but cannot account for differences in image content that arise from probe angulation, depth, or gain settings.
-
 ### 4.3 Linear Regression - Alignment Metrics vs Quality Scores (Part iii)
 
 Simple linear regression (as defined in Section 1.2: $\hat{y} = \beta_0 + \beta_1 x$) is fitted for each combination of alignment metric (rotation or translation) as independent variable and quality score (crit_perc or gen_impr) as dependent variable, yielding $2 \times 2 \times 10 = 40$ models.

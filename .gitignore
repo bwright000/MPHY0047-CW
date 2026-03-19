@@ -5,3 +5,5 @@ __pycache__/
 *.pyc
 *.png
 *.csv
+/CW3/provided
+/CW2.1
