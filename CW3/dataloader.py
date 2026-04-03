@@ -1,5 +1,5 @@
 # Data loader for MPHY0047 Coursework 3.
-# Loads JIGSAWS kinematic data for 8 participants × 5 trials × 3 tasks.
+# Loads JIGSAWS kinematic data for 8 participants x 5 trials x 3 tasks.
 # Each trial is an (N_samples, 76) array of kinematic variables.
 # Also loads COVID-19 CT images (349 COVID + 397 Non-COVID).
 
@@ -117,7 +117,7 @@ def load_covid_data(target_size=IMAGE_SIZE):
 def load_covid_data_imbalanced(target_size=IMAGE_SIZE):
     """
     Load COVID CT data with imbalanced classes (Q5).
-    Removes the last 200 Non-COVID images → 349 COVID vs ~197 Non-COVID.
+    Removes the last 200 Non-COVID images -> 349 COVID vs ~197 Non-COVID.
     """
     for zpath, ddir in [(COVID_ZIP, COVID_DIR), (NON_COVID_ZIP, NON_COVID_DIR)]:
         if not os.path.isdir(ddir):
@@ -138,12 +138,20 @@ def load_covid_data_imbalanced(target_size=IMAGE_SIZE):
     return X, y, filenames
 
 
-def tests():
-    print("JIGSAWS loaded successfully.")
-    print(f"Suturing shape: {suturing.shape}")
-    for p in range(NUM_PARTICIPANTS):
-        shapes = [suturing[p, t].shape for t in range(NUM_TRIALS)]
-        label = "expert" if p in EXPERT_INDICES else "novice"
-        print(f"  {PARTICIPANTS[p]} ({label}): {shapes}")
+def extract_hog_features(images, orientations=9, pixels_per_cell=(8, 8),
+                         cells_per_block=(3, 3), block_norm='L2-Hys'):
+    """
+    Extract HOG features from an array of grayscale images.
+    Returns (N, n_features) array.
+    """
+    from skimage.feature import hog as skimage_hog
+    features = []
+    for img in images:
+        feat = skimage_hog(img, orientations=orientations,
+                           pixels_per_cell=pixels_per_cell,
+                           cells_per_block=cells_per_block,
+                           block_norm=block_norm)
+        features.append(feat)
+    return np.array(features)
 
-# tests()
+
