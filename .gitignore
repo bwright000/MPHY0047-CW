@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
-*.png
+# *.png
 *.csv
 /CW3/provided
 /CW2.1
