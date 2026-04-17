@@ -330,3 +330,234 @@ PCA has minimal impact on agglomerative clustering with ward linkage (accuracy d
 - **V (Ventricular) beats are the easiest to cluster across all methods** (98.5-99.8% recall). Ventricular premature contractions have a distinctive wide QRS complex morphology that is markedly different from normal sinus rhythm. This morphological distinctiveness translates directly into clearly separated wavelet coefficients - the db4 wavelet decomposition captures the broader, higher-amplitude QRS complex as different energy distributions across decomposition levels.
 - **N (Normal) beats are the hardest to cluster** (61.5-72.3% recall). Normal beats represent the baseline cardiac morphology. Some normal beats have wavelet features that fall in regions of feature space that overlap with S and V distributions. This is not a failure of the clustering algorithms but a fundamental limitation of the feature representation - the wavelet features do not perfectly separate all normal beats from abnormal ones.
 - **S (Supraventricular) beats show the most variation across methods** (85.0-92.5% recall). Supraventricular ectopic beats differ from normal beats primarily in their timing and subtle P-wave morphology changes, which are harder to capture in wavelet features than the gross QRS changes seen in V beats. The degree to which each method captures these subtle differences varies, explaining the wider recall range.
+
+---
+
+## Question 4: Time-Series Modelling and Forecasting [20 marks]
+
+### 4.1 Dataset
+
+`single_ecg_signal.csv` contains 3000 ECG samples (~8.3 s at 360 Hz) from one record of the MIT-BIH database. The raw CSV has a leading spurious `0` value which is dropped, leaving 3000 valid samples (mean ≈ 1014 ADC counts, strictly positive — log and square-root transforms are safe).
+
+### 4.2 Stationarity — Augmented Dickey-Fuller
+
+The ADF test's null hypothesis is that the series contains a unit root (non-stationary). Rejecting the null (p < 0.05, or a highly negative ADF statistic relative to the 5% critical value) is evidence that the series is stationary. Four versions were tested:
+
+<h4 align="center">Table 11: ADF Results Across Transforms</h4>
+
+<div align="center">
+
+| Transform | ADF Statistic | p-value | 5% Critical | Stationary? |
+|-----------|--------------:|--------:|------------:|:-----------:|
+| Raw | −11.07 | 4.47e-20 | −2.86 | YES |
+| **First difference** | **−14.90** | **1.53e-27** | **−2.86** | **YES** |
+| Square root | −9.68 | 1.23e-16 | −2.86 | YES |
+| Log | −8.33 | 3.44e-13 | −2.86 | YES |
+
+</div>
+
+<h4 align="center">Figure 8: ADF Statistic Across Transforms</h4>
+
+![ADF Transforms](figures/q4_adf_transforms.png)
+
+All four series reject the unit-root null at 5%, but first-difference does so most strongly (ADF = −14.9, p = 1.5×10⁻²⁷). This is the expected outcome: the raw ECG is already approximately mean-reverting around its baseline (which is why even the raw series passes the test), but differencing further reduces the slow wander between beats and yields the most stationary signal. Square-root and log transforms compress the amplitude but preserve the slow drift, so they are only marginal improvements on the raw signal — they are the wrong tool for this data. **First-difference is selected for all subsequent steps.**
+
+### 4.3 Train/Test Split
+
+After first-differencing, the series has 2999 samples. As specified, the first 1800 form the training set and the remaining 1199 form the test set.
+
+### 4.4 Seasonal Decomposition
+
+The period used for decomposition was read off the first prominent autocorrelation peak of the training signal (searching beyond lag 30 to skip the short-range correlation): **235 samples**, corresponding to a heart rate of ~92 bpm at 360 Hz — physiologically plausible for a moderately tachycardic resting ECG.
+
+<h4 align="center">Figure 9: Seasonal Decomposition (period ≈ 235 samples, ~92 bpm)</h4>
+
+![Seasonal Decomposition](figures/q4_seasonal_decompose.png)
+
+The differenced trace is dominated by the seasonal component — this is the periodic QRS/T pattern. The trend is nearly flat (differencing removes low-frequency drift) and the residual is small noise, confirming that first-differencing has successfully isolated the beat-to-beat oscillation we want to model.
+
+### 4.5 ACF and PACF — Choosing Orders
+
+<h4 align="center">Figure 10: ACF and PACF of the Differenced Training Signal</h4>
+
+![ACF and PACF](figures/q4_acf_pacf.png)
+
+- The **ACF** tails off and first enters the 95% confidence band at lag 5, then oscillates — consistent with an MA process of moderate order.
+- The **PACF** shows sharp spikes at lags 1, 2, 3 (lag 1 ≈ 0.9, lags 2–3 ≈ −0.5) and drops into the band around lag 5–7.
+
+Taking `p = 5` and `q = 5` (both capped at 5 to keep ARIMA(p,1,q) tractable) gives orders that are large enough to capture the short-range structure visible in both plots.
+
+### 4.6 Forecast Comparison
+
+All four models were fitted on the training set and asked to forecast the 1199-sample test window. AR, MA and ARMA were fitted directly on the stationary (differenced) training signal; **ARIMA(5,1,5) was fitted on the raw training series with d = 1** so the integration step is doing real work, then its raw-scale forecasts were differenced so every row of the table is compared in the same space. The literal reading of the spec — "use the stationary signal in the following steps" — would reduce ARIMA to ARMA (d = 0 on an already-differenced series) or over-difference it (d = 1 on an already-differenced series); fitting on raw with d = 1 is the only interpretation in which the `I` component is a genuine, non-redundant modelling step.
+
+<h4 align="center">Table 12: Forecast Comparison (1199-step out-of-sample)</h4>
+
+<div align="center">
+
+| Model | RSS | RMSE | AIC | BIC |
+|-------|---------:|-------:|--------:|--------:|
+| AR(5) | 170361.65 | 11.920 | 9389.12 | 9427.57 |
+| **MA(5)** | **162703.55** | **11.649** | 9890.97 | 9929.44 |
+| ARMA(5,5) | 166329.20 | 11.778 | 9351.17 | 9417.12 |
+| ARIMA(5,1,5) | 166355.88 | 11.779 | **9349.25** | **9409.70** |
+
+</div>
+
+<h4 align="center">Figure 11: Forecasts vs Test Values (Differenced Space)</h4>
+
+![Forecasts](figures/q4_forecasts.png)
+
+### 4.7 Interpretation
+
+**RSS ranks MA(5) first; AIC/BIC rank ARIMA(5,1,5) first.** This metric disagreement is itself the most important finding — any ranking from a single number would misrepresent the result.
+
+- **RSS on MA(5) is lowest by only 2.3% vs the others.** Looking at the forecast plot, every model collapses to ≈ 0 within ~50 steps. For first-differenced ECG this is the correct and unavoidable behaviour: the differenced series has essentially zero long-run mean, and none of these linear models carry information about the 300-sample beat period, so a 1199-step forecast decays to the mean. The RSS we are measuring is therefore dominated by the variance of the true test signal (the QRS spikes we cannot predict), and the small differences between models come from how they behave in the first few dozen steps where the mean-reversion transient matters.
+- **AIC/BIC reward ARIMA(5,1,5) and ARMA(5,5) over MA(5)** — these two parsimonious likelihood-based criteria agree that including the AR component gives a better fit to the training dynamics. MA(5) wins on out-of-sample RSS but is worse in likelihood terms; this is a classic case where a noisier but more flexible model accidentally produces a slightly flatter forecast, minimising RSS on a largely unforecastable test window.
+- **The ARIMA(5,1,5) AIC/BIC being marginally best** validates the design choice of fitting ARIMA on the raw series: the `I(1)` step is doing the same work as our manual differencing, but jointly with the AR and MA fit, giving it a minute modelling edge.
+
+**Clinical relevance.** Long-horizon linear forecasts of raw ECG samples are not clinically useful — no cardiologist asks "what voltage will this patient's lead look like 3 seconds from now?" The reason these models all perform similarly and all decay to zero is that the clinically informative signal (the timing and morphology of QRS complexes) is quasi-periodic, not Markovian in the first few lags. Proper ECG forecasting uses beat-level features (RR intervals, wavelet coefficients — exactly the 83 features of Q1–Q3) or nonlinear models that can carry periodic state. The take-away from Q4 is diagnostic rather than predictive: the ADF, ACF/PACF and decomposition together show that the differenced ECG is a stationary short-memory process overlaid on a strong ~92 bpm oscillation, and that simple ARMA-family models capture the short-memory part but not the oscillation.
+
+---
+
+## Question 5: Association Rule Mining (Heart-Statlog) [20 marks]
+
+### 5.1 Dataset
+
+`heart-statlog.csv` contains 270 patients (the spec states 271; the provided file has 270) with 13 physiological / lab features and a binary class label (`present` / `absent` CVD). Class balance: 150 absent, 120 present.
+
+### 5.2 Binarisation
+
+Each of the 13 features was binarised to 0/1 according to the spec's table. Short labels are used below for readability:
+
+<h4 align="center">Table 13: Binarisation Rule and Fraction Coded as "1"</h4>
+
+<div align="center">
+
+| # | Feature | Rule for 1 | Label(1) | Fraction = 1 |
+|---|---------|------------|----------|-------------:|
+| 1 | age | > 50 | AGE_OLD | 0.681 |
+| 2 | sex | = 1 (male) | SEX_M | 0.678 |
+| 3 | chest pain type | > 2.5 | CHEST_HIGH | 0.770 |
+| 4 | resting BP | > 125 | BP_HIGH | 0.593 |
+| 5 | cholesterol | > 250 | CHOL_HIGH | 0.448 |
+| 6 | fasting blood sugar | = 1 (>120) | FBS_HIGH | 0.148 |
+| 7 | resting ECG | ≠ 0 | RECG_ABNORMAL | 0.515 |
+| 8 | max heart rate | > 140 | MAXHR_HIGH | 0.696 |
+| 9 | exercise angina | = 1 | ANGINA_YES | 0.330 |
+| 10 | oldpeak | ≠ 0 | OLDPEAK_POS | 0.685 |
+| 11 | slope | ≠ 1 (flat/down) | SLOPE_NOTUP | 0.519 |
+| 12 | major vessels | ≠ 0 | VESSELS_POS | 0.407 |
+| 13 | thal | ≠ 3 | THAL_ABNORMAL | 0.437 |
+
+</div>
+
+### 5.3 Apriori Basket Construction
+
+Each binarised feature was one-hot encoded into **two separate items** — one for the "0" value and one for the "1" value (e.g. `AGE_YOUNG` *and* `AGE_OLD`). Without this step, Apriori can only surface rules about the "1" value of each feature; the one-hot expansion allows rules that reference either state.
+
+The **class column is deliberately kept out of the basket**, in line with the spec's binarisation list (which names only the 13 features). The class enters at the *interpretation* step: for each significant rule we compute a class-stratified lift that measures how strongly the rule's itemset concentrates in CVD-present vs CVD-absent patients (§5.5 onward).
+
+Final basket: **270 transactions × 26 items**.
+
+### 5.4 Frequent Itemsets and Rule Extraction
+
+| Stage | Threshold | Count |
+|-------|-----------|------:|
+| Frequent itemsets | support ≥ 0.25 | 439 |
+| Association rules | lift ≥ 1.15 | 776 |
+| Significant rules | conviction > 1.5 | 309 |
+
+### 5.5 Class-Stratified Scoring of Rules
+
+For each rule with antecedent $A$ and consequent $C$, let $I = A \cup C$ be the full itemset. We compute the **class-lift** in each class:
+
+$$
+\text{class\_lift}_X = \frac{P(\text{class}{=}X \mid I)}{P(\text{class}{=}X)}
+= \frac{|\{\text{rows matching } I \text{ and in class } X\}|}{|\{\text{rows matching } I\}| \cdot P(X)}
+$$
+
+`class_lift = 1` means the itemset is neutral with respect to class $X$; values > 1 mean the itemset is *enriched* in class $X$ compared to baseline prevalence. Each rule is tagged with the **direction** (`absent` or `present`) of its higher class-lift, and with **strength** equal to that value. Of the 309 significant rules:
+
+- **139 (45.0%) are indicative of CVD ABSENCE**
+- **170 (55.0%) are indicative of CVD PRESENCE**
+
+The stratification is **mathematically equivalent** to the class-in-basket mining we initially tried, but keeps the Apriori step pure to the spec's 13-feature brief.
+
+### 5.6 Top Rules Overall (by Conviction)
+
+<h4 align="center">Table 14: Top 10 Most Informative Rules (all directions, sorted by conviction)</h4>
+
+<div align="center">
+
+| Antecedents | Consequents | Sup | Conf | Lift | Conv | L_abs | L_pres | Dir |
+|-------------|-------------|---:|----:|----:|-----:|-----:|-------:|:---:|
+| CHEST_HIGH, SLOPE_NOTUP, THAL_ABNORMAL | OLDPEAK_POS | 0.26 | 0.99 | 1.44 | **22.35** | 0.23 | 1.96 | present |
+| AGE_OLD, CHEST_HIGH, SLOPE_NOTUP | OLDPEAK_POS | 0.32 | 0.98 | 1.43 | 13.85 | 0.48 | 1.65 | present |
+| CHEST_HIGH, SEX_M, SLOPE_NOTUP | OLDPEAK_POS | 0.29 | 0.98 | 1.42 | 12.75 | 0.41 | 1.74 | present |
+| AGE_OLD, CHEST_HIGH, FBS_NORMAL, SLOPE_NOTUP | OLDPEAK_POS | 0.27 | 0.97 | 1.42 | 11.65 | 0.50 | 1.62 | present |
+| AGE_OLD, SLOPE_NOTUP | OLDPEAK_POS | 0.37 | 0.96 | 1.40 | 8.19 | 0.58 | 1.53 | present |
+| AGE_OLD, SEX_M, SLOPE_NOTUP | OLDPEAK_POS | 0.27 | 0.96 | 1.40 | 7.87 | 0.47 | 1.66 | present |
+| CHEST_HIGH, SLOPE_NOTUP | OLDPEAK_POS | 0.41 | 0.96 | 1.40 | 7.37 | 0.56 | 1.55 | present |
+| AGE_OLD, FBS_NORMAL, SLOPE_NOTUP | OLDPEAK_POS | 0.30 | 0.95 | 1.39 | 6.77 | 0.57 | 1.54 | present |
+| MAXHR_HIGH, OLDPEAK_ZERO | SLOPE_UP | 0.26 | 0.92 | 1.91 | 6.57 | 1.36 | 0.55 | absent |
+| RECG_ABNORMAL, SLOPE_NOTUP | OLDPEAK_POS | 0.29 | 0.95 | 1.39 | 6.53 | 0.62 | 1.48 | present |
+
+</div>
+
+Nine of the top ten rules have the consequent `OLDPEAK_POS` — positive ST-segment depression on exercise — and every one of them is enriched in CVD-present patients (class_lift_present up to 1.96, meaning such itemsets are almost twice as common in present patients as in the full cohort). The remaining rule, `{MAXHR_HIGH, OLDPEAK_ZERO} → SLOPE_UP`, is the only top-10 rule enriched in absent patients, and it captures the physiological counterpart: a patient who reaches a high peak heart rate *and* has no ST depression will also have a normal (up-sloping) ST slope, a pattern seen almost exclusively in the CVD-absent group.
+
+### 5.7 Top Rules Indicative of CVD ABSENCE
+
+<h4 align="center">Table 15: Top 10 Absence-Indicative Rules (sorted by class-lift in absent)</h4>
+
+<div align="center">
+
+| Antecedents | Consequents | Sup | Conf | Lift | Conv | L_abs | L_pres |
+|-------------|-------------|---:|----:|----:|-----:|-----:|-------:|
+| CHOL_NORMAL, THAL_NORMAL | VESSELS_ZERO | 0.25 | 0.77 | 1.30 | 1.79 | **1.64** | 0.20 |
+| MAXHR_HIGH, THAL_NORMAL, VESSELS_ZERO | ANGINA_NO | 0.29 | 0.85 | 1.26 | 2.17 | 1.64 | 0.20 |
+| ANGINA_NO, THAL_NORMAL, VESSELS_ZERO | MAXHR_HIGH | 0.29 | 0.86 | 1.23 | 2.13 | 1.64 | 0.20 |
+| ANGINA_NO, MAXHR_HIGH, VESSELS_ZERO | THAL_NORMAL | 0.29 | 0.77 | 1.37 | 1.92 | 1.64 | 0.20 |
+| THAL_NORMAL, VESSELS_ZERO | ANGINA_NO, MAXHR_HIGH | 0.29 | 0.73 | 1.35 | 1.69 | 1.64 | 0.20 |
+| ANGINA_NO, MAXHR_HIGH, THAL_NORMAL | VESSELS_ZERO | 0.29 | 0.76 | 1.28 | 1.68 | 1.64 | 0.20 |
+| ANGINA_NO, VESSELS_ZERO | MAXHR_HIGH, THAL_NORMAL | 0.29 | 0.65 | 1.45 | 1.58 | 1.64 | 0.20 |
+| MAXHR_HIGH, THAL_NORMAL | ANGINA_NO, VESSELS_ZERO | 0.29 | 0.64 | 1.45 | 1.56 | 1.64 | 0.20 |
+| THAL_NORMAL, VESSELS_ZERO | MAXHR_HIGH | 0.34 | 0.86 | 1.23 | 2.17 | 1.62 | 0.22 |
+| MAXHR_HIGH, THAL_NORMAL | VESSELS_ZERO | 0.34 | 0.76 | 1.28 | 1.70 | 1.62 | 0.22 |
+
+</div>
+
+Every top-10 absence rule is a rearrangement of the same four items: `THAL_NORMAL`, `VESSELS_ZERO`, `MAXHR_HIGH`, `ANGINA_NO`. Their common itemset `{THAL_NORMAL, VESSELS_ZERO, MAXHR_HIGH, ANGINA_NO}` has class-lift of 1.64 for absence — i.e. it is 64% more likely to occur in a CVD-absent patient than the baseline rate, and the same itemset has class-lift of only 0.20 for presence (80% *less* likely than baseline).
+
+### 5.8 Top Rules Indicative of CVD PRESENCE
+
+<h4 align="center">Table 16: Top 10 Presence-Indicative Rules (sorted by class-lift in present)</h4>
+
+<div align="center">
+
+| Antecedents | Consequents | Sup | Conf | Lift | Conv | L_abs | L_pres |
+|-------------|-------------|---:|----:|----:|-----:|-----:|-------:|
+| CHEST_HIGH, THAL_ABNORMAL | SLOPE_NOTUP | 0.26 | 0.70 | 1.36 | 1.62 | 0.23 | **1.96** |
+| CHEST_HIGH, SLOPE_NOTUP, THAL_ABNORMAL | OLDPEAK_POS | 0.26 | 0.99 | 1.44 | 22.35 | 0.23 | 1.96 |
+| SLOPE_NOTUP, THAL_ABNORMAL | CHEST_HIGH, OLDPEAK_POS | 0.26 | 0.85 | 1.53 | 3.01 | 0.23 | 1.96 |
+| CHEST_HIGH, OLDPEAK_POS, THAL_ABNORMAL | SLOPE_NOTUP | 0.26 | 0.79 | 1.52 | 2.26 | 0.23 | 1.96 |
+| OLDPEAK_POS, SLOPE_NOTUP, THAL_ABNORMAL | CHEST_HIGH | 0.26 | 0.90 | 1.16 | 2.24 | 0.23 | 1.96 |
+| OLDPEAK_POS, THAL_ABNORMAL | CHEST_HIGH, SLOPE_NOTUP | 0.26 | 0.71 | 1.63 | 1.93 | 0.23 | 1.96 |
+| CHEST_HIGH, THAL_ABNORMAL | OLDPEAK_POS, SLOPE_NOTUP | 0.26 | 0.69 | 1.44 | 1.69 | 0.23 | 1.96 |
+| CHEST_HIGH, SLOPE_NOTUP | OLDPEAK_POS, THAL_ABNORMAL | 0.26 | 0.60 | 1.63 | 1.58 | 0.23 | 1.96 |
+| CHEST_HIGH, OLDPEAK_POS, SLOPE_NOTUP | THAL_ABNORMAL | 0.26 | 0.62 | 1.43 | 1.50 | 0.23 | 1.96 |
+| SEX_M, VESSELS_POS | CHEST_HIGH | 0.27 | 0.89 | 1.16 | 2.09 | 0.25 | 1.94 |
+
+</div>
+
+Nine of the top-10 presence rules are rearrangements of the same four-item core: `{CHEST_HIGH, OLDPEAK_POS, SLOPE_NOTUP, THAL_ABNORMAL}` — four canonical indicators of coronary artery disease co-occurring in the same patients. The class-lift of 1.96 means this itemset is essentially twice as likely in CVD-present patients as in the cohort overall; conversely its class-lift in absent is 0.23 — nearly five times *less* likely than baseline. The tenth rule, `{SEX_M, VESSELS_POS} → CHEST_HIGH`, captures a demographic-plus-imaging pattern: males with any visualised coronary vessel disease tend to also have higher chest-pain grades, and this combination is enriched almost two-fold in CVD-present patients.
+
+### 5.9 Interpretation — Answering the Spec's Closing Question
+
+**The significant rules split roughly evenly into two clinically coherent families.** Each family is a nearly-monolithic cluster of co-occurring clinical features rather than a diverse rule set:
+
+- **Absence family** (139 rules, core itemset `{THAL_NORMAL, VESSELS_ZERO, MAXHR_HIGH, ANGINA_NO}`, class-lift ≈ 1.64). A normal thallium perfusion scan + no major vessels on angiography + preserved peak exercise heart rate + no exercise-induced angina. This is the standard clinical rule-out conjunction — a patient whose stress test is negative on all four axes is reliably CVD-absent. Apriori has rediscovered the conventional non-invasive rule-out criteria for CAD.
+- **Presence family** (170 rules, core itemset `{CHEST_HIGH, OLDPEAK_POS, SLOPE_NOTUP, THAL_ABNORMAL}`, class-lift ≈ 1.96). Higher-grade chest pain + positive ST-depression on exercise + flat or down-sloping ST slope + abnormal thallium perfusion. This is the classic positive stress-test profile for ischaemic heart disease.
+
+**Are the rules indicative of disease presence or absence?** The significant rules split 45 % / 55 % across the two directions, so both are represented. The **presence family is more strongly enriched** (peak class-lift 1.96 vs 1.64), which partly reflects the lower baseline prevalence of presence (120/270 = 44 %): rarer classes have more headroom for large lifts. What both families share is a striking internal coherence — each is built around a single four-item core of co-occurring clinical markers. The biological reading is that CAD has a canonical syndrome (chest pain, ischaemic ECG changes, perfusion defects) and a canonical "all-negative" counterpart, and Apriori extracts both unchanged. The answer to the spec is therefore: **the significant rules are indicative of both presence and absence in roughly equal numbers, but the presence-indicating rules have higher class-specificity (larger class-lift)**.
