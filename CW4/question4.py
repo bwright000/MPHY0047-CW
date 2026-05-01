@@ -27,12 +27,11 @@ apply_style()
 
 
 # -----------------------------------------------------------------
-# Load signal. Dataloader returns 3001 values because the CSV's first
-# entry is a spurious 0 (first real ECG sample begins at index 1).
-# Slice to the 3000 valid samples specified by the spec.
+# Load signal. Dataloader correctly reads 3000 ECG samples from the CSV
+# (the file's first row is a header, not data).
 # -----------------------------------------------------------------
-raw = ecg_signal[1:].astype(float)
-assert len(raw) == 3000, f"Expected 3000 samples after trim, got {len(raw)}"
+raw = ecg_signal.astype(float)
+assert len(raw) == 3000, f"Expected 3000 samples, got {len(raw)}"
 assert (raw > 0).all(), "Log/sqrt assume strictly positive signal - aborting"
 
 
@@ -67,7 +66,6 @@ def run_stationarity():
     print(f"\n  Selected transform: '{best['name']}' "
           f"(ADF={best['adf_stat']:.4f}, p={best['p_value']:.4g})")
 
-    # Map the chosen label back to the actual series
     series_map = {
         'Raw': raw,
         'First difference': raw_diff,

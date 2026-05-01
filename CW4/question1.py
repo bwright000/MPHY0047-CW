@@ -90,13 +90,18 @@ def run_pca_analysis():
     return n_components_90
 
 
-# Part 3: K-Means on PCA-reduced features
+# Part 3: K-Means on PCA-reduced features (with whitening).
+# whiten=True scales each component to unit variance so all components
+# contribute equally to Euclidean distance. Without whitening, the first
+# few components dominate distance calculations and lower-variance
+# components are effectively ignored. K-Means specifically benefits from
+# whitening because its objective is purely distance-based.
 def run_pca_kmeans(n_components):
     print("\n" + "=" * 60)
-    print(f"  Part 3: K-Means on PCA-Reduced Features ({n_components} components)")
+    print(f"  Part 3: K-Means on PCA-Reduced Features ({n_components} components, whitened)")
     print("=" * 60)
 
-    pca = PCA(n_components=n_components, random_state=42)
+    pca = PCA(n_components=n_components, whiten=True, random_state=42)
     X_pca = pca.fit_transform(X_scaled)
     print(f"  Reduced: {X_scaled.shape[1]} -> {X_pca.shape[1]} features")
     print(f"  Variance retained: {sum(pca.explained_variance_ratio_):.4f}")

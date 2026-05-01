@@ -14,7 +14,12 @@ from clustering import (
     plot_confusion_matrix, print_summary,
 )
 
-# Import Q1 and Q2 results for cross-comparison
+# Import Q1 and Q2 results for cross-comparison.
+# Each method uses its best-performing PCA configuration:
+#   Q1 (K-Means): whitened PCA  - whitening helps centroid-distance methods
+#   Q2 (GMM):     unwhitened PCA - whitening damages covariance estimation
+#   Q3 (Ward):   unwhitened PCA - whitening damages hierarchical merges
+# See §3.7 for the whitening sensitivity analysis that motivates this choice.
 from question1 import metrics_full as q1_full, metrics_pca as q1_pca
 from question2 import metrics_full as q2_full, metrics_pca as q2_pca
 
@@ -81,11 +86,13 @@ def run_pca_agglomerative(best_linkage):
     - print metrics + confusion matrix
     - return metrics
     """
-    pca_full = PCA(random_state=42)
-    pca_full.fit(X_scaled)
-    cumvar = np.cumsum(pca_full.explained_variance_ratio_)
-    n_components_90 = np.argmax(cumvar >= 0.90) + 1 
-    X_pca = pca_full.transform(X_scaled)[:, :n_components_90]
+    # Determine n_components for >=90% variance, then refit at that size.
+    pca_probe = PCA().fit(X_scaled)
+    cumvar = np.cumsum(pca_probe.explained_variance_ratio_)
+    n_components_90 = int(np.argmax(cumvar >= 0.90)) + 1
+
+    pca = PCA(n_components=n_components_90)
+    X_pca = pca.fit_transform(X_scaled)
     y_pred, metrics = run_agglomerative(X_pca, best_linkage)
     print_metrics(f"Agglomerative ({best_linkage}) - PCA", metrics)
     plot_confusion_matrix(f"Agglomerative ({best_linkage}) PCA", y_ecg, y_pred, f"q3_cm_{best_linkage}_pca.png")
@@ -115,9 +122,9 @@ def run_cross_comparison(q3_full, q3_pca, best_linkage):
     ])
 
     print_summary("Cross-Method Comparison (PCA)", [
-        ("K-Means (PCA 17)", q1_pca),
-        ("GMM (PCA 17)", q2_pca),
-        (f"Agglomerative {best_linkage} (PCA 17)", q3_pca),
+        ("K-Means (PCA 20)", q1_pca),
+        ("GMM (PCA 20)", q2_pca),
+        (f"Agglomerative {best_linkage} (PCA 20)", q3_pca),
     ])
 
     # Per-class recall comparison (full features only)

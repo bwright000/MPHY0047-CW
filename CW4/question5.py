@@ -51,7 +51,7 @@ def binarise():
     b['maximum_heart_rate_achieved']           = (df['maximum_heart_rate_achieved'] > 140).astype(int)
     b['exercise_induced_angina']               = df['exercise_induced_angina'].astype(int)
     b['oldpeak']                               = (df['oldpeak'] != 0).astype(int)
-    # Slope: 0 if value=1 else 1  (spec: "be careful" — this is the unusual mapping)
+    # Slope: 0 if value=1 else 1
     b['slope']                                 = (df['slope'] != 1).astype(int)
     b['number_of_major_vessels']               = (df['number_of_major_vessels'] != 0).astype(int)
     b['thal']                                  = (df['thal'] != 3).astype(int)
@@ -229,7 +229,6 @@ def run():
     return freq, rules, significant, stratified
 
 
-# Compute on import (matches Q1-Q4 pattern).
 freq_itemsets, all_rules, sig_rules, stratified_rules = run()
 
 
