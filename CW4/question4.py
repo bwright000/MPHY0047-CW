@@ -26,10 +26,8 @@ from timeseries import (
 apply_style()
 
 
-# -----------------------------------------------------------------
 # Load signal. Dataloader correctly reads 3000 ECG samples from the CSV
-# (the file's first row is a header, not data).
-# -----------------------------------------------------------------
+
 raw = ecg_signal.astype(float)
 assert len(raw) == 3000, f"Expected 3000 samples, got {len(raw)}"
 assert (raw > 0).all(), "Log/sqrt assume strictly positive signal - aborting"
